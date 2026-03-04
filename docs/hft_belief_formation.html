@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HFT Belief Formation &amp; Autonomous AI Market Agents — YonedaAI</title>
+  <meta property="og:title" content="HFT Belief Formation &amp; Autonomous AI Market Agents">
+  <meta property="og:description" content="Part IV of Markets as Distributed Bayesian Inference Engines — YonedaAI">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://magnetonio.github.io/market-theory/hft_belief_formation.html">
+  <meta property="og:image" content="https://magnetonio.github.io/market-theory/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HFT Belief Formation &amp; Autonomous AI Market Agents">
+  <meta name="twitter:description" content="Part IV of Markets as Distributed Bayesian Inference Engines">
+  <meta name="twitter:image" content="https://magnetonio.github.io/market-theory/og-image.png">
+  <meta name="description" content="HFT Belief Formation &amp; Autonomous AI Market Agents — Part IV of the Predictive Market Theory series by Matthew Long">
+  <link rel="canonical" href="https://magnetonio.github.io/market-theory/hft_belief_formation.html">
+  <link rel="stylesheet" href="reader.css">
+  <script>
+  MathJax = {
+    tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']], processEscapes: true, tags: 'ams' },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+  };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="nav-left">
+      <a href="index.html">&#8592; Home</a>
+      <span class="part-label">Part IV &middot; q-fin.TR</span>
+    </div>
+    <div class="nav-right">
+      <a href="../papers/pdf/hft_belief_formation.pdf" class="pdf-btn">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+        PDF
+      </a>
+    </div>
+  </div>
+  <article>
+<div class="center">
+<p><span><strong>High-Frequency Trading as Microsecond Bayesian<br />
+Belief Formation: From Algorithmic Priors<br />
+to Autonomous AI Market Agents</strong></span><br />
+<span>Matthew Long</span><br />
+<span><em>YonedaAI Collaboration</em></span><br />
+<span>Magneton Research, Chicago, IL</span><br />
+<span>matthew@yonedaai.com <span class="math inline">\(\cdot\)</span><a href="https://yonedaai.com" class="uri">https://yonedaai.com</a></span><br />
+<span>Part IV of <em>Markets as Distributed Bayesian Inference Engines</em></span><br />
+2026-03-04</p>
+</div>
+<hr />
+<h1 id="introduction-belief-at-the-speed-of-light">Introduction: Belief at the Speed of Light</h1>
+<h2 id="the-central-question">The Central Question</h2>
+<p>In Parts I–III of this series, we established that the stock market—or any market—is a <em>collective predictive mechanism</em> that models perceived future outcomes as a belief function. Specifically, the market produces a <em>predictive measure</em> <span class="math inline">\(\mathcal{P}_t\)</span> over future states <span class="math inline">\(\omega \in \Omega\)</span>, and prices emerge from this measure through a pricing functional: <span class="math display">\[\begin{equation}
+\label{eq:pricing-functional}
+  P_t(X) = e^{-r(T-t)} \int_\Omega X(\omega) \cdot R(\omega)\, d\mathcal{P}_t(\omega),
+\end{equation}\]</span> where <span class="math inline">\(R(\omega)\)</span> is the risk distortion kernel mapping the predictive measure to the risk-neutral pricing measure.</p>
+<p>This raises a fundamental question that the previous papers left open: <em>At what timescales and through what mechanisms do individual market participants form the beliefs that collectively constitute <span class="math inline">\(\mathcal{P}_t\)</span>?</em></p>
+<p>In modern markets, the dominant participants by volume are not human traders but algorithms. High-frequency trading firms account for approximately 50–60% of U.S. equity volume, executing strategies at microsecond to millisecond timescales. These algorithms form “beliefs” not through human cognition but through computational inference on market data. Understanding how these algorithmic beliefs are formed, aggregated, and how they contribute to the collective predictive measure is essential for a complete theory of markets.</p>
+<h2 id="from-human-to-algorithmic-to-ai-beliefs">From Human to Algorithmic to AI Beliefs</h2>
+<p>We identify three epochs of belief formation in financial markets:</p>
+<ol>
+<li><p><strong>Human Belief</strong> (pre-2000): Beliefs formed through fundamental analysis, technical analysis, and qualitative judgment. Timescale: hours to months. Information set: public filings, news, expert opinion.</p></li>
+<li><p><strong>Algorithmic/HFT Belief</strong> (2000–present): Beliefs formed through statistical models operating on market microstructure data. Timescale: microseconds to seconds. Information set: order book, trade flow, latency signals.</p></li>
+<li><p><strong>AI Agent Belief</strong> (emerging): Beliefs formed through learned representations over multimodal data. Timescale: variable, from microseconds to strategic horizons. Information set: market data, text, images, alternative data, other agents’ behavior, and self-generated hypotheses.</p></li>
+</ol>
+<p>The transition between these epochs is not merely technological but represents a <em>phase transition in belief space</em>—a qualitative change in the dimensionality, adaptability, and generative capacity of the belief functions that constitute the market’s predictive measure.</p>
+<h2 id="outline">Outline</h2>
+<p>Section <a href="#sec:hft-belief" data-reference-type="ref" data-reference="sec:hft-belief">2</a> develops the formal framework for HFT belief formation, decomposing it into structural, microstructure, and strategic components. Section <a href="#sec:lob-inference" data-reference-type="ref" data-reference="sec:lob-inference">3</a> analyzes belief extraction from the limit order book. Section <a href="#sec:belief-timescales" data-reference-type="ref" data-reference="sec:belief-timescales">4</a> characterizes the multi-timescale structure of HFT beliefs. Section <a href="#sec:ai-agents" data-reference-type="ref" data-reference="sec:ai-agents">5</a> extends the framework to autonomous AI agents. Section <a href="#sec:phase-transition" data-reference-type="ref" data-reference="sec:phase-transition">6</a> proves the belief space phase transition theorem. Section <a href="#sec:stability" data-reference-type="ref" data-reference="sec:stability">7</a> derives the AI Market Stability Theorem. Section <a href="#sec:ecosystem" data-reference-type="ref" data-reference="sec:ecosystem">8</a> analyzes multi-agent belief ecosystems. Section <a href="#sec:implications" data-reference-type="ref" data-reference="sec:implications">9</a> discusses implications for market design and regulation. Section <a href="#sec:conclusion" data-reference-type="ref" data-reference="sec:conclusion">13</a> concludes.</p>
+<h1 id="sec:hft-belief">HFT Belief Formation: A Bayesian Decomposition</h1>
+<h2 id="the-hft-agent-as-bayesian-updater">The HFT Agent as Bayesian Updater</h2>
+<p>We model an HFT agent as a constrained Bayesian updater. Let <span class="math inline">\(\theta \in \Theta\)</span> denote the latent state relevant to the agent’s trading decisions (e.g., the “true” short-term price direction, the presence of informed flow, the state of other participants’ inventories). The HFT agent maintains a belief: <span class="math display">\[\begin{equation}
+\label{eq:hft-belief}
+  \pi_t^{\mathrm{HFT}}(\theta) = P(\theta \mid \mathcal{F}_t^{\mathrm{micro}}),
+\end{equation}\]</span> where <span class="math inline">\(\mathcal{F}_t^{\mathrm{micro}}\)</span> is the filtration generated by market microstructure observables up to time <span class="math inline">\(t\)</span>.</p>
+<div id="def:hft-decomposition" class="definition">
+<p><strong>Definition 1</strong> (HFT Belief Decomposition).  The belief of an HFT agent decomposes into three components: <span class="math display">\[\begin{equation}
+\label{eq:belief-decomposition}
+  \pi_t^{\mathrm{HFT}}(\theta) = \underbrace{\pi_0(\theta)}_{\text{structural prior}} \cdot \underbrace{\frac{L(\mathcal{F}_t^{\mathrm{LOB}} \mid \theta)}{Z_t^{\mathrm{LOB}}}}_{\text{microstructure likelihood}} \cdot \underbrace{\frac{L(\mathcal{F}_t^{\mathrm{strat}} \mid \theta)}{Z_t^{\mathrm{strat}}}}_{\text{strategic likelihood}},
+\end{equation}\]</span> where:</p>
+<ul>
+<li><p><span class="math inline">\(\pi_0(\theta)\)</span> is the <em>structural prior</em> encoded in algorithm design and calibration,</p></li>
+<li><p><span class="math inline">\(L(\mathcal{F}_t^{\mathrm{LOB}} \mid \theta)\)</span> is the likelihood from limit order book observations,</p></li>
+<li><p><span class="math inline">\(L(\mathcal{F}_t^{\mathrm{strat}} \mid \theta)\)</span> is the likelihood from strategic inference about other agents,</p></li>
+<li><p><span class="math inline">\(Z_t^{\mathrm{LOB}}, Z_t^{\mathrm{strat}}\)</span> are normalizing constants.</p></li>
+</ul>
+</div>
+<p>Each component operates on a different timescale and information source, creating a hierarchical belief structure.</p>
+<h2 id="structural-beliefs-the-algorithmic-prior">Structural Beliefs: The Algorithmic Prior</h2>
+<p>The structural prior <span class="math inline">\(\pi_0(\theta)\)</span> is not learned in real-time but is <em>designed</em> into the algorithm through:</p>
+<ol>
+<li><p><strong>Model specification</strong>: The choice of model (e.g., linear regression on order imbalance, Hawkes process for order arrival, neural network for pattern recognition) constrains the hypothesis space <span class="math inline">\(\Theta\)</span>.</p></li>
+<li><p><strong>Parameter calibration</strong>: Historical backtesting produces point estimates or posterior distributions over model parameters.</p></li>
+<li><p><strong>Risk constraints</strong>: Position limits, loss limits, and inventory penalties shape the effective prior by zeroing out regions of <span class="math inline">\(\Theta\)</span> that would lead to unacceptable risk.</p></li>
+<li><p><strong>Latency budget</strong>: The computational time available for inference constrains the complexity of <span class="math inline">\(\pi_0\)</span> and the update mechanism.</p></li>
+</ol>
+<div id="prop:structural-constraint" class="proposition">
+<p><strong>Proposition 2</strong> (Structural Prior Constraint).  <em>Let <span class="math inline">\(\mathcal{M}\)</span> be the model class of an HFT algorithm with <span class="math inline">\(d\)</span> free parameters and latency budget <span class="math inline">\(\Delta t\)</span>. The effective dimension of the structural prior satisfies: <span class="math display">\[\begin{equation}
+  \dim_{\mathrm{eff}}(\pi_0) \leq \min\left(d, \left\lfloor \frac{\Delta t}{\tau_{\mathrm{compute}}} \right\rfloor\right),
+\end{equation}\]</span> where <span class="math inline">\(\tau_{\mathrm{compute}}\)</span> is the time required per dimension of Bayesian update.</em></p>
+</div>
+<p>This constraint is fundamental: HFT systems trade off belief complexity for speed. A market-making algorithm with <span class="math inline">\(\Delta t = 10\,\mu\mathrm{s}\)</span> latency budget cannot maintain a posterior over thousands of dimensions; it is restricted to a low-dimensional sufficient-statistic manifold.</p>
+<h2 id="microstructure-beliefs-order-book-inference">Microstructure Beliefs: Order Book Inference</h2>
+<p>The microstructure component updates based on real-time observations from the limit order book:</p>
+<div id="def:lob-info" class="definition">
+<p><strong>Definition 3</strong> (LOB Information Set).  The LOB information set at time <span class="math inline">\(t\)</span> is: <span class="math display">\[\begin{equation}
+  \mathcal{F}_t^{\mathrm{LOB}} = \sigma\left(\{(p_i^b, q_i^b, p_j^a, q_j^a)\}_{i,j}, \{(\tau_k, s_k, p_k, q_k)\}_{k: \tau_k \leq t}\right),
+\end{equation}\]</span> where <span class="math inline">\((p_i^b, q_i^b)\)</span> are bid price-quantity pairs, <span class="math inline">\((p_j^a, q_j^a)\)</span> are ask price-quantity pairs, and <span class="math inline">\((\tau_k, s_k, p_k, q_k)\)</span> are trade timestamps, sides, prices, and quantities.</p>
+</div>
+<p>The key insight is that HFT systems do not process the full LOB state but extract <em>sufficient statistics</em>:</p>
+<div id="thm:lob-sufficient" class="theorem">
+<p><strong>Theorem 4</strong> (LOB Sufficient Statistics).  <em>For the class of linear-Gaussian price impact models, the following statistics are jointly sufficient for short-horizon price prediction: <span class="math display">\[\begin{equation}
+\label{eq:sufficient-stats}
+  S_t = \left(\underbrace{\mathrm{OI}_t}_{\text{order imbalance}},\; \underbrace{\mathrm{TI}_t}_{\text{trade imbalance}},\; \underbrace{\sigma_t^{\mathrm{micro}}}_{\text{microvolatility}},\; \underbrace{\Lambda_t}_{\text{book depth}},\; \underbrace{\dot{V}_t}_{\text{volume acceleration}}\right),
+\end{equation}\]</span> where: <span class="math display">\[\begin{align}
+  \mathrm{OI}_t &amp;= \frac{Q_t^b - Q_t^a}{Q_t^b + Q_t^a}, &amp;
+  \mathrm{TI}_t &amp;= \frac{\sum_{k \in W_t} s_k q_k}{\sum_{k \in W_t} q_k},
+\end{align}\]</span> <span class="math inline">\(Q_t^b, Q_t^a\)</span> are total bid/ask quantities within <span class="math inline">\(K\)</span> levels, <span class="math inline">\(W_t\)</span> is a trailing time window, <span class="math inline">\(\sigma_t^{\mathrm{micro}}\)</span> is realized volatility over <span class="math inline">\(W_t\)</span>, <span class="math inline">\(\Lambda_t\)</span> is depth-weighted book pressure, and <span class="math inline">\(\dot{V}_t\)</span> is the rate of change of volume.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Under the linear-Gaussian model <span class="math inline">\(\Delta p_{t+\delta} = \alpha + \beta^\top S_t + \epsilon\)</span>, the posterior <span class="math inline">\(P(\Delta p_{t+\delta} \mid \mathcal{F}_t^{\mathrm{LOB}}) = P(\Delta p_{t+\delta} \mid S_t)\)</span> by the factorization theorem for sufficient statistics. The Fisher information matrix <span class="math inline">\(I(\beta) = \mathbb{E}[S_t S_t^\top] / \sigma_\epsilon^2\)</span> is finite and positive definite under standard microstructure regularity conditions, confirming that <span class="math inline">\(S_t\)</span> captures all information about the price change parameter <span class="math inline">\(\beta\)</span>. ◻</p>
+</div>
+<p>The belief update at the microstructure level is then: <span class="math display">\[\begin{equation}
+\label{eq:micro-update}
+  \pi_{t+\delta}^{\mathrm{micro}}(\theta) \propto \pi_t^{\mathrm{micro}}(\theta) \cdot p(S_{t+\delta} \mid \theta),
+\end{equation}\]</span> which can be computed in <span class="math inline">\(O(d^2)\)</span> time for the sufficient statistic dimension <span class="math inline">\(d = 5\)</span>.</p>
+<h2 id="strategic-beliefs-the-bayesian-game">Strategic Beliefs: The Bayesian Game</h2>
+<p>The strategic component models other market participants’ behavior:</p>
+<div id="def:bayesian-game" class="definition">
+<p><strong>Definition 5</strong> (HFT Bayesian Game).  The HFT strategic environment is a Bayesian game <span class="math inline">\(\Gamma = (N, \Theta, (A_i, u_i, \tau_i)_{i \in N})\)</span> where:</p>
+<ul>
+<li><p><span class="math inline">\(N\)</span> is the set of market participants (HFT firms, institutional investors, retail),</p></li>
+<li><p><span class="math inline">\(\Theta\)</span> is the type space (each agent’s private information),</p></li>
+<li><p><span class="math inline">\(A_i\)</span> is agent <span class="math inline">\(i\)</span>’s action space (order submission, modification, cancellation),</p></li>
+<li><p><span class="math inline">\(u_i: A \times \Theta \to \mathbb{R}\)</span> is agent <span class="math inline">\(i\)</span>’s utility,</p></li>
+<li><p><span class="math inline">\(\tau_i\)</span> is agent <span class="math inline">\(i\)</span>’s type distribution.</p></li>
+</ul>
+</div>
+<p>The strategic belief component captures:</p>
+<ol>
+<li><p><strong>Adverse selection</strong>: Probability that incoming order flow is informed vs. uninformed, updated from trade arrival patterns and order size distributions.</p></li>
+<li><p><strong>Competitor state inference</strong>: Estimation of other HFT firms’ inventory positions and likely actions from observable market behavior.</p></li>
+<li><p><strong>Institutional flow detection</strong>: Inference about whether large orders are being executed (e.g., VWAP, TWAP algorithms) from volume patterns.</p></li>
+</ol>
+<div id="prop:hierarchy" class="proposition">
+<p><strong>Proposition 6</strong> (Strategic Belief Hierarchy).  <em>In the HFT Bayesian game, the strategic belief hierarchy truncates at depth <span class="math inline">\(K \leq 3\)</span> in practice: <span class="math display">\[\begin{align}
+  \text{Level 0:} &amp;\quad \pi_i^{(0)}(\theta_{-i}) = \tau_{-i} \quad \text{(prior over others&#39; types)} \\
+  \text{Level 1:} &amp;\quad \pi_i^{(1)}(\theta_{-i}) = P(\theta_{-i} \mid a_{-i}^{\mathrm{obs}}) \quad \text{(infer types from actions)} \\
+  \text{Level 2:} &amp;\quad \pi_i^{(2)}(\theta_{-i}) = P(\theta_{-i} \mid a_{-i}^{\mathrm{obs}}, \hat{\pi}_{-i}^{(1)}) \quad \text{(infer others&#39; inference)}
+\end{align}\]</span> The truncation at level <span class="math inline">\(K = 3\)</span> is optimal given HFT latency constraints: the marginal information gain <span class="math inline">\(\Delta I_K = I(\pi^{(K)}) - I(\pi^{(K-1)})\)</span> satisfies <span class="math inline">\(\Delta I_K &lt; \tau_{\mathrm{compute}} / \Delta t\)</span> for <span class="math inline">\(K &gt; 3\)</span>.</em></p>
+</div>
+<h1 id="sec:lob-inference">Belief Extraction from the Limit Order Book</h1>
+<h2 id="the-lob-as-a-belief-artifact">The LOB as a Belief Artifact</h2>
+<p>The limit order book is not merely a queueing system; it is a <em>belief artifact</em>—a spatial representation of the aggregate beliefs of all participants who have placed resting orders.</p>
+<div id="thm:lob-belief" class="theorem">
+<p><strong>Theorem 7</strong> (LOB Belief Density).  <em>Under the assumption that each resting limit order at price <span class="math inline">\(p\)</span> represents a belief that the asset is worth at least <span class="math inline">\(p\)</span> (for bids) or at most <span class="math inline">\(p\)</span> (for asks), the LOB induces a belief density: <span class="math display">\[\begin{equation}
+\label{eq:lob-belief-density}
+  f_t^{\mathrm{LOB}}(v) = \frac{1}{Z_t}\left(\frac{\partial Q^b}{\partial p}\bigg|_{p=v} - \frac{\partial Q^a}{\partial p}\bigg|_{p=v}\right),
+\end{equation}\]</span> where <span class="math inline">\(Q^b(p)\)</span> is the cumulative bid quantity up to price <span class="math inline">\(p\)</span>, <span class="math inline">\(Q^a(p)\)</span> is the cumulative ask quantity down to price <span class="math inline">\(p\)</span>, and <span class="math inline">\(Z_t\)</span> is a normalizing constant.</em></p>
+<p><em>The spread region <span class="math inline">\([p_t^{\mathrm{best\,bid}}, p_t^{\mathrm{best\,ask}}]\)</span> corresponds to the region of maximum belief uncertainty—the market’s “indifference zone.”</em></p>
+</div>
+<h2 id="information-content-of-order-flow">Information Content of Order Flow</h2>
+<p>Individual orders carry information about the beliefs of their submitters:</p>
+<div id="def:order-info" class="definition">
+<p><strong>Definition 8</strong> (Order Information Content).  The information content of an order event <span class="math inline">\(e = (t, \text{type}, p, q)\)</span> is: <span class="math display">\[\begin{equation}
+  I(e) = -\log p(e \mid \mathcal{F}_{t^-}^{\mathrm{LOB}}) = -\log p(\text{type}, p, q \mid \mathcal{H}_t),
+\end{equation}\]</span> where <span class="math inline">\(\mathcal{H}_t\)</span> is the current LOB state. High-information events (surprise orders) trigger large belief updates; low-information events (expected queue replenishment) trigger small updates.</p>
+</div>
+<div id="prop:informed-flow" class="proposition">
+<p><strong>Proposition 9</strong> (Informed Flow Detection).  <em>The posterior probability that order flow in window <span class="math inline">\([t, t+\delta]\)</span> is informed can be estimated via: <span class="math display">\[\begin{equation}
+  P(\text{informed} \mid \mathcal{F}_{[t,t+\delta]}) = \frac{\alpha \cdot L_I(\mathcal{F}_{[t,t+\delta]})}{\alpha \cdot L_I(\mathcal{F}_{[t,t+\delta]}) + (1-\alpha) \cdot L_U(\mathcal{F}_{[t,t+\delta]})},
+\end{equation}\]</span> where <span class="math inline">\(\alpha\)</span> is the prior probability of informed trading, <span class="math inline">\(L_I\)</span> is the likelihood under the informed-flow model (directional, size-clustered, persistent), and <span class="math inline">\(L_U\)</span> is the likelihood under the uninformed-flow model (balanced, Poisson arrivals). This is a real-time Bayesian classifier that forms the core of adverse selection management in HFT market-making.</em></p>
+</div>
+<h2 id="the-kyle-lambda-as-belief-sensitivity">The Kyle Lambda as Belief Sensitivity</h2>
+<p>Kyle’s lambda—the price impact coefficient—has a natural interpretation as the <em>sensitivity of the market’s belief to order flow</em>:</p>
+<div id="thm:kyle-belief" class="theorem">
+<p><strong>Theorem 10</strong> (Lambda as Belief Gradient).  <em>In the Kyle (1985) framework embedded within PMT, the price impact coefficient is: <span class="math display">\[\begin{equation}
+  \lambda = \frac{\partial \mathbb{E}[\mathcal{P}_t(V &gt; p^*) \mid \mathrm{flow}]}{\partial \mathrm{flow}} = \frac{\sigma_V}{2\sigma_U},
+\end{equation}\]</span> where <span class="math inline">\(\sigma_V\)</span> is the fundamental value uncertainty and <span class="math inline">\(\sigma_U\)</span> is noise trading intensity. This is the <em>gradient of the market’s belief function with respect to observed order flow</em>.</em></p>
+<p><em>From the UPMF perspective (Part III), this connects to the thermodynamic structure: <span class="math display">\[\begin{equation}
+  \lambda = \frac{1}{2} \frac{\partial^2 \mathcal{F}_{\mathrm{thermo}}}{\partial \langle E \rangle^2}\bigg|_{\mathrm{eq}},
+\end{equation}\]</span> identifying price impact as the second derivative of thermodynamic free energy—the market’s “stiffness” against belief perturbations.</em></p>
+</div>
+<h1 id="sec:belief-timescales">Multi-Timescale Belief Structure</h1>
+<h2 id="the-belief-timescale-hierarchy">The Belief Timescale Hierarchy</h2>
+<p>HFT beliefs operate across a hierarchy of timescales, each associated with different information sources and update mechanisms:</p>
+<div id="def:timescales" class="definition">
+<p><strong>Definition 11</strong> (Timescale Decomposition).  The HFT belief decomposes across timescales: <span class="math display">\[\begin{equation}
+\label{eq:timescale-decomposition}
+  \pi_t^{\mathrm{HFT}}(\theta) = \int \pi_t^{(\tau)}(\theta)\, d\mu(\tau),
+\end{equation}\]</span> where <span class="math inline">\(\pi_t^{(\tau)}\)</span> is the belief component at timescale <span class="math inline">\(\tau\)</span> and <span class="math inline">\(\mu\)</span> is a measure over timescales. In practice, this decomposes into discrete bands: <span class="math display">\[\begin{align}
+  \tau_1 &amp;\sim 1\text{--}100\,\mu\mathrm{s}: &amp;\quad &amp;\text{Latency arbitrage, queue position} \\
+  \tau_2 &amp;\sim 100\,\mu\mathrm{s}\text{--}10\,\mathrm{ms}: &amp;\quad &amp;\text{Order book dynamics, short-term momentum} \\
+  \tau_3 &amp;\sim 10\,\mathrm{ms}\text{--}1\,\mathrm{s}: &amp;\quad &amp;\text{Informed flow detection, inventory management} \\
+  \tau_4 &amp;\sim 1\,\mathrm{s}\text{--}5\,\mathrm{min}: &amp;\quad &amp;\text{Regime detection, volatility estimation} \\
+  \tau_5 &amp;\sim 5\,\mathrm{min}\text{--}1\,\mathrm{day}: &amp;\quad &amp;\text{Daily pattern exploitation, news integration}
+\end{align}\]</span></p>
+</div>
+<div id="thm:timescale-separation" class="theorem">
+<p><strong>Theorem 12</strong> (Timescale Separation Principle).  <em>For well-designed HFT systems, the belief components at different timescales are approximately independent: <span class="math display">\[\begin{equation}
+  I(\pi^{(\tau_i)}; \pi^{(\tau_j)}) \leq \epsilon_{ij} \quad \text{for } |i-j| \geq 2,
+\end{equation}\]</span> where <span class="math inline">\(I(\cdot;\cdot)\)</span> denotes mutual information and <span class="math inline">\(\epsilon_{ij} \to 0\)</span> as <span class="math inline">\(\tau_j/\tau_i \to \infty\)</span>. This allows parallel belief computation across timescales without information loss.</em></p>
+</div>
+<h2 id="belief-precision-vs.-latency-trade-off">Belief Precision vs. Latency Trade-off</h2>
+<div id="thm:belief-uncertainty" class="theorem">
+<p><strong>Theorem 13</strong> (Belief Uncertainty Relation).  <em>For an HFT agent with latency budget <span class="math inline">\(\Delta t\)</span> and computational capacity <span class="math inline">\(C\)</span> (operations per second), the belief precision <span class="math inline">\(\tau_\pi = 1/\mathrm{Var}(\pi)\)</span> satisfies: <span class="math display">\[\begin{equation}
+\label{eq:belief-uncertainty}
+  \tau_\pi \cdot \Delta t \leq \frac{C \cdot \Delta t^2}{d_{\mathrm{eff}}},
+\end{equation}\]</span> where <span class="math inline">\(d_{\mathrm{eff}}\)</span> is the effective belief dimension. This is analogous to the Heisenberg uncertainty relation: one cannot simultaneously achieve high belief precision and low latency.</em></p>
+<p><em>The optimal trade-off satisfies: <span class="math display">\[\begin{equation}
+  \tau_\pi^* = \frac{C \cdot \Delta t}{d_{\mathrm{eff}}}, \qquad \Delta t^* = \sqrt{\frac{d_{\mathrm{eff}} \cdot \tau_\pi}{C}}.
+\end{equation}\]</span></em></p>
+</div>
+<p>This theorem has a direct market structure implication: the “arms race” in HFT latency is actually an arms race in <em>belief formation speed</em>—the ability to form more precise beliefs faster.</p>
+<h2 id="belief-aggregation-across-hft-agents">Belief Aggregation Across HFT Agents</h2>
+<p>When multiple HFT agents operate simultaneously, their beliefs aggregate into a collective micro-timescale predictive measure:</p>
+<div id="prop:hft-aggregation" class="proposition">
+<p><strong>Proposition 14</strong> (HFT Belief Aggregation).  <em>The collective HFT belief at the micro-timescale is: <span class="math display">\[\begin{equation}
+  \mathcal{P}_t^{\mathrm{HFT}} = \frac{\sum_{i \in \mathcal{I}_{\mathrm{HFT}}} w_i \cdot \tau_{\pi,i} \cdot \pi_t^i}{\sum_{i \in \mathcal{I}_{\mathrm{HFT}}} w_i \cdot \tau_{\pi,i}},
+\end{equation}\]</span> where <span class="math inline">\(w_i\)</span> is agent <span class="math inline">\(i\)</span>’s capital weight and <span class="math inline">\(\tau_{\pi,i}\)</span> is its belief precision. This is the <em>precision-weighted consensus</em> from Part I, now operating at microsecond timescales. The key insight is that HFT “price discovery” is Bayesian belief aggregation in fast-forward.</em></p>
+</div>
+<h1 id="sec:ai-agents">Extension to Autonomous AI Market Agents</h1>
+<h2 id="what-changes-with-ai-agents">What Changes with AI Agents</h2>
+<p>The transition from HFT to AI market agents is not merely quantitative (faster, more data) but qualitative. We identify five fundamental differences:</p>
+<div id="def:ai-agent" class="definition">
+<p><strong>Definition 15</strong> (AI Market Agent).  An <em>AI market agent</em> is a market participant characterized by:</p>
+<ol>
+<li><p><strong>Learned prior</strong>: <span class="math inline">\(\pi_0\)</span> is not hand-designed but learned from data through neural network training, encoding implicit beliefs about market structure.</p></li>
+<li><p><strong>Multimodal information processing</strong>: The information set extends beyond market microstructure: <span class="math display">\[\begin{equation}
+    \mathcal{F}_t^{\mathrm{AI}} = \mathcal{F}_t^{\mathrm{LOB}} \vee \mathcal{F}_t^{\mathrm{text}} \vee \mathcal{F}_t^{\mathrm{alt}} \vee \mathcal{F}_t^{\mathrm{social}} \vee \mathcal{F}_t^{\mathrm{agent}},
+\end{equation}\]</span> where <span class="math inline">\(\mathcal{F}_t^{\mathrm{text}}\)</span> includes news, filings, and LLM-processed text; <span class="math inline">\(\mathcal{F}_t^{\mathrm{alt}}\)</span> includes alternative data (satellite imagery, credit card transactions, web traffic); <span class="math inline">\(\mathcal{F}_t^{\mathrm{social}}\)</span> includes social media sentiment; and <span class="math inline">\(\mathcal{F}_t^{\mathrm{agent}}\)</span> includes observations of other AI agents’ behavior.</p></li>
+<li><p><strong>Adaptive model</strong>: The model class <span class="math inline">\(\mathcal{M}\)</span> itself evolves through online learning, not just parameters.</p></li>
+<li><p><strong>Generative capacity</strong>: The agent can form beliefs about states it has never observed, through learned generative models.</p></li>
+<li><p><strong>Strategic depth</strong>: The agent can model other agents’ learning processes, not just their current actions.</p></li>
+</ol>
+</div>
+<h2 id="the-ai-belief-functional">The AI Belief Functional</h2>
+<div id="def:ai-belief-functional" class="definition">
+<p><strong>Definition 16</strong> (AI Belief Functional).  An AI market agent’s belief is a functional: <span class="math display">\[\begin{equation}
+\label{eq:ai-belief}
+  \pi_t^{\mathrm{AI}} = \Phi_\theta\left(\mathcal{F}_t^{\mathrm{AI}}\right),
+\end{equation}\]</span> where <span class="math inline">\(\Phi_\theta: \mathcal{F} \to \Delta(\Theta)\)</span> is a <em>learned mapping</em> from information to beliefs, parameterized by neural network weights <span class="math inline">\(\theta\)</span>. Unlike HFT beliefs, which are analytical functions of sufficient statistics, AI beliefs are <em>amortized inference</em>—the network has learned to approximate the Bayesian posterior without explicit computation.</p>
+</div>
+<div id="thm:universal-belief" class="theorem">
+<p><strong>Theorem 17</strong> (Universal Belief Approximation).  <em>For any measurable belief function <span class="math inline">\(\pi^*: \mathcal{F}\to \Delta(\Theta)\)</span> and any <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a neural network <span class="math inline">\(\Phi_\theta\)</span> such that: <span class="math display">\[\begin{equation}
+  \sup_{t} \mathrm{KL}\left(\pi_t^* \,\|\, \Phi_\theta(\mathcal{F}_t)\right) &lt; \epsilon.
+\end{equation}\]</span> That is, AI agents can approximate <em>any</em> belief formation process, including optimal Bayesian inference, given sufficient capacity.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> This follows from the universal approximation theorem for neural networks applied to the space of probability measures. The key observation is that <span class="math inline">\(\Delta(\Theta)\)</span> can be embedded in <span class="math inline">\(L^1(\Theta)\)</span>, and neural networks are universal approximators of measurable functions into Banach spaces (Hornik, 1991; Kidger and Lyons, 2020, for the modern continuous-depth variant). ◻</p>
+</div>
+<h2 id="llm-agents-beliefs-from-language">LLM Agents: Beliefs from Language</h2>
+<p>Large language model (LLM) based market agents form beliefs through a fundamentally different channel: <em>natural language understanding of market narratives</em>.</p>
+<div id="def:llm-belief" class="definition">
+<p><strong>Definition 18</strong> (LLM Market Belief).  An LLM market agent forms beliefs via: <span class="math display">\[\begin{equation}
+\label{eq:llm-belief}
+  \pi_t^{\mathrm{LLM}}(\theta) \propto P_{\mathrm{LLM}}(\theta \mid \text{prompt}_t),
+\end{equation}\]</span> where <span class="math inline">\(\text{prompt}_t\)</span> encodes the current market context, recent news, analyst reports, and the agent’s reasoning chain. The LLM’s pre-trained weights encode an implicit prior over market dynamics learned from the entire textual history of financial markets.</p>
+</div>
+<p>The power of LLM beliefs lies in their ability to process <em>narratives</em>—causal stories about why markets move—that cannot be captured by statistical models of microstructure data alone.</p>
+<div id="prop:narrative" class="proposition">
+<p><strong>Proposition 19</strong> (Narrative Information Content).  <em>Let <span class="math inline">\(I^{\mathrm{quant}}\)</span> be the information content of quantitative microstructure signals and <span class="math inline">\(I^{\mathrm{narr}}\)</span> be the information content of market narratives. For prediction horizons <span class="math inline">\(h\)</span>: <span class="math display">\[\begin{equation}
+  \frac{I^{\mathrm{narr}}(h)}{I^{\mathrm{quant}}(h)} \sim h^{\gamma}, \quad \gamma &gt; 0,
+\end{equation}\]</span> i.e., narrative information becomes increasingly dominant at longer horizons. Quantitative microstructure dominates at <span class="math inline">\(h &lt; 1\,\mathrm{s}\)</span>; narratives dominate at <span class="math inline">\(h &gt; 1\,\mathrm{day}\)</span>.</em></p>
+</div>
+<h2 id="reinforcement-learning-agents-beliefs-from-interaction">Reinforcement Learning Agents: Beliefs from Interaction</h2>
+<p>RL-based market agents form beliefs through <em>interaction with the market environment</em>:</p>
+<div id="def:rl-belief" class="definition">
+<p><strong>Definition 20</strong> (RL Market Belief).  An RL agent’s belief is implicitly encoded in its value function: <span class="math display">\[\begin{equation}
+  V_\theta(s_t) = \mathbb{E}\left[\sum_{k=0}^\infty \gamma^k r_{t+k} \,\bigg|\, s_t, \pi_\theta\right],
+\end{equation}\]</span> where <span class="math inline">\(s_t\)</span> is the market state, <span class="math inline">\(r_t\)</span> is the reward (P&amp;L), <span class="math inline">\(\gamma\)</span> is the discount factor, and <span class="math inline">\(\pi_\theta\)</span> is the learned policy. The belief about future states is encoded in the gradient: <span class="math display">\[\begin{equation}
+  \pi_t^{\mathrm{RL}}(\theta) \propto \exp\left(-\frac{1}{T_{\mathrm{agent}}} \cdot (-V_\theta(\cdot))\right),
+\end{equation}\]</span> where <span class="math inline">\(T_{\mathrm{agent}}\)</span> is the agent’s “temperature” (exploration parameter).</p>
+</div>
+<div class="remark">
+<p><strong>Remark 21</strong>.  The RL agent’s temperature <span class="math inline">\(T_{\mathrm{agent}}\)</span> is distinct from the market temperature <span class="math inline">\(T\)</span> in Parts I–III. However, they interact: when <span class="math inline">\(T_{\mathrm{agent}} \to 0\)</span> (greedy exploitation), the agent’s beliefs become degenerate (point mass), reducing the entropy contribution to the market’s belief diversity.</p>
+</div>
+<h1 id="sec:phase-transition">The Belief Space Phase Transition</h1>
+<h2 id="dimensionality-of-belief-spaces">Dimensionality of Belief Spaces</h2>
+<p>The fundamental difference between HFT and AI agents can be characterized by the dimensionality of their belief spaces.</p>
+<div id="def:belief-dim" class="definition">
+<p><strong>Definition 22</strong> (Belief Space Dimension).  The <em>effective belief dimension</em> of an agent class <span class="math inline">\(\mathcal{A}\)</span> is: <span class="math display">\[\begin{equation}
+  d_{\mathrm{eff}}(\mathcal{A}) = \inf\{d : \exists\, S: \mathcal{F}\to \mathbb{R}^d \text{ such that } \pi(\theta \mid \mathcal{F}) = \pi(\theta \mid S(\mathcal{F})) \text{ a.s.}\},
+\end{equation}\]</span> i.e., the minimal dimension of a sufficient statistic for belief formation.</p>
+</div>
+<div id="thm:phase-transition" class="theorem">
+<p><strong>Theorem 23</strong> (Belief Space Phase Transition).  <em>Let <span class="math inline">\(\mathcal{A}_{\mathrm{HFT}}\)</span> and <span class="math inline">\(\mathcal{A}_{\mathrm{AI}}\)</span> denote the classes of HFT and AI agents respectively. Then:</em></p>
+<ol>
+<li><p><em><strong>HFT dimensionality</strong>: <span class="math inline">\(d_{\mathrm{eff}}(\mathcal{A}_{\mathrm{HFT}}) = O(\log |\Theta|)\)</span>, constrained by latency.</em></p></li>
+<li><p><em><strong>AI dimensionality</strong>: <span class="math inline">\(d_{\mathrm{eff}}(\mathcal{A}_{\mathrm{AI}}) = O(|\Theta|)\)</span> in principle, bounded only by model capacity.</em></p></li>
+<li><p><em><strong>Phase transition</strong>: As the fraction <span class="math inline">\(\phi\)</span> of AI agents in the market increases past a critical threshold <span class="math inline">\(\phi_c\)</span>, the effective dimension of the market’s collective belief undergoes a phase transition: <span class="math display">\[\begin{equation}
+\label{eq:phase-transition}
+    d_{\mathrm{eff}}(\mathcal{P}_t) \sim \begin{cases}
+      O(\log |\Theta|) &amp; \text{if } \phi &lt; \phi_c, \\
+      O(|\Theta|^\alpha) &amp; \text{if } \phi &gt; \phi_c,
+    \end{cases}
+\end{equation}\]</span> where <span class="math inline">\(0 &lt; \alpha \leq 1\)</span> depends on the diversity of AI architectures.</em></p></li>
+</ol>
+</div>
+<div class="proof">
+<p><em>Proof.</em> For Part 1: HFT agents are constrained to <span class="math inline">\(d_{\mathrm{eff}} \leq C \cdot \Delta t / \tau_{\mathrm{compute}}\)</span> by <a href="#thm:belief-uncertainty" data-reference-type="ref+Label" data-reference="thm:belief-uncertainty">13</a>. For typical HFT parameters (<span class="math inline">\(\Delta t \sim 10\,\mu\mathrm{s}\)</span>, <span class="math inline">\(\tau_{\mathrm{compute}} \sim 1\,\mu\mathrm{s}\)</span>, <span class="math inline">\(C \sim 10^9\)</span> ops/s), this gives <span class="math inline">\(d_{\mathrm{eff}} \leq 10\)</span>, which is <span class="math inline">\(O(\log |\Theta|)\)</span> for <span class="math inline">\(|\Theta| \sim 10^3\)</span>.</p>
+<p>For Part 2: AI agents using neural networks with <span class="math inline">\(N\)</span> parameters can represent belief distributions over <span class="math inline">\(\Theta\)</span> with <span class="math inline">\(O(N)\)</span> effective dimensions, and <span class="math inline">\(N\)</span> can scale with <span class="math inline">\(|\Theta|\)</span> without latency constraints (since AI agents need not operate at HFT speeds).</p>
+<p>For Part 3: The collective belief dimension of a mixture of agent types is: <span class="math display">\[\begin{equation}
+  d_{\mathrm{eff}}(\mathcal{P}_t) = d_{\mathrm{eff}}\left(\sum_i w_i \pi_i\right) \leq \sum_i d_{\mathrm{eff}}(\pi_i).
+\end{equation}\]</span> When <span class="math inline">\(\phi &lt; \phi_c\)</span>, the HFT agents dominate and the collective belief is low-dimensional. When <span class="math inline">\(\phi &gt; \phi_c\)</span>, the AI agents’ high-dimensional beliefs cannot be projected onto the HFT sufficient-statistic manifold without information loss, forcing the collective belief into higher dimensions. The transition is sharp because the rank of the belief covariance matrix has a threshold behavior as a function of <span class="math inline">\(\phi\)</span>. ◻</p>
+</div>
+<h2 id="implications-of-the-phase-transition">Implications of the Phase Transition</h2>
+<div id="cor:efficiency-jump" class="corollary">
+<p><strong>Corollary 24</strong> (Information Efficiency Jump).  <em>At the phase transition <span class="math inline">\(\phi = \phi_c\)</span>, the market’s information efficiency (as measured by the mutual information between the predictive measure and the true state) undergoes a discontinuous increase: <span class="math display">\[\begin{equation}
+  I(\mathcal{P}_t; \omega_{\mathrm{true}}) \sim \begin{cases}
+    I_{\mathrm{low}} + O(\log \phi) &amp; \text{if } \phi &lt; \phi_c, \\
+    I_{\mathrm{high}} + O(\phi^\alpha) &amp; \text{if } \phi &gt; \phi_c,
+  \end{cases}
+\end{equation}\]</span> where <span class="math inline">\(I_{\mathrm{high}} - I_{\mathrm{low}} &gt; 0\)</span> is the “efficiency gap” between the HFT-dominated and AI-dominated regimes.</em></p>
+</div>
+<div id="cor:volatility" class="corollary">
+<p><strong>Corollary 25</strong> (Volatility Regime Change).  <em>The phase transition alters volatility structure: <span class="math display">\[\begin{equation}
+  \sigma_t^2 \sim \begin{cases}
+    \sigma_{\mathrm{micro}}^2 + \frac{T}{d_{\mathrm{eff,HFT}}} &amp; \text{if } \phi &lt; \phi_c, \\
+    \sigma_{\mathrm{micro}}^2 + \frac{T}{d_{\mathrm{eff,AI}}} &amp; \text{if } \phi &gt; \phi_c.
+  \end{cases}
+\end{equation}\]</span> Since <span class="math inline">\(d_{\mathrm{eff,AI}} \gg d_{\mathrm{eff,HFT}}\)</span>, the AI-dominated regime has <em>lower</em> fundamental volatility but potentially higher tail risk from belief correlation.</em></p>
+</div>
+<h1 id="sec:stability">AI Market Stability Theorem</h1>
+<h2 id="belief-diversity-and-systemic-risk">Belief Diversity and Systemic Risk</h2>
+<p>The central stability question is: <em>under what conditions does an AI agent ecosystem converge to a stable, efficient predictive equilibrium?</em></p>
+<div id="def:diversity" class="definition">
+<p><strong>Definition 26</strong> (Belief Diversity).  The <em>belief diversity</em> of an agent ecosystem <span class="math inline">\(\{\pi_i\}_{i=1}^N\)</span> is: <span class="math display">\[\begin{equation}
+  \mathcal{D}_t = \frac{1}{N^2}\sum_{i,j} \mathrm{KL}(\pi_i^t \| \pi_j^t),
+\end{equation}\]</span> measuring the average divergence between agents’ beliefs.</p>
+</div>
+<div id="def:belief-corr" class="definition">
+<p><strong>Definition 27</strong> (Belief Correlation).  The <em>belief correlation</em> is: <span class="math display">\[\begin{equation}
+  \rho_t^{\mathrm{belief}} = 1 - \frac{\mathcal{D}_t}{\mathcal{D}_{\mathrm{max}}},
+\end{equation}\]</span> where <span class="math inline">\(\mathcal{D}_{\mathrm{max}}\)</span> is the maximum achievable diversity for the given agent architectures.</p>
+</div>
+<div id="thm:stability" class="theorem">
+<p><strong>Theorem 28</strong> (AI Market Stability Theorem).  <em>An AI market agent ecosystem is stable if and only if the following conditions hold:</em></p>
+<ol>
+<li><p><em><strong>Diversity condition</strong>: The belief diversity satisfies: <span class="math display">\[\begin{equation}
+\label{eq:diversity-condition}
+    \mathcal{D}_t &gt; \mathcal{D}_{\mathrm{crit}} = \frac{T_c}{T} \cdot \log\left(\frac{V_{\mathrm{total}}}{\Lambda_{\mathrm{min}}}\right),
+\end{equation}\]</span> where <span class="math inline">\(T_c\)</span> is the critical temperature from Part I, <span class="math inline">\(V_{\mathrm{total}}\)</span> is total market volume, and <span class="math inline">\(\Lambda_{\mathrm{min}}\)</span> is minimum liquidity.</em></p></li>
+<li><p><em><strong>Update rate bound</strong>: The maximum belief update rate satisfies: <span class="math display">\[\begin{equation}
+\label{eq:update-bound}
+    \sup_i \left\|\frac{d\pi_i^t}{dt}\right\|_{\mathrm{TV}} &lt; \frac{\Lambda_t}{N \cdot \bar{q}},
+\end{equation}\]</span> where <span class="math inline">\(\|\cdot\|_{\mathrm{TV}}\)</span> is total variation norm, <span class="math inline">\(\Lambda_t\)</span> is instantaneous liquidity, and <span class="math inline">\(\bar{q}\)</span> is average order size.</em></p></li>
+<li><p><em><strong>Ergodicity</strong>: The Markov chain on the collective belief state is ergodic: <span class="math display">\[\begin{equation}
+    \lim_{T \to \infty} \frac{1}{T}\int_0^T \mathcal{P}_t\, dt = \mathcal{P}^*_{\mathrm{eq}} \quad \text{a.s.}
+\end{equation}\]</span></em></p></li>
+</ol>
+<p><em>When any condition is violated:</em></p>
+<ul>
+<li><p><em>Violation of (1): <em>Belief cascade</em>—agents’ beliefs converge, collapsing diversity below critical threshold, triggering a first-order phase transition (crash or bubble).</em></p></li>
+<li><p><em>Violation of (2): <em>Liquidity crisis</em>—belief updates exceed the market’s ability to absorb order flow, causing flash crash dynamics.</em></p></li>
+<li><p><em>Violation of (3): <em>Belief lock-in</em>—the market becomes trapped in a non-equilibrium attractor, failing to incorporate new information.</em></p></li>
+</ul>
+</div>
+<div class="proof">
+<p><em>Proof sketch.</em> Condition (1) follows from the connection between belief diversity and entropic liquidity (Part I, Section 8): <span class="math inline">\(\Lambda = \exp(H[\text{beliefs}])\)</span>, and the market is stable iff <span class="math inline">\(\Lambda &gt; \Lambda_{\mathrm{min}}\)</span>, which requires sufficient belief entropy, which requires sufficient diversity.</p>
+<p>Condition (2) follows from the market’s finite absorption capacity. If all agents update beliefs simultaneously, the resulting order flow is <span class="math inline">\(\Delta Q \sim N \cdot \bar{q} \cdot \|d\pi/dt\|_{\mathrm{TV}}\)</span>. For the market to absorb this without price discontinuity, we need <span class="math inline">\(\Delta Q &lt; \Lambda_t\)</span>.</p>
+<p>Condition (3) follows from the requirement that the collective belief converges to the PMT predictive measure <span class="math inline">\(\mathcal{P}^*\)</span>, which requires ergodicity of the underlying Markov dynamics (the system must eventually explore all relevant belief states). ◻</p>
+</div>
+<h2 id="failure-modes">Failure Modes</h2>
+<div id="prop:cascade" class="proposition">
+<p><strong>Proposition 29</strong> (Belief Cascade Dynamics).  <em>When belief diversity drops below <span class="math inline">\(\mathcal{D}_{\mathrm{crit}}\)</span>, the time to cascade (crash) follows: <span class="math display">\[\begin{equation}
+  \tau_{\mathrm{cascade}} \sim \frac{1}{\mathcal{D}_{\mathrm{crit}} - \mathcal{D}_t} \cdot \frac{\Lambda_t}{V_t},
+\end{equation}\]</span> which diverges at the critical point and goes to zero as diversity collapses—consistent with the “calm before the storm” empirically observed before market crashes.</em></p>
+</div>
+<div id="prop:adversarial" class="proposition">
+<p><strong>Proposition 30</strong> (Adversarial Belief Manipulation).  <em>An adversarial agent can manipulate the collective belief by injecting signals that exploit the training distribution of AI agents. The vulnerability is: <span class="math display">\[\begin{equation}
+  \Delta \mathcal{P}= \sum_i w_i \cdot \nabla_{\mathcal{F}} \Phi_{\theta_i}(\mathcal{F}) \cdot \delta\mathcal{F}_{\mathrm{adv}},
+\end{equation}\]</span> where <span class="math inline">\(\delta\mathcal{F}_{\mathrm{adv}}\)</span> is an adversarial perturbation. The attack surface scales with the <em>homogeneity</em> of agent architectures: if all agents use similar neural networks, a single adversarial signal can shift the collective belief.</em></p>
+</div>
+<h1 id="sec:ecosystem">Multi-Agent Belief Ecosystems</h1>
+<h2 id="ecosystem-dynamics">Ecosystem Dynamics</h2>
+<div id="def:ecosystem" class="definition">
+<p><strong>Definition 31</strong> (Market Belief Ecosystem).  A <em>market belief ecosystem</em> is a tuple <span class="math inline">\((\mathcal{A}, \mathcal{E}, \mathcal{I}, \mathcal{R})\)</span> where:</p>
+<ul>
+<li><p><span class="math inline">\(\mathcal{A} = \{a_1, \ldots, a_N\}\)</span> is the set of AI agents,</p></li>
+<li><p><span class="math inline">\(\mathcal{E}: \mathcal{A} \times \mathcal{A} \to [0,1]\)</span> is the <em>interaction graph</em> (information exchange intensity),</p></li>
+<li><p><span class="math inline">\(\mathcal{I} = \{\mathcal{F}_i\}_{i=1}^N\)</span> is the information partition,</p></li>
+<li><p><span class="math inline">\(\mathcal{R} = \{r_i\}_{i=1}^N\)</span> are reward functions (market P&amp;L plus any additional objectives).</p></li>
+</ul>
+</div>
+<p>The ecosystem evolves through coupled belief dynamics: <span class="math display">\[\begin{equation}
+\label{eq:ecosystem-dynamics}
+  \frac{d\pi_i^t}{dt} = -\eta_i \nabla_{\pi_i} \mathcal{F}[\pi_i^t; \mathcal{F}_i^t] + \sum_{j \neq i} \mathcal{E}_{ij} \cdot (\pi_j^t - \pi_i^t) + \xi_i^t,
+\end{equation}\]</span> where the first term is free energy minimization (each agent improving its belief), the second term is belief exchange through the interaction graph, and <span class="math inline">\(\xi_i^t\)</span> is stochastic innovation from new information.</p>
+<h2 id="convergence-to-predictive-equilibrium">Convergence to Predictive Equilibrium</h2>
+<div id="thm:convergence" class="theorem">
+<p><strong>Theorem 32</strong> (Ecosystem Convergence).  <em>If the interaction graph <span class="math inline">\(\mathcal{E}\)</span> is connected and the information partition <span class="math inline">\(\mathcal{I}\)</span> is such that <span class="math inline">\(\bigvee_i \mathcal{F}_i = \mathcal{F}_{\mathrm{market}}\)</span> (collective completeness), then the ecosystem converges to the PMT predictive measure: <span class="math display">\[\begin{equation}
+  \pi_i^t \xrightarrow{t \to \infty} \mathcal{P}^* \quad \forall\, i,
+\end{equation}\]</span> at rate: <span class="math display">\[\begin{equation}
+  \mathrm{KL}(\pi_i^t \| \mathcal{P}^*) \leq C \cdot e^{-\lambda_2(\mathcal{E}) \cdot t},
+\end{equation}\]</span> where <span class="math inline">\(\lambda_2(\mathcal{E})\)</span> is the spectral gap of the interaction graph Laplacian.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> The dynamics <a href="#eq:ecosystem-dynamics" data-reference-type="eqref" data-reference="eq:ecosystem-dynamics">[eq:ecosystem-dynamics]</a> combine local free energy descent with consensus-seeking on the interaction graph. The free energy term drives each agent toward the locally optimal belief given its information; the consensus term drives agreement. Under connectedness of <span class="math inline">\(\mathcal{E}\)</span> and collective completeness of <span class="math inline">\(\mathcal{I}\)</span>, the unique fixed point is <span class="math inline">\(\pi_i = \mathcal{P}^*\)</span> for all <span class="math inline">\(i\)</span>, and convergence follows from standard results on consensus dynamics on graphs (Olfati-Saber and Murray, 2004) combined with the contraction property of free energy minimization. ◻</p>
+</div>
+<h2 id="specialization-and-division-of-belief-labor">Specialization and Division of Belief Labor</h2>
+<div id="prop:specialization" class="proposition">
+<p><strong>Proposition 33</strong> (Belief Specialization).  <em>In equilibrium, AI agents specialize in belief formation along information dimensions: <span class="math display">\[\begin{equation}
+  \pi_i^* \approx \mathcal{P}^* \text{ restricted to } \mathcal{F}_i,
+\end{equation}\]</span> i.e., each agent becomes an “expert” in its information domain. The market achieves collective intelligence through <em>division of belief labor</em>: no single agent needs to process all information, but the ecosystem as a whole covers the full information space.</em></p>
+<p><em>The efficiency of belief specialization is: <span class="math display">\[\begin{equation}
+  \eta_{\mathrm{spec}} = \frac{I(\mathcal{P}^*; \omega_{\mathrm{true}})}{N \cdot \bar{I}_{\mathrm{agent}}} \geq 1,
+\end{equation}\]</span> where <span class="math inline">\(\bar{I}_{\mathrm{agent}}\)</span> is the average information per agent. The inequality <span class="math inline">\(\eta_{\mathrm{spec}} \geq 1\)</span> means specialization is always at least as efficient as uniform processing, with strict inequality when information domains are separable.</em></p>
+</div>
+<h2 id="emergent-market-intelligence">Emergent Market Intelligence</h2>
+<div id="def:collective-intelligence" class="definition">
+<p><strong>Definition 34</strong> (Collective Intelligence Measure).  The <em>collective intelligence</em> of the market is: <span class="math display">\[\begin{equation}
+  \mathcal{CI}_t = I(\mathcal{P}_t; \omega_{\mathrm{true}}) - \max_i I(\pi_i^t; \omega_{\mathrm{true}}),
+\end{equation}\]</span> the excess information in the collective belief over the best individual agent.</p>
+</div>
+<div id="thm:superadditivity" class="theorem">
+<p><strong>Theorem 35</strong> (Superadditivity of Market Belief).  <em>Under the conditions of <a href="#thm:convergence" data-reference-type="ref+Label" data-reference="thm:convergence">32</a>, the collective intelligence is strictly positive: <span class="math display">\[\begin{equation}
+  \mathcal{CI}_t &gt; 0 \quad \text{for all } t &gt; t_0,
+\end{equation}\]</span> i.e., the market “knows more” than any individual AI agent. Moreover: <span class="math display">\[\begin{equation}
+  \mathcal{CI}_t \geq H[\text{agent specializations}] = -\sum_i p_i \log p_i,
+\end{equation}\]</span> where <span class="math inline">\(p_i\)</span> is the fraction of total information contributed by agent <span class="math inline">\(i\)</span>. Collective intelligence is maximized when agents are maximally diverse in their information sources.</em></p>
+</div>
+<h1 id="sec:implications">Implications for Market Design and Regulation</h1>
+<h2 id="regulatory-principles">Regulatory Principles</h2>
+<p>The framework yields concrete regulatory principles:</p>
+<ol>
+<li><p><strong>Diversity mandates</strong>: Regulators should monitor and promote AI agent diversity. A market dominated by agents using the same architecture (e.g., all using GPT-based systems) is vulnerable to correlated belief failures. Minimum diversity requirements analogous to biodiversity preservation are warranted.</p></li>
+<li><p><strong>Belief update speed limits</strong>: The update rate bound (<a href="#thm:stability" data-reference-type="ref+Label" data-reference="thm:stability">28</a>, condition 2) provides a principled basis for speed limits—not arbitrary latency floors, but limits tied to the market’s absorption capacity.</p></li>
+<li><p><strong>Adversarial robustness requirements</strong>: AI agents should be tested against adversarial belief manipulation (<a href="#prop:adversarial" data-reference-type="ref+Label" data-reference="prop:adversarial">30</a>) before deployment, analogous to stress testing for banks.</p></li>
+<li><p><strong>Transparency of belief formation</strong>: Regulators should require AI agents to make their belief formation process interpretable—not necessarily revealing proprietary strategies, but providing sufficient information to assess systemic risk contribution.</p></li>
+</ol>
+<h2 id="market-design-for-ai-ecosystems">Market Design for AI Ecosystems</h2>
+<div id="prop:optimal-microstructure" class="proposition">
+<p><strong>Proposition 36</strong> (Optimal Market Microstructure for AI).  <em>The optimal market microstructure for AI agent ecosystems differs from the current HFT-optimized design:</em></p>
+<ol>
+<li><p><em><strong>Batch auctions at AI-natural frequencies</strong>: Rather than continuous limit order books, batch auctions at intervals matching the AI belief update cycle (<span class="math inline">\(\sim 1\,\mathrm{s}\)</span> to <span class="math inline">\(1\,\mathrm{min}\)</span>) would improve belief aggregation quality.</em></p></li>
+<li><p><em><strong>Rich signal spaces</strong>: Markets should provide structured data channels beyond price and quantity—belief reports, confidence intervals, reasoning traces—to improve inter-agent information exchange.</em></p></li>
+<li><p><em><strong>Belief-weighted voting</strong>: Order priority should account for belief precision, not just time priority. More informed beliefs (higher <span class="math inline">\(\tau_\pi\)</span>) should have greater price impact.</em></p></li>
+</ol>
+</div>
+<h2 id="the-grossman-stiglitz-paradox-revisited">The Grossman-Stiglitz Paradox Revisited</h2>
+<div id="thm:gs-resolution" class="theorem">
+<p><strong>Theorem 37</strong> (AI Resolution of Grossman-Stiglitz).  <em>In AI agent markets, the Grossman-Stiglitz paradox is resolved differently than in human markets: <span class="math display">\[\begin{equation}
+  \text{Cost of belief formation} = \underbrace{C_{\mathrm{compute}}}_{\text{near-zero marginal}} + \underbrace{C_{\mathrm{data}}}_{\text{diminishing}} + \underbrace{C_{\mathrm{model}}}_{\text{amortized}},
+\end{equation}\]</span> where <span class="math inline">\(C_{\mathrm{compute}} \to 0\)</span> with Moore’s law, <span class="math inline">\(C_{\mathrm{data}}\)</span> is subject to diminishing returns, and <span class="math inline">\(C_{\mathrm{model}}\)</span> is a one-time training cost amortized over the agent’s lifetime. This means the equilibrium level of market efficiency increases monotonically with AI adoption: <span class="math display">\[\begin{equation}
+  \eta_{\mathrm{eff}}(\phi) = 1 - \frac{C(\phi)}{\bar{r}(\phi)},
+\end{equation}\]</span> where <span class="math inline">\(C(\phi)\)</span> is the aggregate cost of belief formation at AI adoption level <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\bar{r}(\phi)\)</span> is the average return to informed trading. Since <span class="math inline">\(C(\phi) \to 0\)</span>, we get <span class="math inline">\(\eta_{\mathrm{eff}} \to 1\)</span>—near-perfect efficiency.</em></p>
+</div>
+<h1 id="sec:computation">Computational Framework</h1>
+<h2 id="agent-architecture">Agent Architecture</h2>
+<p>We provide the computational architecture for the AI market agent belief system, extending the UPMF implementation from Part III.</p>
+<div id="def:comp-agent" class="definition">
+<p><strong>Definition 38</strong> (Computational Belief Agent).  The computational agent implements:</p>
+<ol>
+<li><p><strong>Belief Encoder</strong>: Neural network <span class="math inline">\(f_\theta: \mathcal{F}_t \to \mathbb{R}^d\)</span> mapping observations to a latent belief representation.</p></li>
+<li><p><strong>Belief Decoder</strong>: Network <span class="math inline">\(g_\phi: \mathbb{R}^d \to \Delta(\Theta)\)</span> mapping latent representation to a probability distribution over states.</p></li>
+<li><p><strong>Update Rule</strong>: <span class="math inline">\(z_{t+1} = z_t + \alpha \cdot h_\psi(z_t, \delta\mathcal{F}_t)\)</span>, where <span class="math inline">\(h_\psi\)</span> is a learned update function and <span class="math inline">\(\delta\mathcal{F}_t\)</span> is new information.</p></li>
+<li><p><strong>Action Policy</strong>: <span class="math inline">\(a_t = \pi_\omega(z_t)\)</span>, mapping belief state to market actions.</p></li>
+</ol>
+</div>
+<p>The full pipeline is: <span class="math display">\[\begin{equation}
+  \mathcal{F}_t \xrightarrow{f_\theta} z_t \xrightarrow{g_\phi} \pi_t(\theta) \xrightarrow{\text{pricing}} P_t(X) \xrightarrow{\pi_\omega} a_t \xrightarrow{\text{market}} \mathcal{F}_{t+1}.
+\end{equation}\]</span></p>
+<h2 id="training-objective">Training Objective</h2>
+<div id="prop:training-loss" class="proposition">
+<p><strong>Proposition 39</strong> (Optimal Training Loss).  <em>The optimal training objective for an AI market agent combines predictive accuracy with free energy minimization: <span class="math display">\[\begin{equation}
+\label{eq:training-loss}
+  \mathcal{L}(\theta, \phi, \psi, \omega) = \underbrace{\mathbb{E}_t\left[-\log p(x_{t+h} \mid g_\phi(f_\theta(\mathcal{F}_t)))\right]}_{\text{predictive loss}} + \beta \underbrace{\mathrm{KL}(g_\phi(f_\theta(\mathcal{F}_t)) \| \pi_0)}_{\text{complexity penalty}} - \gamma \underbrace{\mathbb{E}_t[r_t(\pi_\omega(z_t))]}_{\text{reward}},
+\end{equation}\]</span> where <span class="math inline">\(\beta\)</span> controls belief complexity (analogous to market temperature) and <span class="math inline">\(\gamma\)</span> controls the trade-off between prediction and profit.</em></p>
+</div>
+<h2 id="multi-agent-simulation">Multi-Agent Simulation</h2>
+<p>The ecosystem simulation extends the MarketSimulator from Part III:</p>
+<div id="def:simulator" class="definition">
+<p><strong>Definition 40</strong> (AI Ecosystem Simulator).  The simulator evolves <span class="math inline">\(N\)</span> agents on a shared LOB:</p>
+<ol>
+<li><p>Initialize <span class="math inline">\(N\)</span> agents with diverse architectures and information feeds.</p></li>
+<li><p>At each timestep:</p>
+<ol>
+<li><p>Generate market events (news, order flow, fundamental signals).</p></li>
+<li><p>Each agent updates its belief: <span class="math inline">\(\pi_i^{t+1} = \Phi_{\theta_i}(\mathcal{F}_i^{t+1})\)</span>.</p></li>
+<li><p>Each agent submits orders: <span class="math inline">\(a_i^t = \pi_{\omega_i}(z_i^t)\)</span>.</p></li>
+<li><p>LOB processes orders, generates trades, updates prices.</p></li>
+<li><p>Agents receive P&amp;L and update through online learning.</p></li>
+</ol></li>
+<li><p>Measure: collective intelligence <span class="math inline">\(\mathcal{CI}_t\)</span>, belief diversity <span class="math inline">\(\mathcal{D}_t\)</span>, market efficiency <span class="math inline">\(\eta_t\)</span>.</p></li>
+</ol>
+</div>
+<h1 id="sec:empirical">Empirical Predictions</h1>
+<p>The framework generates specific, testable predictions:</p>
+<ol>
+<li><p><strong>HFT belief dimension</strong>: The effective dimension of HFT belief formation should be <span class="math inline">\(\leq 10\)</span>, measurable through the rank of the cross-correlation matrix of HFT order flow features.</p></li>
+<li><p><strong>Phase transition signature</strong>: As AI agent market share increases, there should be a discontinuous increase in market information efficiency at <span class="math inline">\(\phi \approx \phi_c\)</span>, detectable as a structural break in return predictability regressions.</p></li>
+<li><p><strong>Diversity-stability correlation</strong>: Markets with more diverse AI agent architectures should exhibit lower crash frequency and smaller tail risk, measurable through cross-sectional comparison of markets with different AI adoption profiles.</p></li>
+<li><p><strong>Narrative vs. quantitative information ratio</strong>: The relative importance of textual vs. quantitative signals should follow <span class="math inline">\(I^{\mathrm{narr}}/I^{\mathrm{quant}} \sim h^\gamma\)</span> with <span class="math inline">\(\gamma \approx 0.5\)</span>, testable through horizon-dependent return prediction comparisons.</p></li>
+<li><p><strong>Belief cascade precursors</strong>: Declining belief diversity <span class="math inline">\(\mathcal{D}_t\)</span> should predict market crashes with lead time <span class="math inline">\(\tau_{\mathrm{cascade}} \propto (\mathcal{D}_{\mathrm{crit}} - \mathcal{D}_t)^{-1}\)</span>, testable through real-time monitoring of algorithmic trading diversity metrics.</p></li>
+<li><p><strong>Adversarial vulnerability</strong>: Markets dominated by homogeneous AI architectures should be more susceptible to manipulation, testable through experimental market simulations.</p></li>
+</ol>
+<h1 id="sec:pmt-connection">Connection to the Predictive Market Theory</h1>
+<h2 id="completing-the-pmt-framework">Completing the PMT Framework</h2>
+<p>This paper completes the PMT framework by filling in the <em>microstructure of belief formation</em>:</p>
+<div class="center">
+
+</div>
+<ul>
+<li><p>Part I established <em>what</em> the market computes (Bayesian posterior).</p></li>
+<li><p>Part II established <em>why</em> (predictive measure minimizes free energy).</p></li>
+<li><p>Part III established <em>how</em> (UPMF dynamics and computational implementation).</p></li>
+<li><p>Part IV (this paper) establishes <em>who</em> computes and <em>at what timescales</em> (HFT and AI agents as belief-forming participants).</p></li>
+</ul>
+<h2 id="the-complete-belief-hierarchy">The Complete Belief Hierarchy</h2>
+<p>The full belief hierarchy of the market is now:</p>
+<p><span class="math display">\[\begin{equation}
+\label{eq:complete-hierarchy}
+  \mathcal{P}_t = \underbrace{\sum_{i \in \mathcal{I}_{\mathrm{human}}} w_i \pi_i^{\mathrm{human}}}_{\text{human beliefs (slow)}} + \underbrace{\sum_{j \in \mathcal{I}_{\mathrm{HFT}}} w_j \pi_j^{\mathrm{HFT}}}_{\text{HFT beliefs (fast)}} + \underbrace{\sum_{k \in \mathcal{I}_{\mathrm{AI}}} w_k \pi_k^{\mathrm{AI}}}_{\text{AI beliefs (adaptive)}},
+\end{equation}\]</span> where the weights <span class="math inline">\(w_i, w_j, w_k\)</span> are proportional to capital deployed and belief precision. The market’s predictive power comes from the <em>diversity</em> of these belief sources across timescales, information domains, and computational architectures.</p>
+<h1 id="sec:conclusion">Conclusion</h1>
+<p>We have developed a formal framework for understanding how high-frequency trading systems and autonomous AI agents form the beliefs that collectively constitute the market’s predictive measure. The key results are:</p>
+<ol>
+<li><p>HFT belief formation decomposes into structural (designed), microstructure (real-time LOB inference), and strategic (game-theoretic) components, each operating at different timescales and constrained by the latency-precision trade-off.</p></li>
+<li><p>AI agents represent a qualitative expansion of the belief space, processing multimodal information through learned representations that can approximate any belief formation process.</p></li>
+<li><p>The transition from HFT-dominated to AI-dominated markets constitutes a <em>phase transition in belief space</em>, with implications for market efficiency, volatility structure, and systemic risk.</p></li>
+<li><p>Market stability requires sufficient belief diversity, bounded update rates, and ergodic dynamics—conditions formalized in the AI Market Stability Theorem.</p></li>
+<li><p>The market’s collective intelligence exceeds any individual agent’s, with the surplus proportional to the diversity of agent specializations.</p></li>
+</ol>
+<p>The central insight connecting all four parts of this series is now complete: <strong>the market is a distributed belief computation engine, and understanding its behavior requires understanding how each participant—human, algorithmic, and AI—forms, updates, and aggregates beliefs about the future</strong>. The predictive measure <span class="math inline">\(\mathcal{P}_t\)</span> is not an abstraction but the real-time output of this vast, heterogeneous, multi-timescale belief formation process.</p>
+<p>As AI agents become increasingly dominant market participants, the character of this belief formation process will change fundamentally. The framework developed here provides the theoretical tools to understand, predict, and design for this transition.</p>
+<div class="thebibliography">
+<p><span>99</span></p>
+<p>Kyle, A.S., 1985. Continuous auctions and insider trading. <em>Econometrica</em>, 53(6), pp.1315–1335.</p>
+<p>Glosten, L.R. and Milgrom, P.R., 1985. Bid, ask and transaction prices in a specialist market with heterogeneously informed traders. <em>Journal of Financial Economics</em>, 14(1), pp.71–100.</p>
+<p>Easley, D., Kiefer, N.M., O’Hara, M. and Paperman, J.B., 1996. Liquidity, information, and infrequently traded stocks. <em>Journal of Finance</em>, 51(4), pp.1405–1436.</p>
+<p>Hasbrouck, J., 2007. <em>Empirical Market Microstructure</em>. Oxford University Press.</p>
+<p>Bouchaud, J.P., Bonart, J., Donier, J. and Gould, M., 2018. <em>Trades, Quotes and Prices: Financial Markets Under the Microscope</em>. Cambridge University Press.</p>
+<p>Cartea, Á., Jaimungal, S. and Penalva, J., 2015. <em>Algorithmic and High-Frequency Trading</em>. Cambridge University Press.</p>
+<p>Grossman, S.J. and Stiglitz, J.E., 1980. On the impossibility of informationally efficient markets. <em>American Economic Review</em>, 70(3), pp.393–408.</p>
+<p>Hayek, F.A., 1945. The use of knowledge in society. <em>American Economic Review</em>, 35(4), pp.519–530.</p>
+<p>Hornik, K., 1991. Approximation capabilities of multilayer feedforward networks. <em>Neural Networks</em>, 4(2), pp.251–257.</p>
+<p>Kidger, P. and Lyons, T., 2020. Universal approximation with deep narrow networks. <em>Proceedings of the 33rd COLT</em>, pp.2306–2327.</p>
+<p>Olfati-Saber, R. and Murray, R.M., 2004. Consensus problems in networks of agents with switching topology and time-delays. <em>IEEE Transactions on Automatic Control</em>, 49(9), pp.1520–1533.</p>
+<p>Silver, D., Singh, S., Precup, D. and Sutton, R.S., 2021. Reward is enough. <em>Artificial Intelligence</em>, 299, p.103535.</p>
+<p>Cont, R., 2001. Empirical properties of asset returns: stylized facts and statistical issues. <em>Quantitative Finance</em>, 1(2), pp.223–236.</p>
+<p>Bouchaud, J.P. and Potters, M., 2003. <em>Theory of Financial Risk and Derivative Pricing</em>. Cambridge University Press.</p>
+<p>Amari, S., 2016. <em>Information Geometry and Its Applications</em>. Springer.</p>
+<p>Friston, K., 2010. The free-energy principle: a unified brain theory? <em>Nature Reviews Neuroscience</em>, 11(2), pp.127–138.</p>
+<p>Long, M., 2026. Markets as distributed Bayesian inference engines. <em>GrokRxiv</em>, 2603.04.markets-bayesian-inference.</p>
+<p>Long, M., 2026. Predictive market theory: a Bayesian-probabilistic foundation. <em>GrokRxiv</em>, 2603.04.predictive-market-theory.</p>
+<p>Long, M., 2026. Unified predictive market framework: synthesis and implementation. <em>GrokRxiv</em>, 2603.04.unified-predictive-markets.</p>
+</div>
+
+    <div class="paper-footer">
+      <p>Matthew Long &middot; YonedaAI Collaboration &middot; 4 Mar 2026</p>
+      <div class="paper-nav">
+        <a href="unified_predictive_markets.html"><span class="label">Previous</span>&#8592; Back</a>
+        
+      </div>
+    </div>
+  </article>
+</body>
+</html>

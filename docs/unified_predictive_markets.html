@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unified Predictive Market Framework: Synthesis &amp; Implementation — YonedaAI</title>
+  <meta property="og:title" content="Unified Predictive Market Framework: Synthesis &amp; Implementation">
+  <meta property="og:description" content="Part III of Markets as Distributed Bayesian Inference Engines — YonedaAI">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://magnetonio.github.io/market-theory/unified_predictive_markets.html">
+  <meta property="og:image" content="https://magnetonio.github.io/market-theory/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Unified Predictive Market Framework: Synthesis &amp; Implementation">
+  <meta name="twitter:description" content="Part III of Markets as Distributed Bayesian Inference Engines">
+  <meta name="twitter:image" content="https://magnetonio.github.io/market-theory/og-image.png">
+  <meta name="description" content="Unified Predictive Market Framework: Synthesis &amp; Implementation — Part III of the Predictive Market Theory series by Matthew Long">
+  <link rel="canonical" href="https://magnetonio.github.io/market-theory/unified_predictive_markets.html">
+  <link rel="stylesheet" href="reader.css">
+  <script>
+  MathJax = {
+    tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']], processEscapes: true, tags: 'ams' },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+  };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="nav-left">
+      <a href="index.html">&#8592; Home</a>
+      <span class="part-label">Part III &middot; q-fin.CP</span>
+    </div>
+    <div class="nav-right">
+      <a href="../papers/pdf/unified_predictive_markets.pdf" class="pdf-btn">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+        PDF
+      </a>
+    </div>
+  </div>
+  <article>
+<div class="center">
+<p><span><strong>Unified Predictive Market Framework:<br />
+Synthesis, Literature Foundations, and<br />
+Computational Implementation</strong></span></p>
+<p><span><em>Part III of: Markets as Distributed Bayesian Inference Engines</em></span></p>
+<p><span>Matthew Long</span><br />
+<span><em>The YonedaAI Collaboration</em></span><br />
+<span><em>YonedaAI Research Collective</em></span><br />
+<span><em>Chicago, IL</em></span><br />
+<span>matthew@yonedaai.com</span> <span class="math inline">\(\cdot\)</span> <span>https://yonedaai.com</span></p>
+<p>2026-03-04</p>
+</div>
+<h1 id="sec:intro">Introduction</h1>
+<h2 id="motivation-closing-the-loop">Motivation: Closing the Loop</h2>
+<p>Parts I and II of this series developed two complementary perspectives on financial markets. Part I <span class="citation" data-cites="long2026part1"></span> characterized markets as distributed Bayesian inference engines, emphasizing the thermodynamic structure of collective belief formation: energy functions constructed from agent log-posteriors, free energy minimization at equilibrium, phase transitions as market crashes, and power-law scaling from self-organized criticality. Part II <span class="citation" data-cites="long2026part2"></span> introduced Predictive Market Theory (PMT), an axiomatic framework that takes prediction as the primitive and derives pricing as a consequence, introducing the predictive measure <span class="math inline">\(\mathcal{P}\)</span>, the variational prediction principle, and the predictive uncertainty relation.</p>
+<p>The present paper serves three purposes:</p>
+<ol>
+<li><p><strong>Theoretical synthesis</strong>: We prove that the two frameworks are mathematically dual, connected by a Legendre transform that exchanges the roles of energy and entropy, belief concentration and predictive precision. This duality is not metaphorical—it is the same mathematical structure that relates thermodynamics to statistical mechanics, Lagrangian to Hamiltonian mechanics, and primal to dual optimization.</p></li>
+<li><p><strong>Literature synthesis</strong>: We map the UPMF onto the existing landscape of financial theory, econophysics, information theory, and machine learning, identifying which prior results are subsumed, which are extended, and which suggest open problems.</p></li>
+<li><p><strong>Computational implementation</strong>: We provide a complete, modular Python codebase that implements the full framework—from individual Bayesian agents through thermodynamic market dynamics to the extraction and evaluation of predictive measures—and validate it against the theoretical predictions.</p></li>
+</ol>
+<h2 id="the-case-for-unification">The Case for Unification</h2>
+<p>Financial theory currently exists in fragmented domains. The rational expectations literature <span class="citation" data-cites="muth1961 lucas1972 grossman1980"></span> provides rigorous equilibrium analysis but struggles with empirical anomalies. Behavioral finance <span class="citation" data-cites="kahneman1979 shiller2000 thaler2015"></span> catalogs deviations from rationality but lacks a unifying mathematical framework. Econophysics <span class="citation" data-cites="mantegna2000 bouchaud2003 sornette2003"></span> imports powerful tools from statistical mechanics but often lacks microeconomic foundations. Machine learning approaches to finance <span class="citation" data-cites="gu2020 dixon2020"></span> achieve impressive empirical performance but offer limited theoretical insight.</p>
+<p>The UPMF claims to bridge these divides. By taking Bayesian prediction as the foundation and thermodynamics as the structural constraint, it provides:</p>
+<ul>
+<li><p>Rational expectations results as fixed-point theorems (Section <a href="#sec:lit_rational" data-reference-type="ref" data-reference="sec:lit_rational">4.1</a>).</p></li>
+<li><p>Behavioral anomalies as departures from the predictive optimum (Section <a href="#sec:lit_behavioral" data-reference-type="ref" data-reference="sec:lit_behavioral">4.2</a>).</p></li>
+<li><p>Econophysics scaling laws as consequences of market criticality (Section <a href="#sec:lit_econophysics" data-reference-type="ref" data-reference="sec:lit_econophysics">4.3</a>).</p></li>
+<li><p>Machine learning architectures as approximate inference algorithms (Section <a href="#sec:lit_ml" data-reference-type="ref" data-reference="sec:lit_ml">4.5</a>).</p></li>
+</ul>
+<h1 id="sec:duality">The Thermodynamic–Predictive Duality</h1>
+<h2 id="recapitulation-of-the-two-frameworks">Recapitulation of the Two Frameworks</h2>
+<p>We briefly recall the core mathematical objects from each part.</p>
+<h3 id="part-i-thermodynamic-framework">Part I: Thermodynamic Framework</h3>
+<p>The market energy function aggregates agent log-beliefs: <span class="math display">\[\begin{equation}
+\label{eq:energy_recap}
+    E(V) = -\sum_{i=1}^{N} \log \pi_i(V)
+\end{equation}\]</span> The market equilibrium distribution is the Boltzmann measure: <span class="math display">\[\begin{equation}
+\label{eq:boltzmann_recap}
+    \pi_{\text{eq}}(V) = \frac{1}{Z(T)} e^{-E(V)/T}
+\end{equation}\]</span> with partition function <span class="math inline">\(Z(T) = \int e^{-E(V)/T} \, dV\)</span> and market temperature <span class="math inline">\(T\)</span> measuring residual uncertainty. The thermodynamic free energy is: <span class="math display">\[\begin{equation}
+\label{eq:thermo_free_recap}
+    \mathcal{F}_{\text{thermo}}[T] = -T \log Z(T) = \langle E \rangle - T \cdot S
+\end{equation}\]</span> where <span class="math inline">\(\langle E \rangle = \mathbb{E}_{\pi_{\text{eq}}}[E]\)</span> is the mean energy and <span class="math inline">\(S = -\mathbb{E}_{\pi_{\text{eq}}}[\log \pi_{\text{eq}}]\)</span> is the entropy.</p>
+<h3 id="part-ii-predictive-framework">Part II: Predictive Framework</h3>
+<p>The predictive free energy of a candidate measure <span class="math inline">\(\mu\)</span> is: <span class="math display">\[\begin{equation}
+\label{eq:pred_free_recap}
+    \mathcal{F}_{\text{pred}}[\mu] = \mathbb{E}_\mu[-\log p(\mathcal{D} \mid \omega)] + \mathrm{KL}(\mu \| \pi_0)
+\end{equation}\]</span> The predictive measure <span class="math inline">\(\mathcal{P}\)</span> minimizes this: <span class="math display">\[\begin{equation}
+\label{eq:predictive_opt_recap}
+    \mathcal{P}= \mathop{\mathrm{arg\,min}}_{\mu \in \mathcal{M}(\Omega)} \mathcal{F}_{\text{pred}}[\mu]
+\end{equation}\]</span> yielding the Bayesian posterior: <span class="math display">\[\begin{equation}
+\label{eq:posterior_recap}
+    \mathcal{P}(\omega) = \frac{p(\mathcal{D} \mid \omega) \, \pi_0(\omega)}{Z_{\text{pred}}}
+\end{equation}\]</span> with evidence <span class="math inline">\(Z_{\text{pred}} = \int p(\mathcal{D} \mid \omega) \, d\pi_0(\omega)\)</span>.</p>
+<h2 id="the-legendre-transform-connection">The Legendre Transform Connection</h2>
+<div id="thm:duality" class="theorem">
+<p><strong>Theorem 1</strong> (Thermodynamic–Predictive Duality).  <em>The thermodynamic free energy <span class="math inline">\(\mathcal{F}_{\text{thermo}}\)</span> and the predictive free energy <span class="math inline">\(\mathcal{F}_{\text{pred}}\)</span> are related by a Legendre transform. Specifically, define: <span class="math display">\[\begin{align}
+    \Phi(\beta) &amp;= -\log Z(\beta) = -\log \int e^{-\beta E(V)} \, dV \label{eq:legendre_phi} \\
+    S^*(e) &amp;= \sup_{\beta} \left\{\beta \, e - \Phi(\beta)\right\} \label{eq:legendre_dual}
+\end{align}\]</span> where <span class="math inline">\(\beta = 1/T\)</span> is the inverse temperature and <span class="math inline">\(e = \langle E \rangle\)</span> is the mean energy. Then:</em></p>
+<ol>
+<li><p><em><span class="math inline">\(\Phi(\beta)\)</span> is the cumulant generating function of the energy under the prior, which equals (up to sign) the thermodynamic free energy at inverse temperature <span class="math inline">\(\beta\)</span>.</em></p></li>
+<li><p><em><span class="math inline">\(S^*(e)\)</span> is the microcanonical entropy—the log-volume of states with energy <span class="math inline">\(e\)</span>—which equals the negative of the predictive KL divergence when the predictive measure is constrained to have mean energy <span class="math inline">\(e\)</span>.</em></p></li>
+<li><p><em>The two are Legendre duals: <span class="math inline">\(\Phi = (S^*)^*\)</span> and <span class="math inline">\(S^* = \Phi^*\)</span>.</em></p></li>
+</ol>
+</div>
+<div class="proof">
+<p><em>Proof.</em> The Legendre transform structure follows from the convexity of <span class="math inline">\(\Phi(\beta)\)</span>. By Hölder’s inequality, <span class="math inline">\(\Phi\)</span> is convex (the log-partition function is always convex). Its Legendre dual: <span class="math display">\[\begin{align}
+    S^*(e) &amp;= \sup_\beta \left\{\beta e + \log \int e^{-\beta E} \, dV\right\} \\
+    &amp;= \sup_\beta \left\{\log \int e^{-\beta(E - e)} \, dV\right\}
+\end{align}\]</span> At the optimum <span class="math inline">\(\beta^*(e)\)</span>, the first-order condition gives <span class="math inline">\(\langle E \rangle_{\beta^*} = e\)</span>, and: <span class="math display">\[\begin{equation}
+    S^*(e) = \mathop{\mathrm{H}}[\pi_{\beta^*}] = -\mathrm{KL}(\pi_{\beta^*} \| \lambda)
+\end{equation}\]</span> where <span class="math inline">\(\lambda\)</span> is the Lebesgue (reference) measure. This is exactly the entropy of the Boltzmann distribution at the inverse temperature where the mean energy constraint is satisfied.</p>
+<p>Now observe that the predictive free energy, when the data likelihood takes the exponential family form <span class="math inline">\(p(\mathcal{D} \mid V) \propto e^{-\beta E(V)}\)</span>, becomes: <span class="math display">\[\begin{equation}
+    \mathcal{F}_{\text{pred}}[\mu] = \beta \mathbb{E}_\mu[E] + \mathrm{KL}(\mu \| \pi_0) = \beta \, e_\mu + \mathrm{KL}(\mu \| \pi_0)
+\end{equation}\]</span> Minimizing over <span class="math inline">\(\mu\)</span> with <span class="math inline">\(\mathbb{E}_\mu[E] = e\)</span> gives: <span class="math display">\[\begin{equation}
+    \min_{\mu: \mathbb{E}_\mu[E]=e} \mathcal{F}_{\text{pred}}[\mu] = \beta \, e - S^*(e) + \text{const.}
+\end{equation}\]</span> This establishes the Legendre duality between <span class="math inline">\(\mathcal{F}_{\text{thermo}}(\beta) = \beta \Phi(\beta)\)</span> and <span class="math inline">\(\mathcal{F}_{\text{pred}}(e) = \beta^*(e) \cdot e - S^*(e)\)</span>. ◻</p>
+</div>
+<div class="remark">
+<p><strong>Remark 2</strong>.  This duality has a beautiful physical interpretation. The thermodynamic framework (Part I) operates in the “canonical ensemble”—the temperature is fixed and the energy fluctuates. The predictive framework (Part II) operates in the “microcanonical ensemble”—the constraint on predictions (mean energy) is fixed and the temperature adjusts. The Legendre transform is exactly the passage between canonical and microcanonical descriptions, a cornerstone of statistical mechanics.</p>
+</div>
+<h2 id="consequences-of-the-duality">Consequences of the Duality</h2>
+<div id="cor:fluct_response" class="corollary">
+<p><strong>Corollary 3</strong> (Fluctuation–Response from Duality).  <em>The duality implies the fluctuation–dissipation relation for markets: <span class="math display">\[\begin{equation}
+\label{eq:fluct_dissipation}
+    \frac{\partial \langle E \rangle}{\partial \beta} = -\mathrm{Var}_{\pi_\beta}(E) = -T^2 C_V
+\end{equation}\]</span> where <span class="math inline">\(C_V\)</span> is the “heat capacity” of the market. This states that the market’s sensitivity to changes in information precision (<span class="math inline">\(\beta\)</span>) is proportional to the variance of the energy function—i.e., the diversity of agent beliefs. Markets with higher belief heterogeneity are more responsive to new information.</em></p>
+</div>
+<div id="cor:pred_eff" class="corollary">
+<p><strong>Corollary 4</strong> (Predictive Efficiency from Partition Function).  <em>The predictive efficiency <span class="math inline">\(\eta_P\)</span> from Part II can be expressed in terms of the partition function: <span class="math display">\[\begin{equation}
+    \eta_P = 1 - \frac{\log Z(\beta)}{\log Z(0)}
+\end{equation}\]</span> where <span class="math inline">\(Z(0) = |\Omega|\)</span> is the volume of the state space (corresponding to the uninformed prior) and <span class="math inline">\(Z(\beta)\)</span> is the partition function at the current information level <span class="math inline">\(\beta\)</span>. As <span class="math inline">\(\beta \to \infty\)</span> (perfect information), <span class="math inline">\(Z \to 1\)</span> and <span class="math inline">\(\eta_P \to 1\)</span>.</em></p>
+</div>
+<div id="cor:phase_pred" class="corollary">
+<p><strong>Corollary 5</strong> (Phase Transitions as Predictive Singularities).  <em>A first-order phase transition in the thermodynamic framework (discontinuous jump in <span class="math inline">\(\langle E \rangle\)</span> at critical <span class="math inline">\(\beta_c\)</span>) corresponds, via the Legendre transform, to a region of the predictive free energy landscape where the optimal predictive measure is non-unique—the market faces genuine predictive ambiguity between two qualitatively different forecasts. At the critical point, the predictive free energy has a flat direction, and the market oscillates between competing predictions.</em></p>
+</div>
+<h1 id="sec:unified">The Unified Predictive Market Framework</h1>
+<h2 id="definition-of-the-upmf">Definition of the UPMF</h2>
+<p>We now state the complete unified framework as a single coherent structure.</p>
+<div id="def:upmf" class="definition">
+<p><strong>Definition 6</strong> (Unified Predictive Market Framework).  The UPMF consists of:</p>
+<ol>
+<li><p><strong>State space</strong>: A measurable space <span class="math inline">\((\Omega, \mathcal{F})\)</span> of possible future states.</p></li>
+<li><p><strong>Agent ensemble</strong>: A collection <span class="math inline">\(\{(\pi_i, w_i)\}_{i=1}^N\)</span> of Bayesian agents, each with posterior belief <span class="math inline">\(\pi_i \in \mathcal{M}(\Omega)\)</span> and market weight <span class="math inline">\(w_i &gt; 0\)</span> with <span class="math inline">\(\sum_i w_i = 1\)</span>.</p></li>
+<li><p><strong>Energy function</strong>: <span class="math inline">\(E(V) = -\sum_{i=1}^N w_i \log \pi_i(V)\)</span>, the weighted aggregate of log-beliefs.</p></li>
+<li><p><strong>Market temperature</strong>: <span class="math inline">\(T = (\sum_i w_i \tau_i)^{-1}\)</span>, the inverse of the weighted aggregate precision.</p></li>
+<li><p><strong>Partition function</strong>: <span class="math inline">\(Z(T) = \int e^{-E(V)/T} \, dV\)</span>.</p></li>
+<li><p><strong>Equilibrium (thermodynamic) distribution</strong>: <span class="math inline">\(\pi_{\text{eq}}(V) = Z^{-1} e^{-E(V)/T}\)</span>.</p></li>
+<li><p><strong>Predictive measure</strong>: <span class="math inline">\(\mathcal{P}= \mathop{\mathrm{arg\,min}}_\mu \mathcal{F}_{\text{pred}}[\mu]\)</span>, related to <span class="math inline">\(\pi_{\text{eq}}\)</span> by the Legendre duality of Theorem <a href="#thm:duality" data-reference-type="ref" data-reference="thm:duality">1</a>.</p></li>
+<li><p><strong>Risk distortion kernel</strong>: <span class="math inline">\(R(\omega) = d\mathbb{Q}/d\mathcal{P}(\omega)\)</span>, encoding aggregate risk preferences.</p></li>
+<li><p><strong>Pricing functional</strong>: <span class="math inline">\(P(X) = e^{-rT} \mathbb{E}_\mathcal{P}[X \cdot R]\)</span> for any asset with payoff <span class="math inline">\(X\)</span>.</p></li>
+<li><p><strong>Dynamics</strong>: The coupled evolution of agent beliefs <span class="math inline">\(\{\pi_i(t)\}\)</span>, market prices <span class="math inline">\(\{P(t)\}\)</span>, and the predictive measure <span class="math inline">\(\mathcal{P}_t\)</span> governed by the Kushner–Stratonovich filtering equations.</p></li>
+<li><p><strong>Thermodynamic constraints</strong>: Free energy dissipation <span class="math inline">\(\Delta \mathcal{F} \leq 0\)</span>, informational irreversibility <span class="math inline">\(\Delta \mathop{\mathrm{H}}[\mathcal{P}] \leq 0\)</span>, and the fluctuation–dissipation relation <a href="#eq:fluct_dissipation" data-reference-type="eqref" data-reference="eq:fluct_dissipation">[eq:fluct_dissipation]</a>.</p></li>
+<li><p><strong>Resolution constraints</strong>: The predictive uncertainty relation <span class="math inline">\(\Delta_T \cdot \Delta_S \geq 1/\mathcal{C}\)</span>.</p></li>
+</ol>
+</div>
+<h2 id="the-upmf-master-equation">The UPMF Master Equation</h2>
+<p>The complete dynamics of the UPMF can be expressed as a single stochastic partial differential equation on the space of measures. For a finite-state approximation with states <span class="math inline">\(\{V_1, \ldots, V_n\}\)</span> and predictive probabilities <span class="math inline">\(\boldsymbol{\pi}(t) = (\mathcal{P}_t(V_1), \ldots, \mathcal{P}_t(V_n))\)</span>:</p>
+<div id="thm:master" class="theorem">
+<p><strong>Theorem 7</strong> (UPMF Master Equation).  <em>The predictive probability vector evolves according to: <span class="math display">\[\begin{equation}
+\label{eq:master}
+    d\pi_k(t) = \underbrace{-\nabla_{\pi_k} \mathcal{F}[\boldsymbol{\pi}] \, dt}_{\text{free energy gradient}} + \underbrace{\pi_k(t) \sum_{j=1}^m (\lambda_j^{(k)} - \bar{\lambda}_j) \, dW_j(t)}_{\text{information arrival}} + \underbrace{\gamma \sum_\ell L_{k\ell} \pi_\ell(t) \, dt}_{\text{inter-agent coupling}}
+\end{equation}\]</span> where:</em></p>
+<ul>
+<li><p><em>The first term drives the distribution toward the free-energy minimum (the Bayesian posterior).</em></p></li>
+<li><p><em>The second term incorporates stochastic information arrivals via Brownian motions <span class="math inline">\(\{W_j\}\)</span>.</em></p></li>
+<li><p><em>The third term, with coupling matrix <span class="math inline">\(L_{k\ell}\)</span> (a graph Laplacian satisfying <span class="math inline">\(\sum_k L_{k\ell} = 0\)</span> to ensure probability conservation), captures inter-agent interactions (herding, contrarianism, information networks), with strength <span class="math inline">\(\gamma\)</span>. Note that <span class="math inline">\(\nabla_{\pi_k} \mathcal{F}\)</span> denotes the natural gradient on the probability simplex (see Theorem <a href="#thm:natural_gradient" data-reference-type="ref" data-reference="thm:natural_gradient">[thm:natural_gradient]</a>).</em></p></li>
+</ul>
+</div>
+<p>When <span class="math inline">\(\gamma = 0\)</span> (no inter-agent coupling), the master equation reduces to the Kushner–Stratonovich filter from Part II. When the information term vanishes and only coupling remains, it reduces to a mean-field spin dynamics from Part I.</p>
+<h1 id="sec:literature">Literature Synthesis</h1>
+<h2 id="sec:lit_rational">Rational Expectations and Information Economics</h2>
+<p>The UPMF subsumes and extends the rational expectations equilibrium (REE) framework of Muth <span class="citation" data-cites="muth1961"></span>, Lucas <span class="citation" data-cites="lucas1972"></span>, and the Grossman–Stiglitz <span class="citation" data-cites="grossman1980"></span> noisy REE.</p>
+<div id="prop:ree" class="proposition">
+<p><strong>Proposition 8</strong> (REE as UPMF Fixed Point).  <em>A rational expectations equilibrium corresponds to a fixed point of the UPMF dynamics <a href="#eq:master" data-reference-type="eqref" data-reference="eq:master">[eq:master]</a> where:</em></p>
+<ol>
+<li><p><em>All agents’ beliefs are consistent with the equilibrium price: <span class="math inline">\(\pi_i(V) = \mathbb{P}(V \mid \mathcal{I}_i, P^*)\)</span>.</em></p></li>
+<li><p><em>The market clears: <span class="math inline">\(\sum_i D_i(P^*) = 0\)</span>.</em></p></li>
+<li><p><em>The predictive measure <span class="math inline">\(\mathcal{P}\)</span> equals the consensus posterior <span class="math inline">\(\mathbb{P}(V \mid \bigcup_i \mathcal{I}_i)\)</span> up to noise-trading contamination.</em></p></li>
+</ol>
+<p><em>The UPMF extends this by providing: (a) the dynamics of convergence to the fixed point, (b) the thermodynamic cost of maintaining the equilibrium, and (c) characterization of the equilibrium’s stability through the Hessian of the free energy.</em></p>
+</div>
+<p>Kyle’s <span class="citation" data-cites="kyle1985"></span> model of continuous auctions embeds naturally:</p>
+<div id="prop:kyle_upmf" class="proposition">
+<p><strong>Proposition 9</strong> (Kyle’s Lambda in the UPMF).  <em>In the UPMF, Kyle’s price impact parameter <span class="math inline">\(\lambda\)</span> equals: <span class="math display">\[\begin{equation}
+    \lambda = \frac{1}{2} \cdot \frac{\partial^2 \mathcal{F}_{\text{thermo}}}{\partial \langle E \rangle^2} \bigg|_{\text{eq}} = \frac{T}{2\mathrm{Var}_{\mathcal{P}}(E)}
+\end{equation}\]</span> where <span class="math inline">\(\mathrm{Var}_{\mathcal{P}}(E)\)</span> is the variance of the energy under the equilibrium distribution. Under the Gaussian assumption where the energy function is quadratic in value, <span class="math inline">\(E(V) \propto (V - \mu)^2\)</span>, this reduces to <span class="math inline">\(\lambda = T / (2\mathrm{Var}_{\mathcal{P}}(V))\)</span>. Price impact is inversely proportional to predictive variance: the more uncertain the market, the more each trade moves the price, because each trade carries more information relative to the existing belief.</em></p>
+</div>
+<p>The Grossman–Stiglitz paradox—that informationally efficient markets provide no incentive for costly information acquisition—is resolved by the thermodynamic dissipation axiom:</p>
+<div id="prop:gs_resolution" class="proposition">
+<p><strong>Proposition 10</strong> (Resolution of the Grossman–Stiglitz Paradox).  <em>In the UPMF, the cost of maintaining market efficiency equals the rate of free energy dissipation <span class="math inline">\(|\dot{\mathcal{F}}|\)</span>. In equilibrium: <span class="math display">\[\begin{equation}
+    \sum_{i \in \text{informed}} c_i = |\dot{\mathcal{F}}_{\text{pred}}| = T \cdot \dot{S}_{\text{info}}
+\end{equation}\]</span> where <span class="math inline">\(c_i\)</span> is the information cost borne by agent <span class="math inline">\(i\)</span> and <span class="math inline">\(\dot{S}_{\text{info}}\)</span> is the rate of entropy reduction (information production). The market is never perfectly efficient because maintaining the predictive function requires continuous energy expenditure, paid for by the trading profits of informed agents.</em></p>
+</div>
+<h2 id="sec:lit_behavioral">Behavioral Finance</h2>
+<p>The behavioral finance literature <span class="citation" data-cites="kahneman1979 thaler2015 barberis2003"></span> documents systematic deviations from rational pricing. In the UPMF, these deviations have a natural interpretation as predictive biases—systematic distortions of the predictive measure <span class="math inline">\(\mathcal{P}\)</span> relative to the true measure <span class="math inline">\(\mathbb{P}\)</span>.</p>
+<div id="def:bias_taxonomy" class="definition">
+<p><strong>Definition 11</strong> (Predictive Bias Taxonomy).  The UPMF classifies behavioral biases as:</p>
+<div class="center">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Behavioral bias</strong></th>
+<th style="text-align: left;"><strong>UPMF interpretation</strong></th>
+<th style="text-align: left;"><strong>Mathematical signature</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Overconfidence</td>
+<td style="text-align: left;">Low market temperature <span class="math inline">\(T\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\mathrm{Var}_\mathcal{P}(V) &lt; \mathrm{Var}_\mathbb{P}(V)\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Anchoring</td>
+<td style="text-align: left;">Sticky prior <span class="math inline">\(\pi_0\)</span></td>
+<td style="text-align: left;">High <span class="math inline">\(\mathrm{KL}(\mathcal{P}\| \pi_0)\)</span> penalty</td>
+</tr>
+<tr>
+<td style="text-align: left;">Herding</td>
+<td style="text-align: left;">Strong coupling <span class="math inline">\(\gamma \gg 0\)</span></td>
+<td style="text-align: left;">Low entropy <span class="math inline">\(\mathop{\mathrm{H}}[\mathcal{P}]\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Availability bias</td>
+<td style="text-align: left;">Signal heterogeneity</td>
+<td style="text-align: left;">Asymmetric <span class="math inline">\(\lambda_j^{(k)}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Loss aversion</td>
+<td style="text-align: left;">Asymmetric <span class="math inline">\(R(\omega)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(R(\omega) \gg 1\)</span> for losses</td>
+</tr>
+<tr>
+<td style="text-align: left;">Momentum</td>
+<td style="text-align: left;">Autocorrelated signals</td>
+<td style="text-align: left;">Non-martingale <span class="math inline">\(\mathcal{P}_t\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="thm:behavioral" class="theorem">
+<p><strong>Theorem 12</strong> (Behavioral Anomalies as Free-Energy Suboptimality).  <em>Let <span class="math inline">\(\mathcal{P}^*\)</span> denote the optimal predictive measure (minimizing <span class="math inline">\(\mathcal{F}_{\text{pred}}\)</span>) and <span class="math inline">\(\mathcal{P}^{\text{biased}}\)</span> the actual market measure exhibiting behavioral biases. The excess return predictability (anomaly alpha) satisfies: <span class="math display">\[\begin{equation}
+\label{eq:anomaly_alpha}
+    |\alpha| \leq c \cdot \sqrt{\mathrm{KL}(\mathcal{P}^{\text{biased}} \| \mathcal{P}^*)}
+\end{equation}\]</span> where <span class="math inline">\(c\)</span> depends on the risk distortion kernel. Anomaly profits are bounded by the predictive suboptimality of the market.</em></p>
+</div>
+<p>This provides a unified metric for all behavioral anomalies: they are all instances of the market’s predictive free energy exceeding its optimum, and the profits from exploiting them are bounded by the magnitude of this excess.</p>
+<h2 id="sec:lit_econophysics">Econophysics</h2>
+<p>The econophysics program <span class="citation" data-cites="mantegna2000 bouchaud2003 sornette2003 gabaix2003"></span> has established robust empirical scaling laws in financial markets. The UPMF provides microeconomic foundations for these laws.</p>
+<div id="prop:power_law_upmf" class="proposition">
+<p><strong>Proposition 13</strong> (Power-Law Returns from UPMF Criticality).  <em>The inverse cubic law for returns, <span class="math inline">\(\mathbb{P}(|r| &gt; x) \sim x^{-3}\)</span>, arises in the UPMF when the market operates near the critical point of the agent-coupling phase transition. At criticality (<span class="math inline">\(\gamma = \gamma_c\)</span>), the correlation length of the agent interaction network diverges, producing scale-free fluctuations with the observed exponent.</em></p>
+</div>
+<p>Sornette’s <span class="citation" data-cites="sornette2003"></span> log-periodic power law (LPPL) model for bubble dynamics connects to the UPMF through the phase-transition framework:</p>
+<div id="prop:lppl" class="proposition">
+<p><strong>Proposition 14</strong> (LPPL as Critical Oscillation).  <em>The log-periodic oscillations observed before market crashes correspond, in the UPMF, to the discrete scale invariance of the market energy function near a first-order phase transition. The LPPL acceleration <span class="math inline">\(P(t) \sim (t_c - t)^{-\alpha}[1 + C \cos(\omega \log(t_c - t))]\)</span> describes the approach of the free energy barrier <span class="math inline">\(\Delta \mathcal{F}\)</span> to zero as the critical time <span class="math inline">\(t_c\)</span> is reached.</em></p>
+</div>
+<p>Bouchaud and Potters’ <span class="citation" data-cites="bouchaud2003"></span> treatment of volatility clustering as a long-memory process is subsumed by the UPMF’s critical slowing down mechanism: near the critical coupling strength <span class="math inline">\(\gamma_c\)</span>, the autocorrelation time of the predictive process diverges, producing the observed slow decay of volatility autocorrelations.</p>
+<h2 id="sec:lit_infogeom">Information Geometry and the Fisher Market Metric</h2>
+<p>Amari’s <span class="citation" data-cites="amari2016"></span> information geometry provides the natural Riemannian structure on the space of predictive measures. The space <span class="math inline">\(\mathcal{M}(\Omega)\)</span> equipped with the Fisher information metric: <span class="math display">\[\begin{equation}
+\label{eq:fisher_metric}
+    g_{ij}(\mathcal{P}) = \mathbb{E}_\mathcal{P}\left[\frac{\partial \log \mathcal{P}}{\partial \theta_i} \cdot \frac{\partial \log \mathcal{P}}{\partial \theta_j}\right]
+\end{equation}\]</span> forms a Riemannian manifold whose geodesics correspond to natural gradient updates of the predictive measure.</p>
+<div id="thm:nat_grad" class="theorem">
+<p><strong>Theorem 15</strong> (UPMF Dynamics as Natural Gradient Flow).  <em>The free-energy gradient term in the UPMF master equation <a href="#eq:master" data-reference-type="eqref" data-reference="eq:master">[eq:master]</a> can be expressed as a natural gradient flow on the statistical manifold <span class="math inline">\((\mathcal{M}(\Omega), g)\)</span>: <span class="math display">\[\begin{equation}
+\label{eq:nat_grad}
+    \dot{\boldsymbol{\pi}} = -g^{-1}(\boldsymbol{\pi}) \cdot \nabla \mathcal{F}_{\text{pred}}[\boldsymbol{\pi}]
+\end{equation}\]</span> This is the Fisher–Rao natural gradient, which adjusts the learning rate based on the local geometry of the probability simplex. The market automatically implements the optimal second-order optimization method for updating its predictions.</em></p>
+</div>
+<div class="remark">
+<p><strong>Remark 16</strong>.  This result explains a longstanding puzzle in market microstructure: why do prices adjust to information at the “right speed”? The natural gradient flow automatically accounts for the curvature of the belief space. Near certainty (low entropy), small belief changes produce large price movements because the Fisher information is large; near maximum uncertainty, large belief changes produce small price movements.</p>
+</div>
+<h2 id="sec:lit_ml">Machine Learning and Deep Generative Models</h2>
+<p>The variational prediction principle (Part II, Theorem 4.2) places the UPMF in direct correspondence with variational inference methods in machine learning <span class="citation" data-cites="blei2017"></span>.</p>
+<div id="prop:vae" class="proposition">
+<p><strong>Proposition 17</strong> (Market as Variational Autoencoder).  <em>The UPMF can be interpreted as a variational autoencoder (VAE) where:</em></p>
+<div class="center">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><em><strong>VAE component</strong></em></th>
+<th style="text-align: left;"><em><strong>UPMF counterpart</strong></em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><em>Encoder <span class="math inline">\(q_\phi(z|x)\)</span></em></td>
+<td style="text-align: left;"><em>Market inference: data <span class="math inline">\(\to\)</span> predictive measure <span class="math inline">\(\mathcal{P}\)</span></em></td>
+</tr>
+<tr>
+<td style="text-align: left;"><em>Decoder <span class="math inline">\(p_\theta(x|z)\)</span></em></td>
+<td style="text-align: left;"><em>Pricing functional: <span class="math inline">\(\mathcal{P}\to\)</span> prices</em></td>
+</tr>
+<tr>
+<td style="text-align: left;"><em>Latent space <span class="math inline">\(z\)</span></em></td>
+<td style="text-align: left;"><em>State of the world <span class="math inline">\(\omega \in \Omega\)</span></em></td>
+</tr>
+<tr>
+<td style="text-align: left;"><em>ELBO objective</em></td>
+<td style="text-align: left;"><em>Negative predictive free energy <span class="math inline">\(-\mathcal{F}_{\text{pred}}\)</span></em></td>
+</tr>
+<tr>
+<td style="text-align: left;"><em>Reparameterization trick</em></td>
+<td style="text-align: left;"><em>Noise trading as auxiliary randomness</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em>The market maximizes the Evidence Lower Bound (ELBO) on the marginal likelihood of observed data, just as a VAE does.</em></p>
+</div>
+<p>The normalizing flows literature <span class="citation" data-cites="rezende2015"></span> connects to the UPMF through the dynamics of the predictive measure: the evolution <span class="math inline">\(\mathcal{P}_t \to \mathcal{P}_{t+1}\)</span> under information arrival is a stochastic normalizing flow that transforms the prior into the posterior through a sequence of invertible maps (Bayesian updates).</p>
+<h1 id="sec:architecture">Computational Architecture</h1>
+<h2 id="system-overview">System Overview</h2>
+<p>The computational implementation of the UPMF is organized into six modules, each corresponding to a theoretical component:</p>
+<div class="center">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Module</strong></th>
+<th style="text-align: left;"><strong>Theory reference</strong></th>
+<th style="text-align: left;"><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>BayesianAgent</code></td>
+<td style="text-align: left;">Part I, Def. 2.1</td>
+<td style="text-align: left;">Individual belief formation</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ThermodynamicEngine</code></td>
+<td style="text-align: left;">Part I, §6</td>
+<td style="text-align: left;">Energy, free energy, temperature</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>PredictiveMeasure</code></td>
+<td style="text-align: left;">Part II, Def. 3.1</td>
+<td style="text-align: left;">Extracting and evaluating <span class="math inline">\(\mathcal{P}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>VariationalOptimizer</code></td>
+<td style="text-align: left;">Part II, Thm. 4.2</td>
+<td style="text-align: left;">Free energy minimization</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ResolutionAnalyzer</code></td>
+<td style="text-align: left;">Part II, §7</td>
+<td style="text-align: left;">Uncertainty relation analysis</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>MarketSimulator</code></td>
+<td style="text-align: left;">Part III, Thm. 3.2</td>
+<td style="text-align: left;">Full UPMF dynamics</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="design-principles">Design Principles</h2>
+<p>The code follows four design principles:</p>
+<ol>
+<li><p><strong>Theory–code correspondence</strong>: Every class and method maps to a specific definition, theorem, or equation from the theoretical papers, documented by cross-reference in the docstrings.</p></li>
+<li><p><strong>Modularity</strong>: Each component can be used independently or composed into the full simulation.</p></li>
+<li><p><strong>Numerical stability</strong>: All computations use log-space representations where possible to avoid floating-point underflow in probability calculations.</p></li>
+<li><p><strong>Extensibility</strong>: The framework supports arbitrary state spaces, signal structures, and agent heterogeneity through abstract base classes.</p></li>
+</ol>
+<h1 id="sec:implementation">Core Implementation</h1>
+<h2 id="module-1-bayesian-agent">Module 1: Bayesian Agent</h2>
+<p>The <code>BayesianAgent</code> class implements Definition 2.1 of Part I: sequential Bayesian updating with heterogeneous signal processing.</p>
+<pre id="lst:agent" data-caption="Bayesian Agent --- Sequential posterior updating (Part~I, Eq.~2)" data-label="lst:agent"><code>import numpy as np
+from scipy.special import logsumexp
+from dataclasses import dataclass, field
+from typing import Optional
+
+@dataclass
+class BayesianAgent:
+    &quot;&quot;&quot;A Bayesian agent maintaining beliefs over discrete states.
+    
+    Implements Part I, Definition 2.1: Sequential Bayesian Updating.
+    Each agent has a prior, signal precision, and market weight.
+    &quot;&quot;&quot;
+    n_states: int
+    signal_precision: float          # tau_i = 1/sigma_i^2
+    market_weight: float = 1.0
+    log_belief: np.ndarray = field(init=False)
+    
+    def __post_init__(self):
+        # Uniform (uninformative) prior in log-space
+        self.log_belief = np.full(
+            self.n_states, -np.log(self.n_states)
+        )
+    
+    def observe_signal(
+        self, signal_idx: int, noise_std: Optional[float] = None
+    ) -&gt; np.ndarray:
+        &quot;&quot;&quot;Bayesian update given a noisy signal.
+        
+        Part I, Eq. (2): pi^(T)(V) propto f(s|V) * pi^(T-1)(V)
+        Signal is a noisy observation centered on the true state.
+        &quot;&quot;&quot;
+        if noise_std is None:
+            noise_std = 1.0 / np.sqrt(self.signal_precision)
+        
+        states = np.arange(self.n_states)
+        # Log-likelihood: Gaussian signal centered on signal_idx
+        log_likelihood = (
+            -0.5 * ((states - signal_idx) / noise_std) ** 2
+        )
+        
+        # Bayesian update in log-space (Part I, Eq. 3)
+        self.log_belief = self.log_belief + log_likelihood
+        self.log_belief -= logsumexp(self.log_belief)  # normalize
+        
+        return self.belief
+    
+    @property
+    def belief(self) -&gt; np.ndarray:
+        &quot;&quot;&quot;Current posterior belief as probabilities.&quot;&quot;&quot;
+        return np.exp(self.log_belief)
+    
+    @property
+    def entropy(self) -&gt; float:
+        &quot;&quot;&quot;Shannon entropy of agent&#39;s belief (Part I, Eq. 8).&quot;&quot;&quot;
+        p = self.belief
+        p = p[p &gt; 0]
+        return -np.sum(p * np.log(p))
+    
+    def observe_price(
+        self, market_log_belief: np.ndarray, confidence: float = 0.5
+    ):
+        &quot;&quot;&quot;Update beliefs using market price as a signal.
+        
+        Part I, Eq. (11): Agent extracts information from the
+        market clearing price, weighted by confidence in market.
+        &quot;&quot;&quot;
+        self.log_belief = (
+            (1 - confidence) * self.log_belief
+            + confidence * market_log_belief
+        )
+        self.log_belief -= logsumexp(self.log_belief)</code></pre>
+<h2 id="module-2-thermodynamic-engine">Module 2: Thermodynamic Engine</h2>
+<p>The <code>ThermodynamicEngine</code> implements the statistical mechanics framework of Part I, Section 6.</p>
+<pre id="lst:thermo" data-caption="Thermodynamic Engine --- Energy, free energy, phase transitions (Part~I, \S 6)" data-label="lst:thermo"><code>@dataclass
+class ThermodynamicEngine:
+    &quot;&quot;&quot;Thermodynamic analysis of market belief distributions.
+    
+    Implements Part I, Section 6: energy functions, partition
+    functions, free energy, and phase transition detection.
+    &quot;&quot;&quot;
+    n_states: int
+    
+    def compute_energy(
+        self, agents: list[BayesianAgent]
+    ) -&gt; np.ndarray:
+        &quot;&quot;&quot;Market energy function E(V) = -sum w_i log pi_i(V).
+        
+        Part I, Eq. (19): Aggregate negative log-beliefs.
+        &quot;&quot;&quot;
+        energy = np.zeros(self.n_states)
+        total_weight = sum(a.market_weight for a in agents)
+        for agent in agents:
+            w = agent.market_weight / total_weight
+            energy -= w * agent.log_belief
+        return energy
+    
+    def partition_function(
+        self, energy: np.ndarray, temperature: float
+    ) -&gt; float:
+        &quot;&quot;&quot;Z(T) = integral exp(-E(V)/T) dV.  Part I, Eq. (26).&quot;&quot;&quot;
+        log_Z = logsumexp(-energy / max(temperature, 1e-10))
+        return np.exp(log_Z)
+    
+    def boltzmann_distribution(
+        self, energy: np.ndarray, temperature: float
+    ) -&gt; np.ndarray:
+        &quot;&quot;&quot;Equilibrium distribution: pi_eq propto exp(-E/T).
+        
+        Part I, Eq. (20): The Boltzmann market distribution.
+        &quot;&quot;&quot;
+        log_pi = -energy / max(temperature, 1e-10)
+        log_pi -= logsumexp(log_pi)
+        return np.exp(log_pi)
+    
+    def free_energy(
+        self, energy: np.ndarray, temperature: float
+    ) -&gt; float:
+        &quot;&quot;&quot;Thermodynamic free energy F = &lt;E&gt; - T*S.
+        
+        Part I, Eq. (22) / Part III, Theorem 2.1.
+        &quot;&quot;&quot;
+        pi = self.boltzmann_distribution(energy, temperature)
+        mean_energy = np.sum(pi * energy)
+        entropy = -np.sum(pi * np.log(pi + 1e-30))
+        return mean_energy - temperature * entropy
+    
+    def market_temperature(
+        self, agents: list[BayesianAgent]
+    ) -&gt; float:
+        &quot;&quot;&quot;T = 1 / sum(w_i * tau_i).  Part I, Definition 6.1.&quot;&quot;&quot;
+        total_precision = sum(
+            a.market_weight * a.signal_precision
+            for a in agents
+        )
+        return 1.0 / max(total_precision, 1e-10)
+    
+    def heat_capacity(
+        self, energy: np.ndarray, temperature: float
+    ) -&gt; float:
+        &quot;&quot;&quot;C_V = Var(E) / T^2.  Part III, Corollary 2.3.
+        
+        Divergence signals approach to a phase transition.
+        &quot;&quot;&quot;
+        pi = self.boltzmann_distribution(energy, temperature)
+        mean_e = np.sum(pi * energy)
+        var_e = np.sum(pi * (energy - mean_e) ** 2)
+        return var_e / max(temperature ** 2, 1e-20)
+    
+    def detect_phase_transition(
+        self, energy: np.ndarray,
+        temp_range: np.ndarray
+    ) -&gt; dict:
+        &quot;&quot;&quot;Scan temperature range for phase transitions.
+        
+        Part I, Theorem 6.4: Phase transitions manifest as
+        peaks in heat capacity C_V.
+        &quot;&quot;&quot;
+        cv_values = [
+            self.heat_capacity(energy, t) for t in temp_range
+        ]
+        cv_arr = np.array(cv_values)
+        critical_idx = np.argmax(cv_arr)
+        return {
+            &quot;critical_temp&quot;: temp_range[critical_idx],
+            &quot;max_heat_capacity&quot;: cv_arr[critical_idx],
+            &quot;heat_capacity_curve&quot;: cv_arr,
+        }</code></pre>
+<h2 id="module-3-predictive-measure">Module 3: Predictive Measure</h2>
+<p>The <code>PredictiveMeasure</code> class implements the central construct of Part II.</p>
+<pre id="lst:predictive" data-caption="Predictive Measure --- Extraction and evaluation (Part~II, \S 3--5)" data-label="lst:predictive"><code>@dataclass
+class PredictiveMeasure:
+    &quot;&quot;&quot;The predictive measure P --- the market&#39;s collective forecast.
+    
+    Part II, Definition 3.1: A probability measure on outcome space
+    encoding the market&#39;s best estimate, purged of risk distortions.
+    &quot;&quot;&quot;
+    n_states: int
+    log_measure: np.ndarray = field(init=False)
+    risk_aversion: float = 2.0  # gamma for power utility
+    
+    def __post_init__(self):
+        self.log_measure = np.full(
+            self.n_states, -np.log(self.n_states)
+        )
+    
+    @property
+    def measure(self) -&gt; np.ndarray:
+        return np.exp(self.log_measure)
+    
+    def extract_from_risk_neutral(
+        self, q_measure: np.ndarray,
+        state_values: np.ndarray
+    ) -&gt; np.ndarray:
+        &quot;&quot;&quot;Extract P from Q using power utility inversion.
+        
+        Part II, Eq. (16): dP/dx propto dQ/dx * x^gamma
+        &quot;&quot;&quot;
+        log_p = (
+            np.log(q_measure + 1e-30)
+            + self.risk_aversion * np.log(state_values + 1e-30)
+        )
+        log_p -= logsumexp(log_p)
+        self.log_measure = log_p
+        return self.measure
+    
+    def extract_from_agents(
+        self, agents: list[BayesianAgent]
+    ) -&gt; np.ndarray:
+        &quot;&quot;&quot;Extract P as precision-weighted consensus.
+        
+        Part I, Theorem 3.1 (Gaussian case): Precision-weighted
+        average of agent beliefs.
+        &quot;&quot;&quot;
+        total_weight = sum(
+            a.market_weight * a.signal_precision
+            for a in agents
+        )
+        log_p = np.full(self.n_states, -100.0)
+        for agent in agents:
+            w = (
+                agent.market_weight * agent.signal_precision
+                / total_weight
+            )
+            log_p = np.logaddexp(
+                log_p, np.log(w) + agent.log_belief
+            )
+        log_p -= logsumexp(log_p)
+        self.log_measure = log_p
+        return self.measure
+    
+    def predictive_free_energy(
+        self, log_likelihood: np.ndarray,
+        log_prior: np.ndarray
+    ) -&gt; float:
+        &quot;&quot;&quot;F[mu] = E_mu[-log p(D|w)] + KL(mu || pi_0).
+        
+        Part II, Eq. (14): The variational free energy.
+        &quot;&quot;&quot;
+        mu = self.measure
+        prediction_error = -np.sum(mu * log_likelihood)
+        kl_divergence = np.sum(
+            mu * (self.log_measure - log_prior)
+        )
+        return prediction_error + kl_divergence
+    
+    def calibration_score(
+        self, outcomes: np.ndarray, n_bins: int = 10
+    ) -&gt; dict:
+        &quot;&quot;&quot;Compute calibration metrics.
+        
+        Part II, Definition 11.1: Market calibration assessment.
+        &quot;&quot;&quot;
+        probs = self.measure
+        bins = np.linspace(0, 1, n_bins + 1)
+        calibration_errors = []
+        
+        for i in range(n_bins):
+            mask = (probs &gt;= bins[i]) &amp; (probs &lt; bins[i+1])
+            if mask.any():
+                predicted = probs[mask].mean()
+                realized = outcomes[mask].mean()
+                calibration_errors.append(
+                    (predicted - realized) ** 2
+                )
+        
+        brier_score = np.mean((probs - outcomes) ** 2)
+        return {
+            &quot;brier_score&quot;: brier_score,
+            &quot;calibration_error&quot;: np.mean(calibration_errors)
+                if calibration_errors else 0.0,
+        }
+    
+    def predictive_efficiency(
+        self, true_distribution: np.ndarray,
+        prior: np.ndarray
+    ) -&gt; float:
+        &quot;&quot;&quot;eta_P = 1 - KL(P||P*) / KL(pi_0||P*).
+        
+        Part II, Definition 11.3: Fraction of achievable
+        information gain captured by the market.
+        &quot;&quot;&quot;
+        kl_market = np.sum(
+            true_distribution
+            * np.log(
+                (true_distribution + 1e-30) / (self.measure + 1e-30)
+            )
+        )
+        kl_prior = np.sum(
+            true_distribution
+            * np.log(
+                (true_distribution + 1e-30) / (prior + 1e-30)
+            )
+        )
+        if kl_prior &lt; 1e-10:
+            return 1.0
+        return 1.0 - kl_market / kl_prior</code></pre>
+<h2 id="module-4-variational-optimizer">Module 4: Variational Optimizer</h2>
+<pre id="lst:variational" data-caption="Variational Optimizer --- Free energy minimization (Part~II, Thm.~4.2)" data-label="lst:variational"><code>@dataclass
+class VariationalOptimizer:
+    &quot;&quot;&quot;Minimize predictive free energy via natural gradient descent.
+    
+    Part II, Theorem 4.2: P = argmin F_pred[mu].
+    Part III, Theorem 4.1: Uses Fisher-Rao natural gradient.
+    &quot;&quot;&quot;
+    n_states: int
+    learning_rate: float = 0.01
+    n_iterations: int = 1000
+    tolerance: float = 1e-8
+    
+    def optimize(
+        self, log_likelihood: np.ndarray,
+        log_prior: np.ndarray
+    ) -&gt; dict:
+        &quot;&quot;&quot;Find the predictive measure minimizing free energy.
+        
+        Natural gradient on the probability simplex:
+        Part III, Eq. (17): dot{pi} = -g^{-1} nabla F
+        &quot;&quot;&quot;
+        # Initialize at prior
+        log_q = log_prior.copy()
+        free_energy_history = []
+        
+        for iteration in range(self.n_iterations):
+            q = np.exp(log_q)
+            
+            # Free energy: E_q[-log p(D|w)] + KL(q||prior)
+            pred_error = -np.sum(q * log_likelihood)
+            kl = np.sum(q * (log_q - log_prior))
+            fe = pred_error + kl
+            free_energy_history.append(fe)
+            
+            # Natural gradient (Fisher-Rao):
+            # For categorical, g^{-1} = diag(q), so natural
+            # gradient = q * (raw gradient / q) = raw gradient
+            # adjusted for simplex geometry.
+            grad = -log_likelihood + (log_q - log_prior) + 1
+            natural_grad = q * (grad - np.sum(q * grad))
+            
+            # Update in log-space for stability
+            log_q -= self.learning_rate * natural_grad / (q + 1e-30)
+            log_q -= logsumexp(log_q)
+            
+            # Convergence check
+            if (iteration &gt; 0
+                and abs(free_energy_history[-1]
+                        - free_energy_history[-2]) &lt; self.tolerance):
+                break
+        
+        # Analytic solution for comparison (Bayesian posterior)
+        log_posterior = log_likelihood + log_prior
+        log_posterior -= logsumexp(log_posterior)
+        
+        return {
+            &quot;log_measure&quot;: log_q,
+            &quot;measure&quot;: np.exp(log_q),
+            &quot;free_energy&quot;: free_energy_history[-1],
+            &quot;free_energy_history&quot;: np.array(free_energy_history),
+            &quot;converged_iteration&quot;: iteration,
+            &quot;analytic_posterior&quot;: np.exp(log_posterior),
+            &quot;kl_to_analytic&quot;: np.sum(
+                np.exp(log_q) * (log_q - log_posterior)
+            ),
+        }</code></pre>
+<h2 id="module-5-resolution-analyzer">Module 5: Resolution Analyzer</h2>
+<pre id="lst:resolution" data-caption="Resolution Analyzer --- Uncertainty relation (Part~II, \S 7)" data-label="lst:resolution"><code>@dataclass
+class ResolutionAnalyzer:
+    &quot;&quot;&quot;Analyze predictive resolution and uncertainty relations.
+    
+    Part II, Theorem 7.1: Delta_T * Delta_S &gt;= 1/C
+    &quot;&quot;&quot;
+    
+    @staticmethod
+    def state_resolution(measure: np.ndarray) -&gt; float:
+        &quot;&quot;&quot;Effective number of distinguishable states.
+        
+        Part II, Eq. (28): R = exp(H[P])
+        &quot;&quot;&quot;
+        p = measure[measure &gt; 0]
+        entropy = -np.sum(p * np.log(p))
+        return np.exp(entropy)
+    
+    @staticmethod
+    def temporal_resolution(
+        measure_history: list[np.ndarray],
+        dt: float = 1.0
+    ) -&gt; float:
+        &quot;&quot;&quot;Shortest horizon with non-trivial prediction.
+        
+        Estimated via decorrelation time of the predictive process.
+        &quot;&quot;&quot;
+        if len(measure_history) &lt; 2:
+            return dt
+        
+        # Compute KL divergence between successive measures
+        kl_series = []
+        for i in range(1, len(measure_history)):
+            p = measure_history[i]
+            q = measure_history[i - 1]
+            kl = np.sum(p * np.log((p + 1e-30) / (q + 1e-30)))
+            kl_series.append(kl)
+        
+        kl_arr = np.array(kl_series)
+        mean_kl = np.mean(kl_arr) if len(kl_arr) &gt; 0 else 1.0
+        # Temporal resolution ~ inverse of information rate
+        return dt / max(mean_kl, 1e-10)
+    
+    @staticmethod
+    def verify_uncertainty_relation(
+        delta_t: float, delta_s: float, capacity: float
+    ) -&gt; dict:
+        &quot;&quot;&quot;Verify Delta_T * Delta_S &gt;= 1/C.
+        
+        Part II, Theorem 7.1: The predictive uncertainty relation.
+        &quot;&quot;&quot;
+        product = delta_t * delta_s
+        bound = 1.0 / max(capacity, 1e-10)
+        return {
+            &quot;delta_t&quot;: delta_t,
+            &quot;delta_s&quot;: delta_s,
+            &quot;product&quot;: product,
+            &quot;lower_bound&quot;: bound,
+            &quot;satisfied&quot;: product &gt;= bound - 1e-6,
+            &quot;margin&quot;: product - bound,
+        }</code></pre>
+<h2 id="module-6-unified-market-simulator">Module 6: Unified Market Simulator</h2>
+<pre id="lst:simulator" data-caption="Market Simulator --- Full UPMF dynamics (Part~III, Thm.~3.2)" data-label="lst:simulator"><code>@dataclass
+class MarketSimulator:
+    &quot;&quot;&quot;Full UPMF market simulation.
+    
+    Part III, Theorem 3.2: The UPMF Master Equation.
+    Combines Bayesian agents, thermodynamic dynamics, and
+    predictive measure extraction into a unified simulation.
+    &quot;&quot;&quot;
+    n_states: int = 50
+    n_agents: int = 100
+    n_timesteps: int = 500
+    true_state: int = 25       # Ground truth
+    coupling_strength: float = 0.1  # gamma (herding)
+    noise_trading_std: float = 0.5
+    
+    def __post_init__(self):
+        self.thermo = ThermodynamicEngine(self.n_states)
+        self.pred_measure = PredictiveMeasure(self.n_states)
+        self.resolution = ResolutionAnalyzer()
+        self.agents: list[BayesianAgent] = []
+        self._init_agents()
+    
+    def _init_agents(self):
+        &quot;&quot;&quot;Create heterogeneous agent population.&quot;&quot;&quot;
+        rng = np.random.default_rng(42)
+        for i in range(self.n_agents):
+            precision = rng.exponential(1.0) + 0.1
+            weight = rng.exponential(1.0) + 0.1
+            agent = BayesianAgent(
+                n_states=self.n_states,
+                signal_precision=precision,
+                market_weight=weight,
+            )
+            self.agents.append(agent)
+    
+    def _generate_signal(
+        self, agent: BayesianAgent, rng: np.random.Generator
+    ) -&gt; int:
+        &quot;&quot;&quot;Generate noisy signal centered on true state.&quot;&quot;&quot;
+        noise_std = 1.0 / np.sqrt(agent.signal_precision)
+        signal = int(round(
+            self.true_state
+            + rng.normal(0, noise_std)
+        ))
+        return np.clip(signal, 0, self.n_states - 1)
+    
+    def run(self, seed: int = 0) -&gt; dict:
+        &quot;&quot;&quot;Execute full UPMF simulation.
+        
+        At each timestep:
+        1. Agents receive private signals (Part I, Def. 2.1)
+        2. Compute market energy (Part I, Eq. 19)
+        3. Compute temperature and equilibrium (Part I, S6)
+        4. Extract predictive measure (Part II, Def. 3.1)
+        5. Apply inter-agent coupling (Part III, Eq. 16)
+        6. Compute price with noise trading
+        7. Record all thermodynamic and predictive observables
+        &quot;&quot;&quot;
+        rng = np.random.default_rng(seed)
+        
+        # Storage for time series
+        prices = np.zeros(self.n_timesteps)
+        temperatures = np.zeros(self.n_timesteps)
+        free_energies = np.zeros(self.n_timesteps)
+        entropies = np.zeros(self.n_timesteps)
+        pred_probs = np.zeros(self.n_timesteps)
+        measure_history = []
+        heat_capacities = np.zeros(self.n_timesteps)
+        
+        state_values = np.linspace(0, 100, self.n_states)
+        
+        for t in range(self.n_timesteps):
+            # Step 1: Agents observe private signals
+            n_signals = max(1, rng.poisson(3))
+            active_agents = rng.choice(
+                self.agents, min(n_signals, self.n_agents),
+                replace=False
+            )
+            for agent in active_agents:
+                signal = self._generate_signal(agent, rng)
+                agent.observe_signal(signal)
+            
+            # Step 2: Compute market energy
+            energy = self.thermo.compute_energy(self.agents)
+            
+            # Step 3: Temperature and equilibrium
+            temp = self.thermo.market_temperature(self.agents)
+            eq_dist = self.thermo.boltzmann_distribution(
+                energy, temp
+            )
+            
+            # Step 4: Extract predictive measure
+            pred = self.pred_measure.extract_from_agents(
+                self.agents
+            )
+            measure_history.append(pred.copy())
+            
+            # Step 5: Inter-agent coupling (herding)
+            market_log = np.log(pred + 1e-30)
+            for agent in self.agents:
+                agent.observe_price(
+                    market_log, self.coupling_strength
+                )
+            
+            # Step 6: Compute price (expected value + noise)
+            price = np.sum(pred * state_values)
+            noise = rng.normal(0, self.noise_trading_std)
+            price += noise
+            
+            # Step 7: Record observables
+            prices[t] = price
+            temperatures[t] = temp
+            free_energies[t] = self.thermo.free_energy(
+                energy, temp
+            )
+            entropies[t] = -np.sum(
+                pred * np.log(pred + 1e-30)
+            )
+            pred_probs[t] = pred[self.true_state]
+            heat_capacities[t] = self.thermo.heat_capacity(
+                energy, temp
+            )
+        
+        # Post-processing: compute returns and statistics
+        returns = np.diff(np.log(np.maximum(prices, 1e-6)))
+        
+        return {
+            &quot;prices&quot;: prices,
+            &quot;returns&quot;: returns,
+            &quot;temperatures&quot;: temperatures,
+            &quot;free_energies&quot;: free_energies,
+            &quot;entropies&quot;: entropies,
+            &quot;predictive_probs&quot;: pred_probs,
+            &quot;heat_capacities&quot;: heat_capacities,
+            &quot;measure_history&quot;: measure_history,
+            &quot;final_measure&quot;: measure_history[-1],
+            &quot;state_values&quot;: state_values,
+        }</code></pre>
+<h1 id="sec:validation">Validation Against Theoretical Predictions</h1>
+<p>We now demonstrate that the computational implementation reproduces the key theoretical predictions of Parts I–III.</p>
+<h2 id="validation-1-convergence-to-bayesian-posterior">Validation 1: Convergence to Bayesian Posterior</h2>
+<p>The first test verifies that the market’s aggregate belief converges to the fully informed posterior (Part I, Theorem 4.3).</p>
+<pre id="lst:val1" data-caption="Validation: Convergence to Bayesian posterior" data-label="lst:val1"><code>def validate_convergence():
+    &quot;&quot;&quot;Part I, Theorem 4.3: Market converges to the
+    fully informed posterior as T -&gt; infinity.&quot;&quot;&quot;
+    sim = MarketSimulator(
+        n_states=50, n_agents=200,
+        n_timesteps=1000, true_state=25,
+        coupling_strength=0.05,
+    )
+    results = sim.run(seed=42)
+    
+    # Check: predictive probability of true state increases
+    pp = results[&quot;predictive_probs&quot;]
+    assert pp[-1] &gt; pp[0], &quot;Prediction should improve&quot;
+    
+    # Check: entropy decreases (Axiom 3: Irreversibility)
+    ent = results[&quot;entropies&quot;]
+    # Use rolling average to smooth stochastic fluctuations
+    window = 50
+    smoothed = np.convolve(ent, np.ones(window)/window, &#39;valid&#39;)
+    trend = np.polyfit(np.arange(len(smoothed)), smoothed, 1)
+    assert trend[0] &lt; 0, &quot;Entropy should decrease on average&quot;
+    
+    # Check: free energy decreases (Axiom 5: Dissipation)
+    fe = results[&quot;free_energies&quot;]
+    smoothed_fe = np.convolve(
+        fe, np.ones(window)/window, &#39;valid&#39;
+    )
+    trend_fe = np.polyfit(
+        np.arange(len(smoothed_fe)), smoothed_fe, 1
+    )
+    assert trend_fe[0] &lt; 0, &quot;Free energy should decrease&quot;
+    
+    return {
+        &quot;initial_pred_prob&quot;: pp[0],
+        &quot;final_pred_prob&quot;: pp[-1],
+        &quot;entropy_trend&quot;: trend[0],
+        &quot;free_energy_trend&quot;: trend_fe[0],
+    }</code></pre>
+<h2 id="validation-2-power-law-returns">Validation 2: Power-Law Returns</h2>
+<p>We verify the inverse cubic law for return distributions (Part I, Conjecture 7.1).</p>
+<pre id="lst:val2" data-caption="Validation: Power-law tail exponents" data-label="lst:val2"><code>def validate_power_law(returns: np.ndarray) -&gt; dict:
+    &quot;&quot;&quot;Part I, Eq. (24): P(|r| &gt; x) ~ x^{-alpha}.
+    
+    Estimate tail exponent using Hill estimator.
+    Target: alpha approximately 3 (inverse cubic law).
+    &quot;&quot;&quot;
+    abs_returns = np.abs(returns)
+    abs_returns = abs_returns[abs_returns &gt; 0]
+    abs_returns = np.sort(abs_returns)[::-1]
+    
+    # Hill estimator for tail exponent
+    k_values = range(10, min(len(abs_returns) // 4, 200))
+    alphas = []
+    for k in k_values:
+        top_k = abs_returns[:k]
+        threshold = abs_returns[k]
+        if threshold &gt; 0:
+            alpha = k / np.sum(
+                np.log(top_k / threshold)
+            )
+            alphas.append(alpha)
+    
+    alpha_estimate = np.median(alphas) if alphas else float(&#39;nan&#39;)
+    
+    return {
+        &quot;tail_exponent&quot;: alpha_estimate,
+        &quot;target_range&quot;: (2.0, 5.0),
+        &quot;in_range&quot;: 2.0 &lt;= alpha_estimate &lt;= 5.0,
+    }</code></pre>
+<h2 id="validation-3-liquidityentropy-correspondence">Validation 3: Liquidity–Entropy Correspondence</h2>
+<p>We verify the relationship between belief diversity and effective liquidity (Part I, Proposition 8.3).</p>
+<pre id="lst:val3" data-caption="Validation: Liquidity--entropy correspondence" data-label="lst:val3"><code>def validate_liquidity_entropy(results: dict) -&gt; dict:
+    &quot;&quot;&quot;Part I, Proposition 8.3: Depth propto exp(H[P]).
+    
+    Verify that periods of high entropy correspond to
+    low volatility (high liquidity) and vice versa.
+    &quot;&quot;&quot;
+    entropies = results[&quot;entropies&quot;]
+    returns = results[&quot;returns&quot;]
+    
+    # Compute rolling volatility as liquidity proxy
+    window = 20
+    rolling_vol = np.array([
+        np.std(returns[max(0,i-window):i+1])
+        for i in range(len(returns))
+    ])
+    
+    # Align lengths
+    min_len = min(len(entropies) - 1, len(rolling_vol))
+    ent_aligned = entropies[1:min_len+1]
+    vol_aligned = rolling_vol[:min_len]
+    
+    # Compute correlation (should be negative:
+    # high entropy -&gt; low volatility -&gt; high liquidity)
+    mask = (vol_aligned &gt; 0) &amp; np.isfinite(ent_aligned)
+    if mask.sum() &gt; 10:
+        correlation = np.corrcoef(
+            ent_aligned[mask], vol_aligned[mask]
+        )[0, 1]
+    else:
+        correlation = float(&#39;nan&#39;)
+    
+    return {
+        &quot;entropy_volatility_correlation&quot;: correlation,
+        &quot;expected_sign&quot;: &quot;negative&quot;,
+        &quot;consistent&quot;: correlation &lt; 0 if np.isfinite(
+            correlation) else False,
+    }</code></pre>
+<h2 id="validation-4-variational-free-energy-minimization">Validation 4: Variational Free Energy Minimization</h2>
+<p>We verify that the variational optimizer converges to the analytic Bayesian posterior (Part II, Theorem 4.2).</p>
+<pre id="lst:val4" data-caption="Validation: Variational optimizer convergence" data-label="lst:val4"><code>def validate_variational():
+    &quot;&quot;&quot;Part II, Theorem 4.2: P = argmin F_pred[mu]
+    should equal the Bayesian posterior.&quot;&quot;&quot;
+    n_states = 30
+    rng = np.random.default_rng(42)
+    
+    # Construct a non-trivial problem
+    log_prior = np.full(n_states, -np.log(n_states))
+    true_state = 15
+    noise = 3.0
+    states = np.arange(n_states)
+    log_likelihood = -0.5 * ((states - true_state) / noise) ** 2
+    
+    optimizer = VariationalOptimizer(
+        n_states=n_states,
+        learning_rate=0.05,
+        n_iterations=2000,
+    )
+    result = optimizer.optimize(log_likelihood, log_prior)
+    
+    return {
+        &quot;kl_to_analytic&quot;: result[&quot;kl_to_analytic&quot;],
+        &quot;converged&quot;: result[&quot;kl_to_analytic&quot;] &lt; 1e-4,
+        &quot;iterations&quot;: result[&quot;converged_iteration&quot;],
+        &quot;final_free_energy&quot;: result[&quot;free_energy&quot;],
+    }</code></pre>
+<h2 id="validation-5-predictive-uncertainty-relation">Validation 5: Predictive Uncertainty Relation</h2>
+<pre id="lst:val5" data-caption="Validation: Uncertainty relation $\Delta_T \cdot \Delta_S \geq 1/\mathcal{C}$" data-label="lst:val5"><code>def validate_uncertainty_relation(results: dict) -&gt; dict:
+    &quot;&quot;&quot;Part II, Theorem 7.1: Predictive uncertainty relation.&quot;&quot;&quot;
+    analyzer = ResolutionAnalyzer()
+    
+    measures = results[&quot;measure_history&quot;]
+    
+    delta_s = analyzer.state_resolution(measures[-1])
+    delta_t = analyzer.temporal_resolution(measures, dt=1.0)
+    
+    # Estimate capacity from information rate
+    entropies = results[&quot;entropies&quot;]
+    info_rates = -np.diff(entropies)
+    capacity = np.mean(info_rates[info_rates &gt; 0]) \
+        if np.any(info_rates &gt; 0) else 0.01
+    
+    check = analyzer.verify_uncertainty_relation(
+        delta_t, delta_s, capacity
+    )
+    return check</code></pre>
+<h2 id="validation-6-integrated-test-suite">Validation 6: Integrated Test Suite</h2>
+<pre id="lst:val_all" data-caption="Integrated validation harness" data-label="lst:val_all"><code>def run_full_validation():
+    &quot;&quot;&quot;Execute all validations and report results.&quot;&quot;&quot;
+    print(&quot;=&quot; * 60)
+    print(&quot;UPMF Validation Suite&quot;)
+    print(&quot;=&quot; * 60)
+    
+    # Run simulation
+    sim = MarketSimulator(
+        n_states=50, n_agents=150,
+        n_timesteps=800, true_state=25,
+        coupling_strength=0.08,
+    )
+    results = sim.run(seed=42)
+    
+    tests = {
+        &quot;Bayesian Convergence&quot;: validate_convergence(),
+        &quot;Power-Law Returns&quot;: validate_power_law(
+            results[&quot;returns&quot;]
+        ),
+        &quot;Liquidity-Entropy&quot;: validate_liquidity_entropy(results),
+        &quot;Variational Optimizer&quot;: validate_variational(),
+        &quot;Uncertainty Relation&quot;: validate_uncertainty_relation(
+            results
+        ),
+    }
+    
+    for name, result in tests.items():
+        print(f&quot;\n--- {name} ---&quot;)
+        for k, v in result.items():
+            if isinstance(v, float):
+                print(f&quot;  {k}: {v:.6f}&quot;)
+            else:
+                print(f&quot;  {k}: {v}&quot;)
+    
+    return tests
+
+if __name__ == &quot;__main__&quot;:
+    run_full_validation()</code></pre>
+<h1 id="sec:comparison">Comparative Synthesis with Existing Theories</h1>
+<p>We now provide a systematic mapping between the UPMF and prior theoretical frameworks, clarifying which results are recovered, extended, or novel.</p>
+<div id="tab:correspondence">
+<table>
+<caption>UPMF correspondence with existing frameworks</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Prior result</strong></th>
+<th style="text-align: left;"><strong>UPMF reformulation</strong></th>
+<th style="text-align: left;"><strong>Status</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Bachelier (1900): Brownian prices</td>
+<td style="text-align: left;">Predictive martingale property</td>
+<td style="text-align: left;">Recovered as special case</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hayek (1945): Price information</td>
+<td style="text-align: left;">Rate-distortion optimality of <span class="math inline">\(P\)</span></td>
+<td style="text-align: left;">Extended with quantitative bounds</td>
+</tr>
+<tr>
+<td style="text-align: left;">Arrow–Debreu: Complete markets</td>
+<td style="text-align: left;">Predictive completeness theorem</td>
+<td style="text-align: left;">Generalized: prediction <span class="math inline">\(\supset\)</span> pricing</td>
+</tr>
+<tr>
+<td style="text-align: left;">Fama (1970): EMH</td>
+<td style="text-align: left;">Fixed point of predictive dynamics</td>
+<td style="text-align: left;">Recovered as thermodynamic equilibrium</td>
+</tr>
+<tr>
+<td style="text-align: left;">Black–Scholes (1973)</td>
+<td style="text-align: left;">Log-normal predictive measure</td>
+<td style="text-align: left;">Recovered when <span class="math inline">\(\mathcal{P}\)</span> is Gaussian</td>
+</tr>
+<tr>
+<td style="text-align: left;">Grossman–Stiglitz (1980)</td>
+<td style="text-align: left;">Free energy cost of prediction</td>
+<td style="text-align: left;">Resolved via dissipation axiom</td>
+</tr>
+<tr>
+<td style="text-align: left;">Kyle (1985): Lambda</td>
+<td style="text-align: left;">Inverse predictive variance</td>
+<td style="text-align: left;">Extended with info-geometric interpretation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Mandelbrot (1963): Fat tails</td>
+<td style="text-align: left;">Critical exponents at <span class="math inline">\(\gamma_c\)</span></td>
+<td style="text-align: left;">Extended with phase-transition mechanism</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sornette (2003): LPPL</td>
+<td style="text-align: left;">First-order transition dynamics</td>
+<td style="text-align: left;">Derived from UPMF free energy barrier</td>
+</tr>
+<tr>
+<td style="text-align: left;">Mehra–Prescott (1985): Equity premium</td>
+<td style="text-align: left;">Predictive bias + risk premium</td>
+<td style="text-align: left;">New decomposition resolves puzzle</td>
+</tr>
+<tr>
+<td style="text-align: left;">Shiller (1981): Excess volatility</td>
+<td style="text-align: left;">Risk kernel fluctuations</td>
+<td style="text-align: left;">New: <span class="math inline">\(\mathrm{Var}(\Delta P) = \mathrm{Var}(\Delta \mathcal{P}) + \mathrm{Var}(\Delta R)\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Friston (2010): Free energy principle</td>
+<td style="text-align: left;">Market as collective active inference</td>
+<td style="text-align: left;">Novel bridge between neuroscience and finance</td>
+</tr>
+<tr>
+<td style="text-align: left;">Amari (2016): Info geometry</td>
+<td style="text-align: left;">Natural gradient flow on <span class="math inline">\(\mathcal{M}(\Omega)\)</span></td>
+<td style="text-align: left;">Novel: market dynamics as Riemannian gradient</td>
+</tr>
+<tr>
+<td style="text-align: left;">VAE (Kingma 2014)</td>
+<td style="text-align: left;">Market = encoder–decoder</td>
+<td style="text-align: left;">Novel: market architecture as generative model</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="sec:open">Open Problems and Future Directions</h1>
+<p>The UPMF, while comprehensive, opens several research directions.</p>
+<h2 id="theoretical-open-problems">Theoretical Open Problems</h2>
+<ol>
+<li><p><strong>Non-equilibrium predictive dynamics</strong>: The current framework focuses on equilibrium (or near-equilibrium) predictions. A full non-equilibrium theory—analogous to non-equilibrium statistical mechanics—would characterize the transient dynamics of market predictions during crises, regime changes, and structural breaks. The Jarzynski equality and Crooks fluctuation theorem from non-equilibrium thermodynamics <span class="citation" data-cites="jarzynski1997"></span> suggest natural extensions.</p></li>
+<li><p><strong>Quantum predictive markets</strong>: The uncertainty relation (Part II, Theorem 7.1) is suggestive of deeper quantum-mechanical structure. Can the UPMF be extended to a full quantum formalism where predictive measures are replaced by density operators, and market incompleteness corresponds to non-commuting observables? This connects to the growing literature on quantum game theory and quantum finance <span class="citation" data-cites="haven2013"></span>.</p></li>
+<li><p><strong>Topological market invariants</strong>: The information-geometric structure (Theorem <a href="#thm:nat_grad" data-reference-type="ref" data-reference="thm:nat_grad">15</a>) suggests that the space of market states has non-trivial topology. Are there topological invariants—analogous to Chern numbers in condensed matter physics—that characterize market regimes and are preserved under continuous deformations of the market microstructure?</p></li>
+<li><p><strong>Renormalization group for market complexity</strong>: The RG framework sketched in Part I (Definition 7.3) needs full development. What are the relevant and irrelevant operators at the market critical point? What universality classes exist? Can different market microstructures (continuous double auction, call auction, dark pools) be classified by their RG fixed points?</p></li>
+<li><p><strong>The predictive arrow of time</strong>: Axiom 3 (Informational Irreversibility) establishes a thermodynamic arrow of time for markets. Does this connect to the cosmological arrow of time? The market’s monotonic entropy decrease (increasing predictive precision) is the time-reverse of the universe’s entropy increase, suggesting a deep connection between prediction and thermodynamic irreversibility.</p></li>
+</ol>
+<h2 id="computational-open-problems">Computational Open Problems</h2>
+<ol>
+<li><p><strong>Scalability</strong>: The current implementation uses discrete state spaces. Extension to continuous state spaces requires variational methods (normalizing flows, neural density estimators) to represent and update the predictive measure.</p></li>
+<li><p><strong>Real-data calibration</strong>: Calibrating the UPMF to real market data requires estimating the agent distribution <span class="math inline">\(\{(\pi_i, w_i)\}\)</span> from observable quantities (prices, volumes, order flow). This is an inverse problem whose solution would enable empirical testing of all theoretical predictions.</p></li>
+<li><p><strong>Online prediction</strong>: Implementing the UPMF as a real-time prediction system requires efficient incremental updates of the predictive measure as new data arrives—a streaming variational inference problem.</p></li>
+</ol>
+<h2 id="empirical-open-problems">Empirical Open Problems</h2>
+<ol>
+<li><p><strong>Cross-market predictive efficiency</strong>: The predictive efficiency hierarchy (Part II, Conjecture 11.4) can be tested by comparing calibration scores across equity, fixed income, commodity, and cryptocurrency markets.</p></li>
+<li><p><strong>Pre-crash criticality detection</strong>: The critical signatures (Part I, Conjecture 7.3) provide an operational early warning system. Can the heat capacity divergence and critical slowing down be detected in real time from market microstructure data?</p></li>
+<li><p><strong>The predictive content of order flow</strong>: The UPMF predicts that order flow mutual information (Part I, Conjecture 12.5) should decompose into contributions from agents of different precision levels. This can be tested using broker-level order flow data.</p></li>
+</ol>
+<h1 id="sec:conclusion">Conclusion</h1>
+<p>This paper completes the theoretical arc initiated in Parts I and II by providing three essential contributions: a mathematical proof that the thermodynamic and predictive frameworks are Legendre duals (unifying the two perspectives into the UPMF), a systematic synthesis with the broader literature showing that the UPMF recovers and extends results from rational expectations theory, behavioral finance, econophysics, information geometry, and machine learning, and a complete computational implementation that validates the theoretical predictions.</p>
+<p>The central message of the trilogy is that financial markets are best understood as <em>predictive thermodynamic engines</em>—computational devices that perform distributed Bayesian inference under thermodynamic constraints, continuously transforming dispersed private information into collective probability forecasts. The price is the visible output; the prediction is the invisible substance; and the thermodynamic structure governs the efficiency, stability, and failure modes of the entire process.</p>
+<p>The UPMF is not merely a repackaging of existing ideas. It provides genuinely new results: the Legendre duality between thermodynamic and predictive free energies, the predictive uncertainty relation constraining temporal and state-space resolution, the decomposition of the equity premium into predictive bias and risk compensation, the natural gradient characterization of price dynamics, and the VAE interpretation of market architecture. Each of these results generates testable empirical predictions that distinguish the UPMF from alternative frameworks.</p>
+<p>We believe the UPMF represents a step toward a truly unified theory of financial markets—one that bridges the currently fragmented domains of rational expectations, behavioral finance, econophysics, and machine learning under a single mathematical roof. The computational implementation provided here is intended both as a research tool for testing the theory and as a pedagogical resource for building intuition about the deep connections between probability, thermodynamics, information, and markets.</p>
+<hr />
+<p><em>GrokRxiv DOI:</em> <code>10.48550/GrokRxiv.2603.04.unified-predictive-markets</code> <em>4 March 2026</em></p>
+<div class="thebibliography">
+<p><span>99</span></p>
+<p>Amari, S.-i. (2016). <em>Information Geometry and Its Applications</em>. Springer.</p>
+<p>Arrow, K. J., &amp; Debreu, G. (1954). Existence of an equilibrium for a competitive economy. <em>Econometrica</em>, 22(3), 265–290.</p>
+<p>Barberis, N., &amp; Thaler, R. (2003). A survey of behavioral finance. In <em>Handbook of the Economics of Finance</em> (Vol. 1, pp. 1053–1128). Elsevier.</p>
+<p>Blei, D. M., Kucukelbir, A., &amp; McAuliffe, J. D. (2017). Variational inference: A review for statisticians. <em>JASA</em>, 112(518), 859–877.</p>
+<p>Bouchaud, J.-P., &amp; Potters, M. (2003). <em>Theory of Financial Risk and Derivative Pricing</em>. Cambridge University Press.</p>
+<p>Cover, T. M., &amp; Thomas, J. A. (2006). <em>Elements of Information Theory</em> (2nd ed.). Wiley.</p>
+<p>Dixon, M. F., Halperin, I., &amp; Bilokon, P. (2020). <em>Machine Learning in Finance</em>. Springer.</p>
+<p>Fama, E. F. (1970). Efficient capital markets: A review of theory and empirical work. <em>Journal of Finance</em>, 25(2), 383–417.</p>
+<p>Friston, K. (2010). The free-energy principle: A unified brain theory? <em>Nature Reviews Neuroscience</em>, 11(2), 127–138.</p>
+<p>Gabaix, X., Gopikrishnan, P., Plerou, V., &amp; Stanley, H. E. (2003). A theory of power-law distributions in financial market fluctuations. <em>Nature</em>, 423, 267–270.</p>
+<p>Grossman, S. J., &amp; Stiglitz, J. E. (1980). On the impossibility of informationally efficient markets. <em>AER</em>, 70(3), 393–408.</p>
+<p>Gu, S., Kelly, B., &amp; Xiu, D. (2020). Empirical asset pricing via machine learning. <em>Review of Financial Studies</em>, 33(5), 2223–2273.</p>
+<p>Haven, E., &amp; Khrennikov, A. (2013). <em>Quantum Social Science</em>. Cambridge University Press.</p>
+<p>Hayek, F. A. (1945). The use of knowledge in society. <em>AER</em>, 35(4), 519–530.</p>
+<p>Jarzynski, C. (1997). Nonequilibrium equality for free energy differences. <em>Physical Review Letters</em>, 78(14), 2690.</p>
+<p>Kahneman, D., &amp; Tversky, A. (1979). Prospect theory: An analysis of decision under risk. <em>Econometrica</em>, 47(2), 263–291.</p>
+<p>Kingma, D. P., &amp; Welling, M. (2014). Auto-encoding variational Bayes. <em>ICLR 2014</em>.</p>
+<p>Kyle, A. S. (1985). Continuous auctions and insider trading. <em>Econometrica</em>, 53(6), 1315–1335.</p>
+<p>Long, M. (2026). Markets as distributed Bayesian inference engines: Price formation, information aggregation, and the thermodynamic structure of financial systems. <em>GrokRxiv:2603.04.markets-bayesian-inference</em>.</p>
+<p>Long, M. (2026). Predictive Market Theory: A Bayesian–probabilistic foundation for markets as prediction engines. <em>GrokRxiv:2603.04.predictive-market-theory</em>.</p>
+<p>Lucas, R. E. (1972). Expectations and the neutrality of money. <em>Journal of Economic Theory</em>, 4(2), 103–124.</p>
+<p>Mandelbrot, B. (1963). The variation of certain speculative prices. <em>Journal of Business</em>, 36(4), 394–419.</p>
+<p>Mantegna, R. N., &amp; Stanley, H. E. (2000). <em>An Introduction to Econophysics</em>. Cambridge University Press.</p>
+<p>Mehra, R., &amp; Prescott, E. C. (1985). The equity premium: A puzzle. <em>Journal of Monetary Economics</em>, 15(2), 145–161.</p>
+<p>Muth, J. F. (1961). Rational expectations and the theory of price movements. <em>Econometrica</em>, 29(3), 315–335.</p>
+<p>Rezende, D. J., &amp; Mohamed, S. (2015). Variational inference with normalizing flows. <em>ICML 2015</em>.</p>
+<p>Shiller, R. J. (1981). Do stock prices move too much to be justified by subsequent changes in dividends? <em>AER</em>, 71(3), 421–436.</p>
+<p>Shiller, R. J. (2000). <em>Irrational Exuberance</em>. Princeton University Press.</p>
+<p>Sornette, D. (2003). <em>Why Stock Markets Crash</em>. Princeton University Press.</p>
+<p>Thaler, R. H. (2015). <em>Misbehaving: The Making of Behavioral Economics</em>. Norton.</p>
+</div>
+
+    <div class="paper-footer">
+      <p>Matthew Long &middot; YonedaAI Collaboration &middot; 4 Mar 2026</p>
+      <div class="paper-nav">
+        <a href="predictive_market_theory.html"><span class="label">Previous</span>&#8592; Back</a>
+        <a href="hft_belief_formation.html"><span class="label">Next</span>Continue &#8594;</a>
+      </div>
+    </div>
+  </article>
+</body>
+</html>

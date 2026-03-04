@@ -95,6 +95,29 @@
       transition: border-color 0.2s;
     }
     .paper:hover { border-color: var(--accent); }
+    .paper-links {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .paper-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .paper-links a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .paper-links svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
     .paper .number {
       display: inline-block;
       background: var(--accent);
@@ -256,6 +279,10 @@
           Thermodynamic structure: energy, temperature, free energy. Power laws, crashes,
           bubbles, liquidity as entropy. Market-neural network correspondence.
         </div>
+        <div class="paper-links">
+          <a href="markets_bayesian.html"><svg viewBox="0 0 24 24"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>Read</a>
+          <a href="papers/pdf/markets_bayesian.pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>PDF</a>
+        </div>
       </div>
       <div class="paper">
         <span class="number">II</span>
@@ -269,6 +296,10 @@
           Inverts the framework: prediction then price. Five axioms of PMT. Three-measure
           decomposition (P, Q, P_pred). Variational free energy minimization. Recovers
           FTAP, CAPM, Black-Scholes as special cases.
+        </div>
+        <div class="paper-links">
+          <a href="predictive_market_theory.html"><svg viewBox="0 0 24 24"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>Read</a>
+          <a href="papers/pdf/predictive_market_theory.pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>PDF</a>
         </div>
       </div>
       <div class="paper">
@@ -284,6 +315,10 @@
           behavioral finance, econophysics, ML. Complete Python computational implementation
           with six modular components.
         </div>
+        <div class="paper-links">
+          <a href="unified_predictive_markets.html"><svg viewBox="0 0 24 24"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>Read</a>
+          <a href="papers/pdf/unified_predictive_markets.pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>PDF</a>
+        </div>
       </div>
       <div class="paper">
         <span class="number" style="background: var(--accent2);">IV</span>
@@ -297,6 +332,10 @@
           How HFT systems form beliefs at microsecond timescales. Extension to autonomous
           AI agents (LLMs, RL). Belief space phase transition. AI Market Stability Theorem.
           Multi-agent belief ecosystems and collective intelligence.
+        </div>
+        <div class="paper-links">
+          <a href="hft_belief_formation.html"><svg viewBox="0 0 24 24"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>Read</a>
+          <a href="papers/pdf/hft_belief_formation.pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>PDF</a>
         </div>
       </div>
     </div>
