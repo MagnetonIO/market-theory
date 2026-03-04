@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Predictive Market Theory — YonedaAI</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #1e1e2e;
+      --text: #e0e0e8;
+      --muted: #8888aa;
+      --accent: #6c8cff;
+      --accent2: #ff6c8c;
+      --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--mono);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header {
+      text-align: center;
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    header .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    header .author {
+      margin-top: 1rem;
+      color: var(--accent);
+      font-size: 0.85rem;
+    }
+    .quote {
+      margin: 3rem 0;
+      padding: 1.5rem 2rem;
+      border-left: 3px solid var(--accent);
+      background: var(--surface);
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    h2 {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin: 3rem 0 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .papers {
+      display: grid;
+      gap: 1rem;
+    }
+    .paper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .paper:hover { border-color: var(--accent); }
+    .paper .number {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg);
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+    }
+    .paper .title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .paper .meta {
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .paper .desc {
+      font-size: 0.8rem;
+      margin-top: 0.75rem;
+      color: #b0b0c0;
+    }
+    .tag {
+      display: inline-block;
+      background: #1a1a2e;
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin-right: 4px;
+    }
+    .results {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .result {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .result .label {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .result .value {
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+    .hierarchy {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      white-space: pre-line;
+    }
+    .hierarchy code {
+      color: var(--accent);
+    }
+    footer {
+      text-align: center;
+      padding: 3rem 0 2rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      .results { grid-template-columns: 1fr; }
+      .container { padding: 1rem; }
+      header h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Predictive Market Theory</h1>
+      <div class="subtitle">Markets as Distributed Bayesian Inference Engines</div>
+      <div class="author">Matthew Long · YonedaAI Collaboration · 4 Mar 2026</div>
+    </header>
+
+    <div class="quote">
+      "The Stock Market (or any market on the planet) is a collective predictive mechanism
+      that models perceived future outcomes as a Belief Function."
+    </div>
+
+    <h2>Papers</h2>
+    <div class="papers">
+      <div class="paper">
+        <span class="number">I</span>
+        <span class="title">Markets as Distributed Bayesian Inference Engines</span>
+        <div class="meta">
+          <span class="tag">q-fin.GN</span>
+          <span class="tag">2603.04</span>
+          Price Formation, Information Aggregation, Thermodynamic Structure
+        </div>
+        <div class="desc">
+          Markets as distributed Bayesian inference engines. Precision-weighted consensus.
+          Thermodynamic structure: energy, temperature, free energy. Power laws, crashes,
+          bubbles, liquidity as entropy. Market-neural network correspondence.
+        </div>
+      </div>
+      <div class="paper">
+        <span class="number">II</span>
+        <span class="title">Predictive Market Theory: A Bayesian-Probabilistic Foundation</span>
+        <div class="meta">
+          <span class="tag">q-fin.MF</span>
+          <span class="tag">2603.04</span>
+          Predictive Measure, Five Axioms, Variational Principles
+        </div>
+        <div class="desc">
+          Inverts the framework: prediction then price. Five axioms of PMT. Three-measure
+          decomposition (P, Q, P_pred). Variational free energy minimization. Recovers
+          FTAP, CAPM, Black-Scholes as special cases.
+        </div>
+      </div>
+      <div class="paper">
+        <span class="number">III</span>
+        <span class="title">Unified Predictive Market Framework: Synthesis & Implementation</span>
+        <div class="meta">
+          <span class="tag">q-fin.CP</span>
+          <span class="tag">2603.04</span>
+          Legendre Duality, UPMF, Python Implementation
+        </div>
+        <div class="desc">
+          Legendre duality connects Parts I and II. UPMF Master Equation. Maps to REE,
+          behavioral finance, econophysics, ML. Complete Python computational implementation
+          with six modular components.
+        </div>
+      </div>
+      <div class="paper">
+        <span class="number" style="background: var(--accent2);">IV</span>
+        <span class="title">HFT Belief Formation & Autonomous AI Market Agents</span>
+        <div class="meta">
+          <span class="tag">q-fin.TR</span>
+          <span class="tag">2603.04</span>
+          High-Frequency Trading, AI Agents, Phase Transitions
+        </div>
+        <div class="desc">
+          How HFT systems form beliefs at microsecond timescales. Extension to autonomous
+          AI agents (LLMs, RL). Belief space phase transition. AI Market Stability Theorem.
+          Multi-agent belief ecosystems and collective intelligence.
+        </div>
+      </div>
+    </div>
+
+    <h2>Key Results</h2>
+    <div class="results">
+      <div class="result">
+        <div class="label">Theorem I</div>
+        <div class="value">Price is a sufficient statistic for fundamental value (Gaussian case)</div>
+      </div>
+      <div class="result">
+        <div class="label">Theorem II</div>
+        <div class="value">EMH is the fixed-point condition of distributed Bayesian inference</div>
+      </div>
+      <div class="result">
+        <div class="label">Theorem III</div>
+        <div class="value">Market equilibrium = free energy minimization</div>
+      </div>
+      <div class="result">
+        <div class="label">Theorem IV</div>
+        <div class="value">Thermodynamic and predictive frameworks are Legendre duals</div>
+      </div>
+      <div class="result">
+        <div class="label">Theorem V</div>
+        <div class="value">UPMF Master Equation: single stochastic PDE for all market dynamics</div>
+      </div>
+      <div class="result">
+        <div class="label">Theorem VI</div>
+        <div class="value">HFT→AI transition is a phase transition in belief dimensionality</div>
+      </div>
+      <div class="result">
+        <div class="label">Theorem VII</div>
+        <div class="value">AI Market Stability requires belief diversity above critical threshold</div>
+      </div>
+      <div class="result">
+        <div class="label">Theorem VIII</div>
+        <div class="value">Collective intelligence exceeds any individual agent (superadditivity)</div>
+      </div>
+    </div>
+
+    <h2>Framework Hierarchy</h2>
+    <div class="hierarchy">
+<code>Part I</code> (Foundation)
+  ├── Bayesian inference engine
+  ├── Thermodynamic structure
+  ├── Empirical phenomena
+  └── Market as neural network
+        │
+<code>Part II</code> (Prediction Layer)
+  ├── Prediction → Price (inverted)
+  ├── Five axioms
+  ├── Three-measure decomposition
+  └── Classical finance recovered
+        │
+<code>Part III</code> (Synthesis)
+  ├── Legendre duality
+  ├── UPMF Master Equation
+  ├── Literature unification
+  └── Python implementation
+        │
+<code>Part IV</code> (Belief Agents)
+  ├── HFT microsecond beliefs
+  ├── AI agent belief expansion
+  ├── Phase transition theorem
+  └── Stability & ecosystems
+    </div>
+
+    <h2>Three-Measure Decomposition</h2>
+    <div class="results">
+      <div class="result">
+        <div class="label">P (Physical)</div>
+        <div class="value">Objective probabilities of actual outcomes</div>
+      </div>
+      <div class="result">
+        <div class="label">Q (Risk-neutral)</div>
+        <div class="value">Pricing measure with risk adjustments</div>
+      </div>
+      <div class="result">
+        <div class="label">P_pred (Predictive)</div>
+        <div class="value">Market's collective forecast, purged of risk distortions</div>
+      </div>
+      <div class="result">
+        <div class="label">Relationship</div>
+        <div class="value">M(ω) = A(ω) × R(ω) — assessment × risk</div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Matthew Long · <a href="https://yonedaai.com">YonedaAI</a> · 2026</p>
+      <p style="margin-top: 0.5rem;">matthew@yonedaai.com</p>
+    </footer>
+  </div>
+</body>
+</html>

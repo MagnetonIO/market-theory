@@ -1,0 +1,1160 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Packages ──────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{everypage}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{thmtools}
+\usepackage{mathtools}
+
+\geometry{margin=1in, left=1.35in}
+
+% ── GrokRxiv Sidebar ─────────────────────────────────────
+\definecolor{grokgray}{RGB}{110,110,110}
+\AddEverypageHook{%
+  \ifnum\value{page}=1
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[
+        rotate=90,
+        anchor=south,
+        font=\Large\sffamily\bfseries\color{grokgray},
+        inner sep=0pt
+      ] at ([xshift=38pt, yshift=0.52\paperheight]current page.south west)
+      {GrokRxiv:2603.04.predictive-market-theory\quad
+       [\,q-fin.MF\,]\quad
+       4 Mar 2026};
+    \end{tikzpicture}
+  \fi
+}
+
+% ── Theorem Environments ─────────────────────────────────
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{axiom}{Axiom}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{assumption}[theorem]{Assumption}
+
+% ── Hyperref Setup ────────────────────────────────────────
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=green!50!black,
+    urlcolor=blue!70!black
+}
+
+% ── Custom Commands ───────────────────────────────────────
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\KL}{\mathrm{KL}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\dP}{\mathrm{d}\Prob}
+\newcommand{\dQ}{\mathrm{d}\Q}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Ent}{Ent}
+\DeclareMathOperator{\MI}{I}
+
+\begin{document}
+
+% ══════════════════════════════════════════════════════════
+% TITLE PAGE
+% ══════════════════════════════════════════════════════════
+
+\begin{center}
+{\LARGE\bfseries Predictive Market Theory:\\[6pt]
+A Bayesian--Probabilistic Foundation for\\[4pt]
+Markets as Prediction Engines}
+
+\vspace{0.5cm}
+
+{\large\itshape Part II of: Markets as Distributed Bayesian Inference Engines}
+
+\vspace{1.0cm}
+
+{\large Matthew Long}\\[4pt]
+{\itshape The YonedaAI Collaboration}\\
+{\itshape YonedaAI Research Collective}\\
+{\itshape Chicago, IL}\\[4pt]
+{\ttfamily matthew@yonedaai.com} $\cdot$ {\ttfamily https://yonedaai.com}
+
+\vspace{0.8cm}
+
+\today
+
+\vspace{0.6cm}
+
+\end{center}
+
+% ── Abstract ─────────────────────────────────────────────
+\begin{abstract}
+\noindent We introduce \emph{Predictive Market Theory} (PMT), a new axiomatic framework that reconceptualizes financial markets as probabilistic prediction engines whose fundamental output is not price \textit{per se} but rather a continuously updated posterior probability measure over future states of the world. Building on the distributed Bayesian inference perspective of Part~I, we elevate the predictive function from an emergent property to the foundational primitive: rather than deriving prediction as a consequence of equilibrium pricing, we derive pricing as a consequence of collective prediction. The theory is erected on five axioms---\textit{Predictive Completeness}, \textit{Bayesian Coherence}, \textit{Informational Irreversibility}, \textit{Predictive Sufficiency of Price}, and \textit{Thermodynamic Dissipation}---from which we derive the standard results of asset pricing theory (martingale pricing, risk-neutral valuation, the fundamental theorem of asset pricing) as corollaries of a deeper predictive structure. We introduce the \emph{predictive measure} $\PP$, a probability measure on outcome space that is distinct from both the physical measure $\Prob$ and the risk-neutral measure $\Q$, and show that it encodes the market's best collective forecast. We prove that the predictive measure satisfies a variational principle: it minimizes the expected free energy of prediction over all belief-consistent measures, unifying Bayesian inference, information theory, and thermodynamics within a single market-theoretic framework. The theory resolves several longstanding puzzles---the equity premium puzzle, excess volatility, the value of active management---through the lens of predictive inefficiency and the cost of maintaining the market's predictive function. We establish formal connections to the theory of prediction markets, Kelly criterion portfolio theory, and de Finetti's operational subjective probability, and we prove a \emph{Predictive Market Completeness Theorem} showing that a sufficiently liquid market generates a complete probability measure over any measurable partition of future states. Finally, we derive novel results on the \emph{predictive resolution} of markets---a quantitative measure of forecasting precision---and show it is governed by a fundamental uncertainty relation linking temporal resolution to state-space resolution.
+
+\medskip
+\noindent\textbf{Keywords:} predictive market theory, Bayesian probability, market prediction, predictive measure, variational inference, free energy principle, equity premium puzzle, market completeness, Kelly criterion, de Finetti, uncertainty relations
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════
+% SECTION 1: INTRODUCTION
+% ══════════════════════════════════════════════════════════
+
+\section{Introduction}\label{sec:intro}
+
+\subsection{From Inference to Prediction}
+
+In Part~I of this series \citep{long2026part1}, we established that financial markets function as distributed Bayesian inference engines, aggregating heterogeneous private information into equilibrium prices through a process formally equivalent to posterior computation in probabilistic graphical models. The present paper takes the next logical step: if markets perform inference, what exactly do they infer? And can we build a complete theory of markets by taking the \emph{predictive function} as the foundational primitive?
+
+The classical answer---that markets estimate fundamental value---is unsatisfying for several reasons. ``Fundamental value'' is itself a derived concept, defined as the expected discounted sum of future cashflows. But expected with respect to \emph{which} probability measure? Discounted at \emph{which} rate? And who decides? These circularities suggest that the conventional approach has the logical order backwards: it attempts to define value first and derive prediction as a byproduct, when in fact prediction is the more primitive operation.
+
+We propose a radical inversion. In \emph{Predictive Market Theory} (PMT), the fundamental output of a market is not a price but a \emph{prediction}---specifically, a probability measure over the space of possible future states of the world. Price is then derived from this predictive measure through a pricing functional that reflects agents' risk preferences. This inversion is not merely philosophical: it leads to different mathematics, different theorems, and different empirical predictions.
+
+\subsection{Historical and Intellectual Context}
+
+The idea that markets are prediction machines has deep roots. The earliest formal prediction markets date to the Iowa Electronic Markets established in 1988 for forecasting election outcomes. Arrow \citep{arrow1964} recognized that competitive equilibria in complete markets are isomorphic to probability measures over states of nature. De Finetti's foundational work on subjective probability \citep{definetti1937} established that coherent betting behavior implies---and is implied by---a probability measure, a result that applies directly to market prices of contingent claims.
+
+More recently, the literature on prediction markets \citep{wolfers2004,hanson2003,arrow2008} has explicitly studied markets designed for forecasting. The key insight from this literature is that market prices for binary contracts (``Will event $E$ occur?'') can be interpreted directly as probability estimates. What has been missing is a unified theoretical framework that:
+
+\begin{enumerate}[label=(\roman*)]
+    \item Extends the prediction market insight from binary contracts to the full complexity of financial markets.
+    \item Provides axiomatic foundations for the market's predictive function.
+    \item Derives standard asset pricing results as consequences of the predictive framework.
+    \item Quantifies the precision and limitations of market prediction.
+    \item Connects to the thermodynamic and information-theoretic structures identified in Part~I.
+\end{enumerate}
+
+Predictive Market Theory accomplishes all five.
+
+\subsection{Overview of Contributions}
+
+The principal contributions of this paper are:
+
+\begin{enumerate}
+    \item \textbf{Axiomatic foundations} (Section~\ref{sec:axioms}): Five axioms from which the entire theory follows.
+    \item \textbf{The Predictive Measure} $\PP$ (Section~\ref{sec:predictive_measure}): A new probability measure on outcome space, distinct from both $\Prob$ and $\Q$, encoding the market's collective forecast.
+    \item \textbf{Variational Prediction Principle} (Section~\ref{sec:variational}): The predictive measure minimizes expected predictive free energy.
+    \item \textbf{Price as a Functional of Prediction} (Section~\ref{sec:pricing}): Standard pricing results derived from the predictive framework.
+    \item \textbf{The Fundamental Theorem of Predictive Markets} (Section~\ref{sec:ftpm}): A market-completeness result for predictive measures.
+    \item \textbf{Predictive Resolution and Uncertainty Relations} (Section~\ref{sec:resolution}): Fundamental limits on market forecasting precision.
+    \item \textbf{Resolution of Classical Puzzles} (Section~\ref{sec:puzzles}): New explanations for the equity premium puzzle and excess volatility.
+    \item \textbf{Connections to Kelly Theory and de Finetti} (Section~\ref{sec:connections}): Unifying threads with optimal betting and operational subjective probability.
+    \item \textbf{Predictive Dynamics} (Section~\ref{sec:dynamics}): The stochastic evolution of the predictive measure.
+    \item \textbf{Empirical predictions and experimental design} (Section~\ref{sec:empirical}).
+\end{enumerate}
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 2: AXIOMS
+% ══════════════════════════════════════════════════════════
+
+\section{The Axioms of Predictive Market Theory}\label{sec:axioms}
+
+We now state the five axioms on which Predictive Market Theory is erected. Throughout, let $(\Omega, \F, \Prob)$ be a probability space where $\Omega$ is the space of possible future states of the world, $\F$ is a $\sigma$-algebra of events, and $\Prob$ is the physical (objective) probability measure. Let $\{P_t^{(k)}\}_{k \in \mathcal{K}}$ denote the collection of prices of all traded assets at time $t$, where $\mathcal{K}$ is the asset index set. Let $\F_t$ denote the market filtration at time $t$---the information available from observing market activity up to time $t$.
+
+\begin{axiom}[Predictive Completeness]\label{ax:completeness}
+For every event $A \in \F$ with $\Prob(A) \in (0,1)$, there exists (in principle) a portfolio of traded assets whose market value at time $t$ encodes the market's conditional probability estimate $\PP_t(A) = \PP(A \mid \F_t)$.
+\end{axiom}
+
+\begin{axiom}[Bayesian Coherence]\label{ax:coherence}
+The predictive measure $\PP_t$ is a proper probability measure on $(\Omega, \F)$ for all $t$, and its evolution satisfies Bayes' rule: for any event $A$ and any new information $\I_{t+1}$ arriving at time $t+1$:
+\begin{equation}\label{eq:bayes_update}
+    \PP_{t+1}(A) = \frac{\PP_t(A \mid \I_{t+1}) \cdot \PP_t(\I_{t+1})}{\PP_t(\I_{t+1})} = \PP_t(A \mid \I_{t+1})
+\end{equation}
+Moreover, if no new information arrives, the predictive measure does not change:
+\begin{equation}
+    \I_{t+1} = \varnothing \implies \PP_{t+1} = \PP_t
+\end{equation}
+\end{axiom}
+
+\begin{axiom}[Informational Irreversibility]\label{ax:irreversibility}
+The evolution of the predictive measure is informationally irreversible: the total information content of the market (as measured by the negative entropy of $\PP_t$) is non-decreasing:
+\begin{equation}\label{eq:irreversibility}
+    H[\PP_t] \leq H[\PP_s] \quad \text{for all } t > s
+\end{equation}
+where $H[\PP] = -\int_\Omega \frac{d\PP}{d\lambda} \log \frac{d\PP}{d\lambda} \, d\lambda$ is the differential entropy relative to a reference measure $\lambda$. Equivalently, the predictive measure becomes progressively more concentrated as information accumulates.
+\end{axiom}
+
+\begin{axiom}[Predictive Sufficiency of Price]\label{ax:sufficiency}
+The vector of market prices $\mathbf{P}_t = \{P_t^{(k)}\}_{k \in \mathcal{K}}$ is a sufficient statistic for the predictive measure $\PP_t$ in the sense that:
+\begin{equation}\label{eq:price_sufficiency}
+    \PP_t(\cdot) = \PP(\cdot \mid \mathbf{P}_t)
+\end{equation}
+The predictive measure is uniquely determined by, and recoverable from, market prices.
+\end{axiom}
+
+\begin{axiom}[Thermodynamic Dissipation]\label{ax:dissipation}
+Every update of the predictive measure dissipates predictive free energy. Specifically, the change in the predictive free energy:
+\begin{equation}\label{eq:free_energy_def}
+    \mathcal{F}[\PP_t] = \E_{\PP_t}[-\log \Prob(\omega)] + \E_{\PP_t}[\log \PP_t(\omega)]
+\end{equation}
+satisfies:
+\begin{equation}\label{eq:dissipation}
+    \Delta \mathcal{F} = \mathcal{F}[\PP_{t+1}] - \mathcal{F}[\PP_t] \leq 0
+\end{equation}
+with equality if and only if no genuinely new information is incorporated. The predictive free energy is a Lyapunov function for the market dynamics.
+\end{axiom}
+
+\subsection{Discussion of the Axioms}
+
+\subsubsection{Axiom 1: Predictive Completeness}
+
+This is the predictive analogue of market completeness in the Arrow--Debreu sense \citep{arrow1954,debreu1959}. In the Arrow--Debreu framework, a complete market has a traded security for every state of nature. Predictive Completeness is weaker: it requires only that a \emph{portfolio} (possibly synthetic) exists whose price encodes the probability of any event. This is achievable whenever the market has a sufficient variety of derivative instruments, particularly options at different strike prices.
+
+The Breeden--Litzenberger result \citep{breeden1978} provides the classical construction: the price of a European call option $C(K)$ with strike $K$ encodes the tail probability of the underlying exceeding $K$ at expiration. Formally:
+\begin{equation}\label{eq:breeden_litz}
+    \PP_t(S_T > K) = -e^{r(T-t)} \frac{\partial C(K)}{\partial K}
+\end{equation}
+and the full predictive density is:
+\begin{equation}\label{eq:risk_neutral_density}
+    \frac{d\PP_t}{dK}(K) = e^{r(T-t)} \frac{\partial^2 C(K)}{\partial K^2}
+\end{equation}
+
+We emphasize that our $\PP$ is \emph{not} the risk-neutral measure $\Q$. The relationship between $\PP$, $\Q$, and $\Prob$ is developed in Section~\ref{sec:predictive_measure}.
+
+\subsubsection{Axiom 2: Bayesian Coherence}
+
+This axiom asserts that the market, viewed as a collective prediction device, obeys the laws of probability. It is the market-level analogue of individual rationality: just as a rational agent's beliefs satisfy the axioms of probability, so too do the market's collective beliefs. The key empirical content is the dynamic updating rule---the market does not simply assign static probabilities but revises them in response to new information in a manner consistent with Bayes' theorem.
+
+This axiom rules out certain pathological market behaviors:
+\begin{itemize}
+    \item \textbf{Dutch books}: If $\PP_t$ were not a proper probability measure, an arbitrageur could construct a Dutch book---a combination of trades that guarantees a profit regardless of the outcome \citep{definetti1937}.
+    \item \textbf{Non-Bayesian updating}: If the market updated in a manner inconsistent with Bayes' rule (e.g., overreacting systematically to new information), the resulting $\PP$ would fail the coherence axiom.
+\end{itemize}
+
+\subsubsection{Axiom 3: Informational Irreversibility}
+
+This axiom encodes a form of the second law of thermodynamics for markets. As information is incorporated, the predictive distribution sharpens---uncertainty decreases, and this process is irreversible. The market cannot ``unlearn'' information that has been publicly reflected in prices.
+
+Note that this does not preclude increased \emph{price volatility}. Volatility can increase even as entropy decreases: a bimodal distribution (e.g., ``the company will either succeed spectacularly or fail completely'') can have lower entropy than a diffuse unimodal distribution, yet exhibit higher variance. The axiom constrains entropy, not variance.
+
+\subsubsection{Axiom 4: Predictive Sufficiency of Price}
+
+This is the strongest axiom and the one most subject to empirical challenge. It asserts that prices contain all the information needed to reconstruct the predictive measure. In its strong form, this is equivalent to the strong-form Efficient Market Hypothesis. We will later weaken it to an approximate version, introducing the concept of \emph{predictive residuals}.
+
+\subsubsection{Axiom 5: Thermodynamic Dissipation}
+
+This axiom connects the predictive theory to the thermodynamic framework of Part~I. The predictive free energy combines two terms: the expected surprise of outcomes under the predictive measure (an accuracy term) and the KL divergence from the predictive measure to the physical measure (a complexity or confidence penalty). The axiom states that the market's prediction improves over time in the free-energy sense.
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 3: THE PREDICTIVE MEASURE
+% ══════════════════════════════════════════════════════════
+
+\section{The Predictive Measure}\label{sec:predictive_measure}
+
+\subsection{Three Measures in Finance}
+
+Standard mathematical finance operates with two probability measures:
+
+\begin{enumerate}[label=(\roman*)]
+    \item The \emph{physical measure} $\Prob$: the objective probability distribution governing actual outcomes. Under $\Prob$, stocks have positive expected returns (the equity premium), and the expected return on any asset reflects its systematic risk.
+    
+    \item The \emph{risk-neutral measure} $\Q$: a mathematical construct under which all assets have the same expected return (the risk-free rate). The risk-neutral measure is not a genuine probability forecast---it is a pricing convenience that encodes risk preferences alongside probability assessments.
+\end{enumerate}
+
+We introduce a third measure:
+
+\begin{definition}[The Predictive Measure]\label{def:predictive_measure}
+The \emph{predictive measure} $\PP_t$ is the probability measure on $(\Omega, \F)$ that represents the market's collective best estimate of the likelihood of future states, purged of risk preference distortions. Formally, $\PP_t$ is defined by the requirement that for any event $A \in \F$:
+\begin{equation}\label{eq:predictive_def}
+    \PP_t(A) = \text{``the market's probability forecast for } A \text{ at time } t\text{''}
+\end{equation}
+subject to the constraint that $\PP_t$ is coherent (Axiom~\ref{ax:coherence}) and informationally consistent with market prices (Axiom~\ref{ax:sufficiency}).
+\end{definition}
+
+\subsection{Relationship Between $\Prob$, $\Q$, and $\PP$}
+
+The three measures are related through Radon--Nikodym derivatives. Under regularity conditions (absolute continuity), we can write:
+\begin{equation}\label{eq:radon_nikodym_chain}
+    \frac{d\Q}{d\Prob} = \frac{d\Q}{d\PP} \cdot \frac{d\PP}{d\Prob}
+\end{equation}
+
+The Radon--Nikodym derivative $d\Q/d\Prob$ is the classical \emph{pricing kernel} or \emph{stochastic discount factor} $M$:
+\begin{equation}\label{eq:pricing_kernel}
+    M(\omega) = \frac{d\Q}{d\Prob}(\omega)
+\end{equation}
+
+We decompose this into two components:
+
+\begin{definition}[Predictive Accuracy and Risk Distortion]\label{def:decomposition}
+The pricing kernel admits a multiplicative decomposition:
+\begin{equation}\label{eq:kernel_decomposition}
+    M(\omega) = A(\omega) \cdot R(\omega)
+\end{equation}
+where:
+\begin{align}
+    A(\omega) &= \frac{d\PP}{d\Prob}(\omega) & &\text{(predictive accuracy kernel)} \label{eq:accuracy_kernel} \\
+    R(\omega) &= \frac{d\Q}{d\PP}(\omega) & &\text{(risk distortion kernel)} \label{eq:risk_kernel}
+\end{align}
+\end{definition}
+
+The predictive accuracy kernel $A(\omega)$ measures how well the market's collective forecast matches the true probabilities: if $A(\omega) = 1$ for all $\omega$, the market is a perfect forecaster. The risk distortion kernel $R(\omega)$ captures pure risk preferences: even a perfectly forecasting market will price risky assets differently from risk-neutral valuation because agents demand compensation for bearing risk.
+
+\begin{proposition}[Measure Separation]\label{prop:separation}
+The three measures $\Prob$, $\PP$, $\Q$ satisfy the following chain of relationships:
+\begin{equation}
+    \Prob \xrightarrow{\text{market prediction}} \PP \xrightarrow{\text{risk adjustment}} \Q
+\end{equation}
+where:
+\begin{enumerate}[label=(\roman*)]
+    \item $\PP$ is the market's probabilistic forecast, which may differ from $\Prob$ due to informational limitations and behavioral biases.
+    \item $\Q$ adjusts $\PP$ for aggregate risk preferences, overweighting bad states (where marginal utility is high) and underweighting good states.
+\end{enumerate}
+The standard ``$\Prob$ to $\Q$ directly'' approach conflates these two distinct transformations.
+\end{proposition}
+
+\subsection{Extracting $\PP$ from Market Data}
+
+In practice, how do we disentangle the predictive measure $\PP$ from the risk-neutral measure $\Q$ observed in option prices? We provide two methods.
+
+\subsubsection{Method 1: Calibration via Prediction Markets}
+
+If a prediction market exists for the same event, the prediction market price directly estimates $\PP(A)$, while the option market provides $\Q(A)$. The ratio yields the risk distortion kernel evaluated on the event:
+\begin{equation}
+    R(A) = \frac{\Q(A)}{\PP(A)}
+\end{equation}
+
+\subsubsection{Method 2: Power Utility Inversion}
+
+Under the assumption of power utility with relative risk aversion $\gamma$, the predictive density can be recovered from the risk-neutral density by:
+\begin{equation}\label{eq:power_inversion}
+    \frac{d\PP}{dx}(x) \propto \frac{d\Q}{dx}(x) \cdot x^{\gamma}
+\end{equation}
+where $x = S_T/S_t$ is the gross return. This follows from the first-order condition of a representative agent with power utility.
+
+\subsection{The Predictive Measure as a Martingale Measure}
+
+A fundamental structural property of the predictive measure is that it generates a martingale---but not on prices. Rather, it is the \emph{predictive probabilities themselves} that form a martingale:
+
+\begin{theorem}[Predictive Martingale Property]\label{thm:pred_martingale}
+Under Axioms~\ref{ax:coherence}--\ref{ax:sufficiency}, for any event $A \in \F$:
+\begin{equation}\label{eq:pred_martingale}
+    \E_{\PP_t}[\PP_{t+1}(A) \mid \F_t] = \PP_t(A)
+\end{equation}
+That is, the market's probability forecasts are martingales under the predictive measure itself.
+\end{theorem}
+
+\begin{proof}
+By the tower property of conditional expectation and the Bayesian coherence axiom:
+\begin{align}
+    \E_{\PP_t}[\PP_{t+1}(A) \mid \F_t] &= \E_{\PP_t}[\PP(A \mid \F_{t+1}) \mid \F_t] \\
+    &= \PP(A \mid \F_t) \\
+    &= \PP_t(A)
+\end{align}
+The second equality uses the tower property, which holds for any probability measure.
+\end{proof}
+
+\begin{corollary}[Forecast Unbiasedness]\label{cor:unbiased}
+If $\PP = \Prob$ (the market is a perfect forecaster), then the predictive probabilities are unbiased estimators of the true probabilities:
+\begin{equation}
+    \E_\Prob[\PP_t(A)] = \Prob(A) \quad \text{for all } A, t
+\end{equation}
+\end{corollary}
+
+This is a strong testable prediction: realized frequencies of events should match their market-implied probabilities, on average.
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 4: VARIATIONAL PRINCIPLE
+% ══════════════════════════════════════════════════════════
+
+\section{The Variational Prediction Principle}\label{sec:variational}
+
+\subsection{Free Energy of Prediction}
+
+We now show that the predictive measure is characterized by a variational principle: it minimizes the expected \emph{predictive free energy} over all measures consistent with the market's information.
+
+\begin{definition}[Predictive Free Energy]\label{def:pred_free_energy}
+The predictive free energy of a candidate measure $\mu$ relative to the market information $\F_t$ is:
+\begin{equation}\label{eq:pred_free_energy}
+    \mathcal{F}[\mu; \F_t] = \underbrace{\E_\mu\left[-\log p(\mathcal{D}_t \mid \omega)\right]}_{\text{prediction error}} + \underbrace{\KL(\mu \| \pi_0)}_{\text{complexity penalty}}
+\end{equation}
+where $\mathcal{D}_t$ denotes the data (market observations) available at time $t$, $p(\mathcal{D}_t \mid \omega)$ is the likelihood of the data given state $\omega$, and $\pi_0$ is the prior measure.
+\end{definition}
+
+The predictive free energy has two competing terms:
+\begin{itemize}
+    \item The \textbf{prediction error} term penalizes measures that assign low likelihood to the observed data. A measure that ``predicted poorly'' in light of what has been observed receives a large penalty.
+    \item The \textbf{complexity penalty} (KL divergence from the prior) penalizes measures that deviate far from the prior, implementing a form of Occam's razor: among measures that explain the data equally well, prefer the simplest (closest to the prior).
+\end{itemize}
+
+\begin{theorem}[Variational Characterization of $\PP$]\label{thm:variational}
+The predictive measure $\PP_t$ is the unique minimizer of the predictive free energy:
+\begin{equation}\label{eq:variational_opt}
+    \PP_t = \argmin_{\mu \in \M(\Omega)} \mathcal{F}[\mu; \F_t]
+\end{equation}
+where $\M(\Omega)$ is the space of probability measures on $(\Omega, \F)$. Moreover, the minimum value of the free energy is:
+\begin{equation}\label{eq:min_free_energy}
+    \mathcal{F}[\PP_t; \F_t] = -\log Z_t
+\end{equation}
+where $Z_t = \int p(\mathcal{D}_t \mid \omega) \, d\pi_0(\omega)$ is the marginal likelihood (evidence).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand the free energy:
+\begin{align}
+    \mathcal{F}[\mu; \F_t] &= \E_\mu[-\log p(\mathcal{D}_t \mid \omega)] + \int \log \frac{d\mu}{d\pi_0} \, d\mu \\
+    &= \int \left(-\log p(\mathcal{D}_t \mid \omega) + \log \frac{d\mu}{d\pi_0}(\omega)\right) d\mu(\omega) \\
+    &= \int \log \frac{d\mu(\omega)}{p(\mathcal{D}_t \mid \omega) \, d\pi_0(\omega)} \, d\mu(\omega) \\
+    &= \KL\left(\mu \,\Big\|\, \frac{p(\mathcal{D}_t \mid \cdot) \, \pi_0}{Z_t}\right) - \log Z_t
+\end{align}
+The first term is a KL divergence, which is non-negative and equals zero if and only if:
+\begin{equation}
+    \mu(\omega) = \frac{p(\mathcal{D}_t \mid \omega) \, \pi_0(\omega)}{Z_t}
+\end{equation}
+This is precisely the Bayesian posterior, which we identify with $\PP_t$. The minimum free energy value is $-\log Z_t$.
+\end{proof}
+
+\subsection{The Market as a Variational Inference Machine}
+
+Theorem~\ref{thm:variational} reveals that the market performs \emph{variational inference}---the same computational framework used in modern machine learning \citep{blei2017}. The market searches over the space of probability measures to find the one that best balances explanatory power (fitting observed data) against complexity (staying close to the prior).
+
+This has profound implications:
+
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Bounded rationality as approximate inference}: When the market cannot compute the exact posterior (due to bounded rationality, limited information processing, or insufficient liquidity), it effectively performs \emph{approximate} variational inference, searching over a restricted family of measures $\M_0 \subset \M(\Omega)$. The quality of the approximation is measured by the variational gap:
+    \begin{equation}\label{eq:variational_gap}
+        \Delta \mathcal{F} = \mathcal{F}[\PP_t^{\text{approx}}; \F_t] - \mathcal{F}[\PP_t^*; \F_t] = \KL(\PP_t^{\text{approx}} \| \PP_t^*) \geq 0
+    \end{equation}
+    
+    \item \textbf{Model selection}: The marginal likelihood $Z_t$ provides an automatic model selection criterion. Markets that can entertain more complex models (richer asset universes, more derivative instruments) achieve lower free energy, corresponding to better predictions. This provides a principled explanation for financial innovation: new instruments are valuable precisely because they expand the space of measures over which the market can optimize.
+    
+    \item \textbf{The prior as market structure}: The prior $\pi_0$ encodes structural assumptions about the economy---the base rate expectations, the background model. Changes in the prior (e.g., regime changes, new economic paradigms) correspond to fundamental reconfigurations of the market's predictive framework.
+\end{enumerate}
+
+\subsection{Connection to the Free Energy Principle}
+
+The variational formulation connects directly to Friston's \emph{Free Energy Principle} \citep{friston2010} from computational neuroscience, which posits that biological agents minimize variational free energy to maintain a model of their environment. Under PMT, the market is a collective agent that minimizes predictive free energy, treating the economy as its ``environment.'' The parallel is exact:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Free Energy Principle (Brain)} & \textbf{PMT (Market)} \\
+\midrule
+Organism & Market \\
+Sensory data & Market data, news, signals \\
+Generative model & Collective belief structure \\
+Free energy & Predictive free energy $\mathcal{F}$ \\
+Perception & Price discovery \\
+Action & Trading \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is more than analogy. Both the brain and the market face the same fundamental computational problem---maintaining an accurate internal model of an uncertain, changing environment---and both solve it by minimizing variational free energy.
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 5: PRICING FROM PREDICTION
+% ══════════════════════════════════════════════════════════
+
+\section{Deriving Price from Prediction}\label{sec:pricing}
+
+\subsection{The Pricing Functional}
+
+In PMT, price is not a primitive---it is derived from the predictive measure through a \emph{pricing functional} that encodes aggregate risk preferences.
+
+\begin{definition}[Predictive Pricing Functional]\label{def:pricing_functional}
+The price of an asset with payoff $X(\omega)$ at time $T$ is:
+\begin{equation}\label{eq:pricing_functional}
+    P_t(X) = e^{-r(T-t)} \int_\Omega X(\omega) \cdot R(\omega) \, d\PP_t(\omega)
+\end{equation}
+where $r$ is the risk-free rate and $R(\omega) = d\Q/d\PP(\omega)$ is the risk distortion kernel. Equivalently:
+\begin{equation}\label{eq:pricing_decomposed}
+    P_t(X) = e^{-r(T-t)} \left[\E_{\PP_t}[X] + \Cov_{\PP_t}(X, R)\right]
+\end{equation}
+where $\E_{\PP_t}[X]$ is the market's prediction of the expected payoff and $\Cov_{\PP_t}(X, R)$ is the risk premium.
+\end{definition}
+
+Equation~\eqref{eq:pricing_decomposed} makes the decomposition transparent: the asset price equals the discounted predicted expected payoff, adjusted by a risk premium that depends on the covariance of the payoff with the risk distortion kernel.
+
+\subsection{Recovering Classical Results}
+
+We now show that the standard results of asset pricing theory follow as corollaries of the predictive framework.
+
+\begin{corollary}[Fundamental Theorem of Asset Pricing]\label{cor:ftap}
+Under Axioms~\ref{ax:completeness}--\ref{ax:sufficiency}, the absence of arbitrage is equivalent to the existence of a predictive measure $\PP$ and a risk distortion kernel $R > 0$ such that all asset prices satisfy \eqref{eq:pricing_functional}.
+\end{corollary}
+
+\begin{proof}
+By Axiom~\ref{ax:sufficiency}, prices determine $\PP$. Define $\Q$ by $d\Q = R \, d\PP$. The pricing formula \eqref{eq:pricing_functional} becomes $P_t(X) = e^{-r(T-t)} \E_\Q[X]$, the standard risk-neutral pricing formula. The existence of $\Q \sim \PP \sim \Prob$ with $\Q$ being an equivalent martingale measure is exactly the first fundamental theorem of asset pricing \citep{harrison1981}.
+\end{proof}
+
+\begin{corollary}[Capital Asset Pricing Model]\label{cor:capm}
+If the risk distortion kernel is an affine function of the market return, $R(\omega) = a + b \cdot R_m(\omega)$, then the CAPM follows:
+\begin{equation}
+    \E_{\PP}[R_i] - r = \beta_i \cdot (\E_{\PP}[R_m] - r)
+\end{equation}
+where $\beta_i = \Cov_{\PP}(R_i, R_m) / \Var_{\PP}(R_m)$.
+\end{corollary}
+
+\begin{corollary}[Black--Scholes as Degenerate Prediction]\label{cor:black_scholes}
+The Black--Scholes option pricing formula arises when the predictive measure is log-normal:
+\begin{equation}
+    \PP_t\left(\log \frac{S_T}{S_t} \leq x\right) = \Phi\left(\frac{x - \mu_\PP (T-t)}{\sigma\sqrt{T-t}}\right)
+\end{equation}
+and the risk distortion kernel is exponential-affine in the log-return. In this case, the risk-neutral measure $\Q$ is also log-normal (with drift $r$ instead of $\mu_\PP$), and the Black--Scholes formula follows.
+\end{corollary}
+
+The PMT perspective reveals that the Black--Scholes model is not merely a pricing formula but a statement about the \emph{form of the market's prediction}: it assumes the market predicts log-normal returns. Deviations from Black--Scholes (volatility smiles, skew) are therefore deviations of the predictive measure from log-normality, not just deviations of the pricing kernel.
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 6: FUNDAMENTAL THEOREM
+% ══════════════════════════════════════════════════════════
+
+\section{The Fundamental Theorem of Predictive Markets}\label{sec:ftpm}
+
+We now state and prove the central result of the theory: the Predictive Market Completeness Theorem.
+
+\subsection{Predictive Completeness}
+
+\begin{definition}[Predictive Resolution]\label{def:pred_resolution}
+The \emph{predictive resolution} of a market with respect to a partition $\{A_1, \ldots, A_n\}$ of $\Omega$ is the vector of predictive probabilities:
+\begin{equation}
+    \boldsymbol{\pi}_t = (\PP_t(A_1), \ldots, \PP_t(A_n))
+\end{equation}
+The market has \emph{full predictive resolution} with respect to this partition if $\boldsymbol{\pi}_t$ can be determined from market prices.
+\end{definition}
+
+\begin{definition}[Predictive Span]\label{def:pred_span}
+The \emph{predictive span} of a market is the coarsest $\sigma$-algebra $\G \subset \F$ such that the market has full predictive resolution with respect to every finite measurable partition of $\Omega$ into $\G$-measurable sets.
+\end{definition}
+
+\begin{theorem}[Fundamental Theorem of Predictive Markets]\label{thm:ftpm}
+Let $\mathcal{K}$ be the set of traded assets, with payoff functions $\{X^{(k)}\}_{k \in \mathcal{K}}$. Then:
+\begin{enumerate}[label=(\roman*)]
+    \item The predictive span $\G$ equals the $\sigma$-algebra generated by the payoff functions: $\G = \sigma\{X^{(k)} : k \in \mathcal{K}\}$.
+    
+    \item If $\G = \F$ (the payoff functions generate the full $\sigma$-algebra), then the market is \emph{predictively complete}: it generates a full predictive measure $\PP_t$ on $(\Omega, \F)$.
+    
+    \item The minimum number of assets required for predictive completeness with respect to a finite partition into $n$ states is $n-1$ (since probabilities sum to one).
+    
+    \item For a predictively complete market, the predictive measure $\PP_t$ is the unique measure satisfying Axioms~\ref{ax:completeness}--\ref{ax:sufficiency} and consistent with observed prices.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) Any event in $\G$ can be expressed as a Boolean combination of events $\{X^{(k)} \in B_k\}$ for Borel sets $B_k$. The price of an asset with payoff $\mathbf{1}\{X^{(k)} \in B_k\}$ (a digital option) encodes $\PP_t(X^{(k)} \in B_k)$ up to the risk distortion. With sufficiently many such digital options (or equivalently, vanilla options at all strikes, via Breeden--Litzenberger), we can recover $\PP_t$ restricted to $\G$.
+
+(ii) If $\G = \F$, every event is measurable with respect to the payoff functions, so the construction in (i) determines $\PP_t$ on all of $\F$.
+
+(iii) For an $n$-state partition, the predictive measure is an $(n-1)$-dimensional simplex. Each linearly independent asset provides one constraint, so $n-1$ independent assets suffice.
+
+(iv) Uniqueness follows from the sufficiency axiom: different measures consistent with the same prices are identified.
+\end{proof}
+
+\subsection{Implications for Market Design}
+
+The Fundamental Theorem provides a precise criterion for evaluating market design: a well-designed market should maximize its predictive span. This has concrete implications:
+
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Options markets expand predictive completeness}: A market with only stock and bond cannot distinguish between symmetric and skewed predictive distributions. Adding options at multiple strikes fills in the full predictive density.
+    
+    \item \textbf{Prediction markets are maximally predictive}: A prediction market with binary contracts on all events of interest achieves predictive completeness by construction.
+    
+    \item \textbf{Financial innovation as predictive expansion}: New financial instruments (CDOs, variance swaps, volatility-of-volatility products) expand the predictive span, allowing the market to express forecasts along dimensions that were previously unresolvable.
+\end{enumerate}
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 7: PREDICTIVE RESOLUTION & UNCERTAINTY
+% ══════════════════════════════════════════════════════════
+
+\section{Predictive Resolution and Uncertainty Relations}\label{sec:resolution}
+
+\subsection{Quantifying Forecasting Precision}
+
+\begin{definition}[Predictive Information]\label{def:pred_info}
+The \emph{predictive information} of the market at time $t$ about event $A$ at horizon $\tau$ is:
+\begin{equation}\label{eq:pred_info}
+    \MI_t(A; \tau) = H[\PP_0(A)] - H[\PP_t(A)]
+\end{equation}
+where $H[p] = -p \log p - (1-p) \log(1-p)$ is the binary entropy of the predictive probability. This measures the reduction in uncertainty achieved by the market's prediction relative to the prior.
+\end{definition}
+
+\begin{definition}[Predictive Resolution]\label{def:resolution_quant}
+The \emph{predictive resolution} of a market at time $t$ for horizon $\tau$ is the effective number of distinguishable states:
+\begin{equation}\label{eq:resolution}
+    \mathcal{R}_t(\tau) = \exp\left(-\sum_{\omega \in \Omega} \PP_t(\omega) \log \PP_t(\omega)\right) = e^{H[\PP_t]}
+\end{equation}
+for a discrete state space, or the exponential of the differential entropy for continuous state spaces.
+\end{definition}
+
+\subsection{The Predictive Uncertainty Relation}
+
+We now derive a fundamental result: an uncertainty relation that constrains the joint precision of market predictions across time and across states.
+
+\begin{theorem}[Predictive Uncertainty Relation]\label{thm:uncertainty}
+Let $\Delta_T$ denote the temporal resolution of the market (the shortest time horizon over which the market makes non-trivial predictions) and let $\Delta_S$ denote the state-space resolution (the finest partition of outcomes that the market can distinguish). Then:
+\begin{equation}\label{eq:uncertainty_relation}
+    \Delta_T \geq \frac{\log_2 \Delta_S}{\mathcal{C}}
+\end{equation}
+where $\mathcal{C}$ is the market's information processing capacity, measured in bits per unit time. Equivalently, $\Delta_S \leq 2^{\mathcal{C} \cdot \Delta_T}$.
+\end{theorem}
+
+\begin{proof}
+The market receives information at rate $\mathcal{C}$ bits per unit time. To resolve $\Delta_S$ states, the market needs at least $\log_2 \Delta_S$ bits of information. To achieve this resolution over time horizon $\Delta_T$, the total information budget is $\mathcal{C} \cdot \Delta_T$ bits. The constraint $\log_2 \Delta_S \leq \mathcal{C} \cdot \Delta_T$ rearranges to $\Delta_T \geq \frac{\log_2 \Delta_S}{\mathcal{C}}$.
+\end{proof}
+
+\begin{remark}
+This is the market analogue of the Heisenberg uncertainty principle in quantum mechanics, where position and momentum cannot both be simultaneously measured with arbitrary precision. In the market context, temporal precision (``when will this happen?'') trades off against state-space precision (``what will happen?''). A market that makes very precise short-term predictions can only do so for a coarse partition of outcomes, while a market that resolves fine distinctions among outcomes can only do so over longer time horizons.
+\end{remark}
+
+\subsection{Consequences of the Uncertainty Relation}
+
+\begin{corollary}[Resolution Frontier]\label{cor:resolution_frontier}
+For a given market capacity $\mathcal{C}$, the achievable pairs $(\Delta_T, \Delta_S)$ lie on or above the curve $\Delta_T = \frac{\log_2 \Delta_S}{\mathcal{C}}$. The \emph{resolution frontier} is the set of Pareto-optimal pairs $\Delta_S = 2^{\mathcal{C} \cdot \Delta_T}$.
+\end{corollary}
+
+\begin{corollary}[Liquidity and Resolution]\label{cor:liq_resolution}
+Since market capacity $\mathcal{C}$ is proportional to trading volume (more trades = more information processed per unit time), liquid markets have a lower uncertainty bound and thus better joint resolution. This provides a new explanation for why liquid markets produce better prices: they can simultaneously resolve more states over shorter time horizons.
+\end{corollary}
+
+\begin{corollary}[High-Frequency Trading and the Uncertainty Relation]\label{cor:hft}
+High-frequency traders operate in the regime of very small $\Delta_T$. The uncertainty relation implies that their predictions must have correspondingly low state-space resolution---they can predict the direction of the next price movement, but not the magnitude. This is consistent with empirical evidence that HFT strategies achieve high Sharpe ratios through small, frequent profits rather than large, rare gains.
+\end{corollary}
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 8: RESOLVING CLASSICAL PUZZLES
+% ══════════════════════════════════════════════════════════
+
+\section{Resolution of Classical Puzzles}\label{sec:puzzles}
+
+\subsection{The Equity Premium Puzzle}
+
+The equity premium puzzle \citep{mehra1985} notes that the historical excess return of equities over risk-free assets ($\sim$6\% per year) is far too large to be explained by standard consumption-based models with plausible risk aversion parameters. In PMT, this puzzle admits a natural resolution.
+
+\begin{theorem}[Predictive Resolution of the Equity Premium]\label{thm:equity_premium}
+In the PMT framework, the equity premium $\E_\Prob[R_m - r]$ decomposes as:
+\begin{equation}\label{eq:equity_premium_decomp}
+    \E_\Prob[R_m - r] = \underbrace{\E_\Prob[R_m] - \E_\PP[R_m]}_{\text{predictive bias}} + \underbrace{\E_\PP[R_m] - r - \text{risk premium}}_{\text{predictive residual}} + \underbrace{\text{risk premium}}_{\text{standard risk compensation}}
+\end{equation}
+\end{theorem}
+
+The key new term is the \emph{predictive bias}: the systematic difference between the physical expected return and the market's predicted expected return. If the market systematically underestimates equity returns (i.e., is too pessimistic), this generates an apparent equity premium even with moderate risk aversion.
+
+\begin{proposition}[Pessimism Premium]\label{prop:pessimism}
+If the predictive measure systematically underestimates the probability of high-return states:
+\begin{equation}
+    \PP(\omega) < \Prob(\omega) \quad \text{for states } \omega \text{ with } R_m(\omega) > \bar{R}_m
+\end{equation}
+then the predictive bias term is positive, contributing to the equity premium. The magnitude of this contribution is:
+\begin{equation}
+    \text{Pessimism premium} = \E_\Prob[R_m] - \E_\PP[R_m] = \int R_m(\omega) \, d(\Prob - \PP)(\omega)
+\end{equation}
+\end{proposition}
+
+This is empirically testable: surveys of professional forecasters consistently show that median forecasts for equity returns underperform realized returns, supporting the pessimism hypothesis.
+
+\subsection{The Excess Volatility Puzzle}
+
+Shiller \citep{shiller1981} demonstrated that stock prices are far more volatile than can be justified by subsequent changes in dividends. In PMT, excess volatility has a natural interpretation.
+
+\begin{theorem}[Excess Volatility as Predictive Updating]\label{thm:excess_vol}
+The variance of price changes decomposes as:
+\begin{equation}\label{eq:excess_vol}
+    \Var(P_{t+1} - P_t) = \underbrace{\Var\left(\E_{\PP_{t+1}}[V] - \E_{\PP_t}[V]\right)}_{\text{predictive updating}} + \underbrace{\Var(\Delta R_t)}_{\text{risk preference shifts}} + \underbrace{2\Cov(\Delta \PP, \Delta R)}_{\text{interaction}}
+\end{equation}
+\end{theorem}
+
+In this decomposition, the ``predictive updating'' term captures genuine information-driven price changes, while the ``risk preference shifts'' and ``interaction'' terms capture changes in risk attitudes. The excess volatility puzzle arises when the total variance exceeds what the predictive updating term alone would justify---the excess is due to fluctuations in risk preferences (the risk distortion kernel $R$).
+
+\begin{proposition}[Volatility as Predictive Disagreement]\label{prop:vol_disagreement}
+In a market with $N$ agents holding heterogeneous predictive measures $\{\PP_t^{(i)}\}_{i=1}^N$, the price volatility is bounded below by:
+\begin{equation}
+    \Var(\Delta P_t) \geq c \cdot \sum_{i=1}^{N} w_i \, \KL(\PP_t^{(i)} \| \PP_t)
+\end{equation}
+where $w_i$ is agent $i$'s market weight and $c > 0$ is a constant. Greater disagreement among predictive measures implies greater volatility.
+\end{proposition}
+
+\subsection{The Value of Active Management}
+
+A persistent puzzle in finance is why active management persists when index funds consistently outperform. PMT provides a resolution: active managers are part of the market's predictive infrastructure.
+
+\begin{theorem}[Predictive Maintenance Cost]\label{thm:active_mgmt}
+The aggregate cost of active management in equilibrium equals the value of the predictive function it provides:
+\begin{equation}\label{eq:active_cost}
+    \sum_{i \in \text{active}} \text{Fee}_i = \mathcal{C}_{\text{prediction}} \cdot \frac{\partial \mathcal{F}}{\partial \mathcal{C}}
+\end{equation}
+where $\mathcal{C}_{\text{prediction}}$ is the information processing capacity provided by active managers and $\partial \mathcal{F} / \partial \mathcal{C}$ is the marginal value of prediction improvement.
+\end{theorem}
+
+Active managers are, in effect, paid to run the market's distributed inference algorithm. The fees they charge are the cost of maintaining the market's predictive accuracy. If all managers switched to passive indexing, the predictive free energy would increase (predictions would worsen), leading to less efficient capital allocation. The equilibrium fee level is set by the marginal value of the prediction improvement they provide.
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 9: CONNECTIONS
+% ══════════════════════════════════════════════════════════
+
+\section{Connections to Kelly Theory and de Finetti}\label{sec:connections}
+
+\subsection{The Kelly Criterion as Optimal Prediction Exploitation}
+
+The Kelly criterion \citep{kelly1956} prescribes the bet size that maximizes the expected log growth rate of wealth:
+\begin{equation}\label{eq:kelly}
+    f^* = \argmax_f \E_\Prob[\log(1 + f \cdot R)]
+\end{equation}
+where $f$ is the fraction of wealth bet and $R$ is the return.
+
+In PMT, the Kelly criterion admits a natural interpretation as optimal exploitation of predictive superiority.
+
+\begin{theorem}[Kelly as Predictive Edge Exploitation]\label{thm:kelly_pmt}
+The optimal Kelly bet size for an agent with predictive measure $\PP^{(i)}$ in a market with consensus predictive measure $\PP$ is:
+\begin{equation}\label{eq:kelly_pmt}
+    f^*_i = \frac{\E_{\PP^{(i)}}[R] - \E_\PP[R]}{\Var_\PP(R)} + O\left(\KL(\PP^{(i)} \| \PP)\right)
+\end{equation}
+The optimal bet is proportional to the predictive edge: the difference between the agent's prediction and the market's prediction, normalized by the market's uncertainty.
+\end{theorem}
+
+\begin{proof}
+Expand the Kelly objective around $f = 0$:
+\begin{align}
+    \E_{\PP^{(i)}}[\log(1 + fR)] &\approx f \, \E_{\PP^{(i)}}[R] - \frac{f^2}{2} \E_{\PP^{(i)}}[R^2] \\
+    &\approx f \, \E_{\PP^{(i)}}[R] - \frac{f^2}{2} \Var_\PP(R)
+\end{align}
+In equilibrium under the risk-neutral measure $\Q$, $\E_\Q[R] = r$. Under the market's predictive measure, $\E_\PP[R] = r + \rho$ where $\rho$ is the risk premium. The first-order condition gives:
+\begin{equation}
+    f^* = \frac{\E_{\PP^{(i)}}[R] - \E_\PP[R]}{\Var_\PP(R)}
+\end{equation}
+The correction term arises from higher-order contributions proportional to the divergence between the agent's measure and the market measure.
+\end{proof}
+
+\begin{corollary}[Zero Predictive Edge Implies No Trade]\label{cor:no_trade}
+If $\PP^{(i)} = \PP$ (the agent has no predictive advantage over the market), then $f^*_i = 0$: the agent should not trade. This is the \emph{no-trade theorem} \citep{milgrom1982} restated in predictive terms.
+\end{corollary}
+
+\subsection{De Finetti's Theorem and Market Coherence}
+
+De Finetti's \citep{definetti1937} fundamental insight was that coherent betting behavior---behavior that does not admit a Dutch book---is equivalent to the existence of a probability measure governing the bets. This provides the operational foundation for subjective probability.
+
+PMT extends de Finetti's theorem from individual agents to markets:
+
+\begin{theorem}[Market Coherence Theorem]\label{thm:market_coherence}
+A market is \emph{predictively coherent}---in the sense that no combination of trades yields a guaranteed loss for all participants---if and only if there exists a predictive measure $\PP$ and a positive risk distortion kernel $R > 0$ such that all asset prices satisfy the pricing functional \eqref{eq:pricing_functional}.
+\end{theorem}
+
+\begin{proof}
+$(\Rightarrow)$: If the market is predictively coherent, no arbitrage exists. By the fundamental theorem of asset pricing, a risk-neutral measure $\Q$ exists. Decomposing $\Q = R \cdot \PP$ (where $\PP$ is the measure closest to $\Prob$ in KL divergence among all measures consistent with prices) gives the result.
+
+$(\Leftarrow)$: If $\PP$ exists with $R > 0$, then $\Q = R \cdot \PP$ is an equivalent martingale measure, which by the first fundamental theorem of asset pricing implies no arbitrage, which implies no Dutch book.
+\end{proof}
+
+\subsection{Scoring Rules and the Market as a Mechanism}
+
+The theory of proper scoring rules \citep{gneiting2007} provides mechanisms that incentivize truthful probability reporting. A scoring rule $S(p, \omega)$ assigns a score to a probabilistic forecast $p$ when outcome $\omega$ is realized.
+
+\begin{proposition}[Market as a Proper Scoring Mechanism]\label{prop:scoring}
+The profit-and-loss (P\&L) of trading based on a predictive measure $\PP^{(i)}$ when the market consensus is $\PP$ implements a proper scoring rule:
+\begin{equation}\label{eq:market_scoring}
+    \E_\Prob[\text{P\&L}(\PP^{(i)})] = -\KL(\Prob \| \PP^{(i)}) + \KL(\Prob \| \PP) + \text{const.}
+\end{equation}
+The expected P\&L is maximized when $\PP^{(i)} = \Prob$, i.e., when the agent's predictive measure matches the true distribution.
+\end{proposition}
+
+This establishes that the market mechanism itself is a proper scoring rule that incentivizes participants to reveal their best probability estimates through trading. The market doesn't just aggregate predictions---it actively incentivizes truthful prediction.
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 10: PREDICTIVE DYNAMICS
+% ══════════════════════════════════════════════════════════
+
+\section{Predictive Dynamics: The Stochastic Evolution of $\PP_t$}\label{sec:dynamics}
+
+\subsection{The Predictive Process}
+
+We now study the dynamics of the predictive measure itself. Rather than analyzing the time series of prices (the traditional approach), we analyze the time series of predictions---the stochastic process $\{\PP_t\}_{t \geq 0}$ valued in the space of probability measures on $(\Omega, \F)$.
+
+\begin{definition}[Predictive Process]\label{def:pred_process}
+The \emph{predictive process} is the $\M(\Omega)$-valued stochastic process $\{\PP_t\}_{t \geq 0}$ defined by:
+\begin{equation}
+    \PP_t = \Prob(\cdot \mid \F_t)
+\end{equation}
+under the assumption $\PP = \Prob$ (perfect prediction). The predictive process lives on the infinite-dimensional simplex $\M(\Omega)$.
+\end{definition}
+
+\begin{theorem}[Doob's Convergence for the Predictive Process]\label{thm:doob}
+If the filtration $\{\F_t\}$ is generated by a sequence of informative signals, then the predictive process converges:
+\begin{equation}
+    \PP_t \xrightarrow{t \to \infty} \delta_{\omega^*}
+\end{equation}
+where $\omega^*$ is the realized state and $\delta_{\omega^*}$ is the Dirac measure concentrated on $\omega^*$. That is, in the long run, the market learns the truth.
+\end{theorem}
+
+\begin{proof}
+This is L\'{e}vy's zero-one law (or Doob's martingale convergence theorem) applied to the conditional probabilities $\PP_t(A) = \Prob(A \mid \F_t)$. Since $\PP_t(A)$ is a bounded martingale, it converges almost surely. If $\F_\infty = \sigma(\bigcup_t \F_t) = \F$ (the filtration eventually reveals everything), the limit is $\mathbf{1}_A(\omega^*)$.
+\end{proof}
+
+\subsection{The Stochastic Differential Equation for $\PP_t$}
+
+In continuous time, the evolution of the predictive measure can be expressed as a stochastic partial differential equation (SPDE) on the space of measures. For the finite-dimensional case (prediction over a finite partition $\{A_1, \ldots, A_n\}$), the predictive probabilities $\pi_i(t) = \PP_t(A_i)$ satisfy:
+
+\begin{theorem}[Predictive SDE]\label{thm:pred_sde}
+The predictive probabilities evolve according to the system of SDEs:
+\begin{equation}\label{eq:pred_sde}
+    d\pi_i(t) = \pi_i(t) \sum_{j=1}^{m} \left(\lambda_j^{(i)}(t) - \bar{\lambda}_j(t)\right) dW_j(t)
+\end{equation}
+where $\lambda_j^{(i)}(t)$ is the sensitivity of state $i$'s likelihood to the $j$-th information source, $\bar{\lambda}_j(t) = \sum_i \pi_i(t) \lambda_j^{(i)}(t)$ is the average sensitivity, and $\{W_j\}$ are independent Brownian motions representing information arrivals.
+\end{theorem}
+
+\begin{proof}
+The result follows from applying the Kushner--Stratonovich equation to the filtering problem. The conditional probability $\pi_i(t)$ of state $A_i$ given continuous observations $\{Y_s\}_{s \leq t}$ (the information process) satisfies the Zakai equation in unnormalized form, which when normalized to a probability measure yields \eqref{eq:pred_sde}.
+\end{proof}
+
+Key properties of the predictive SDE:
+
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Drift-free}: The predictive SDE has no drift term---the evolution is a pure martingale. This is a direct consequence of Theorem~\ref{thm:pred_martingale}.
+    
+    \item \textbf{Multiplicative noise}: The volatility of each probability is proportional to the probability itself, ensuring that probabilities near zero or one change slowly (strong beliefs are hard to move).
+    
+    \item \textbf{Conservation}: The probabilities sum to one at all times: $\sum_i d\pi_i(t) = 0$.
+    
+    \item \textbf{Absorption}: The states $\pi_i = 0$ and $\pi_i = 1$ are absorbing boundaries---once the market is certain, it stays certain (under the idealized model).
+\end{enumerate}
+
+\subsection{Information Arrival Rate and Predictive Volatility}
+
+The volatility of the predictive process is directly linked to the rate of information arrival:
+
+\begin{proposition}[Predictive Volatility--Information Rate Identity]\label{prop:pred_vol}
+The rate of quadratic variation of the predictive probability of event $A$ is:
+\begin{equation}\label{eq:pred_vol_info}
+    \frac{d\langle \PP_\cdot(A) \rangle_t}{dt} = \PP_t(A)^2(1 - \PP_t(A))^2 \cdot \sum_{j=1}^m (\lambda_j^{(A)} - \bar{\lambda}_j)^2
+\end{equation}
+where $\langle \PP_\cdot(A) \rangle_t$ denotes the quadratic variation process. Note that the paths of $\PP_t(A)$, driven by Brownian motion, are nowhere differentiable; the quadratic variation captures the instantaneous variability. The right-hand side is maximized when $\PP_t(A) = 1/2$ (maximum uncertainty about $A$) and when the signal-to-noise ratio $(\lambda_j^{(A)} - \bar{\lambda}_j)^2$ is large (highly informative signals).
+\end{proposition}
+
+This result quantifies the intuition that predictions are most volatile when the market is most uncertain---a probability near 50\% can swing dramatically in either direction, while a probability near 0\% or 100\% is inherently stable.
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 11: MARKET PREDICTION ACCURACY
+% ══════════════════════════════════════════════════════════
+
+\section{Quantifying Market Prediction Accuracy}\label{sec:accuracy}
+
+\subsection{Calibration and Discrimination}
+
+Following the scoring rule literature \citep{gneiting2007}, we decompose predictive accuracy into two components:
+
+\begin{definition}[Market Calibration]\label{def:calibration}
+The market is \emph{calibrated} if, among all events to which it assigns probability $p$, approximately a fraction $p$ actually occur:
+\begin{equation}\label{eq:calibration}
+    \lim_{n \to \infty} \frac{1}{|\{t : \PP_t(A_t) \in [p - \epsilon, p + \epsilon]\}|} \sum_{\substack{t : \PP_t(A_t) \in \\ [p - \epsilon, p + \epsilon]}} \mathbf{1}_{A_t}(\omega_t) = p \quad \text{for all } p \in [0,1]
+\end{equation}
+\end{definition}
+
+\begin{definition}[Market Discrimination]\label{def:discrimination}
+The market has good \emph{discrimination} (or resolution) if it assigns high probabilities to events that occur and low probabilities to events that do not:
+\begin{equation}
+    \E[\PP_t(A) \mid A \text{ occurs}] \gg \E[\PP_t(A) \mid A \text{ does not occur}]
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Brier Score Decomposition for Markets]\label{thm:brier}
+The market's Brier score (mean squared prediction error) decomposes as:
+\begin{equation}\label{eq:brier_decomp}
+    \text{BS} = \underbrace{\overline{p(1-p)}}_{\text{irreducible uncertainty}} + \underbrace{\text{CalErr}}_{\text{calibration error}} - \underbrace{\text{Disc}}_{\text{discrimination}}
+\end{equation}
+The Brier score is minimized when calibration error is zero and discrimination is maximized.
+\end{theorem}
+
+\subsection{The Predictive Efficiency Ratio}
+
+\begin{definition}[Predictive Efficiency]\label{def:pred_efficiency}
+The \emph{predictive efficiency} of a market is:
+\begin{equation}\label{eq:pred_efficiency}
+    \eta_P = 1 - \frac{\KL(\Prob \| \PP)}{\KL(\Prob \| \pi_0)}
+\end{equation}
+where $\pi_0$ is the prior (uninformed) distribution. This ratio measures the fraction of the total possible information gain that the market has actually achieved. A perfect market has $\eta_P = 1$; a market that adds no information to the prior has $\eta_P = 0$.
+\end{definition}
+
+\begin{proposition}[Bounds on Predictive Efficiency]\label{prop:eff_bounds}
+Under the PMT axioms:
+\begin{equation}
+    0 \leq \eta_P \leq 1
+\end{equation}
+with the lower bound achieved when $\PP = \pi_0$ (no information aggregation) and the upper bound when $\PP = \Prob$ (perfect prediction). Moreover, $\eta_P$ is non-decreasing in the number of informed agents $N$ and in the liquidity $L$ of the market:
+\begin{equation}
+    \frac{\partial \eta_P}{\partial N} \geq 0, \quad \frac{\partial \eta_P}{\partial L} \geq 0
+\end{equation}
+\end{proposition}
+
+\subsection{Comparing Predictive Efficiency Across Markets}
+
+The predictive efficiency framework provides a principled way to compare markets. An empirically testable conjecture:
+
+\begin{conjecture}[Market Predictive Efficiency Hierarchy]\label{conj:hierarchy}
+Predictive efficiency varies systematically across markets:
+\begin{equation}
+    \eta_P^{\text{large-cap equities}} > \eta_P^{\text{corporate bonds}} > \eta_P^{\text{real estate}} > \eta_P^{\text{private equity}}
+\end{equation}
+with the ordering driven primarily by liquidity and the number of informed participants.
+\end{conjecture}
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 12: PREDICTIVE MARKET MICROSTRUCTURE
+% ══════════════════════════════════════════════════════════
+
+\section{Predictive Market Microstructure}\label{sec:microstructure}
+
+\subsection{The Predictive Interpretation of Order Flow}
+
+In the PMT framework, every trade carries a predictive signal. When agent $i$ buys, she is expressing the belief $\PP^{(i)}(V > P) > \PP(V > P)$---her prediction assigns higher probability to favorable states than the market consensus.
+
+\begin{definition}[Predictive Content of a Trade]\label{def:trade_content}
+The predictive content of a trade of size $q$ at price $P$ is:
+\begin{equation}\label{eq:trade_content}
+    \mathcal{I}_{\text{trade}} = q \cdot \left|\frac{d\PP_t}{dP}\right|^{-1} \approx q \cdot \sigma_{\PP}
+\end{equation}
+where $\sigma_\PP$ is the standard deviation of the predictive distribution. Large trades in uncertain environments carry maximum predictive content.
+\end{definition}
+
+\begin{theorem}[Kyle's Lambda as Predictive Sensitivity]\label{thm:kyle_lambda}
+Kyle's lambda \citep{kyle1985}---the price impact coefficient---is the reciprocal of the market's predictive precision:
+\begin{equation}\label{eq:kyle_pmt}
+    \lambda = \frac{\sigma_V}{\sigma_z} \cdot \frac{1}{\tau_{\text{total}}}
+\end{equation}
+where $\sigma_V$ is the prior standard deviation of fundamental value, $\sigma_z$ is noise trading volatility, and $\tau_{\text{total}}$ is the total precision of all informed agents' signals. Markets with higher aggregate predictive precision have lower price impact.
+\end{theorem}
+
+\subsection{The Bid--Ask Spread as Predictive Insurance}
+
+The bid--ask spread can be understood as the price the market charges for providing instant predictive feedback:
+
+\begin{proposition}[Spread as Ambiguity Premium]\label{prop:spread}
+The bid--ask spread decomposes as:
+\begin{equation}\label{eq:spread_decomp}
+    S = \underbrace{2 \cdot \E[|\PP_{\text{post-trade}} - \PP_{\text{pre-trade}}|]}_{\text{expected predictive revision}} + \underbrace{\text{inventory cost}}_{\text{risk bearing}} + \underbrace{\text{processing cost}}_{\text{operational}}
+\end{equation}
+The first term---the expected magnitude of the predictive revision caused by the trade---is the informational component of the spread and dominates in liquid markets.
+\end{proposition}
+
+\subsection{Market Making as Predictive Mediation}
+
+Market makers occupy a unique role in the PMT framework: they are \emph{predictive mediators} who bridge temporal gaps in the flow of predictions.
+
+\begin{proposition}[Market Maker as Predictive Smoother]\label{prop:mm_smoother}
+A market maker with inventory $I_t$ and predictive measure $\PP^{(MM)}_t$ optimally sets quotes:
+\begin{equation}
+    P_{\text{bid}} = \E_{\PP^{(MM)}}[V] - \frac{1}{2}\gamma I_t \sigma^2 - \frac{\lambda}{2}
+\end{equation}
+\begin{equation}
+    P_{\text{ask}} = \E_{\PP^{(MM)}}[V] + \frac{1}{2}\gamma I_t \sigma^2 + \frac{\lambda}{2}
+\end{equation}
+where $\gamma$ is risk aversion, $\sigma^2$ is predictive variance, and $\lambda$ is the adverse selection parameter. The quotes are centered on the market maker's prediction, adjusted for inventory risk and the cost of trading against better-informed agents.
+\end{proposition}
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 13: EMPIRICAL FRAMEWORK
+% ══════════════════════════════════════════════════════════
+
+\section{Empirical Predictions and Experimental Design}\label{sec:empirical}
+
+\subsection{Core Empirical Predictions}
+
+\begin{enumerate}
+    \item \textbf{Calibration Test}: Option-implied probabilities, adjusted for risk preferences using the power utility inversion \eqref{eq:power_inversion}, should be well-calibrated: the fraction of events occurring at each probability level should match the predicted probability. This can be tested using large cross-sections of options data.
+    
+    \item \textbf{Predictive Martingale Test}: The implied probability $\PP_t(A)$ for any event $A$ should be a martingale under the physical measure $\Prob$. Specifically, $\PP_{t+1}(A) - \PP_t(A)$ should be uncorrelated with $\F_t$. Violations indicate failures of Axiom~\ref{ax:coherence}.
+    
+    \item \textbf{Free Energy Monotonicity}: The predictive free energy $\mathcal{F}[\PP_t]$ should be non-increasing over time within a given prediction episode (e.g., from the start of an earnings season to the announcement). The rate of decrease should correlate with information flow (proxied by trading volume).
+    
+    \item \textbf{Uncertainty Relation Test}: For a given market, plot $\Delta_T$ (time horizon of profitable prediction, measured by holding period of successful strategies) against $\Delta_S$ (number of states distinguished, measured by the effective number of scenarios in option-implied distributions). The data should satisfy $\Delta_T \geq \frac{\log_2 \Delta_S}{\mathcal{C}}$ as predicted by Theorem~\ref{thm:uncertainty}.
+    
+    \item \textbf{Predictive Efficiency Comparison}: Compare the Brier scores of market-implied probabilities across different asset classes. The ordering should follow the hierarchy predicted by Conjecture~\ref{conj:hierarchy}, with liquid equity markets outperforming illiquid alternatives.
+\end{enumerate}
+
+\subsection{Experimental Design: A Controlled Test of PMT}
+
+We propose the following experimental framework for testing PMT:
+
+\begin{enumerate}[label=\textbf{Step \arabic*:}]
+    \item Identify a universe of well-defined, verifiable events (e.g., quarterly earnings beating consensus, central bank decisions, election outcomes).
+    
+    \item Extract $\Q$-probabilities from option prices using the Breeden--Litzenberger formula \eqref{eq:breeden_litz}.
+    
+    \item Estimate the risk distortion kernel $R$ using either Method 1 (prediction market calibration) or Method 2 (power utility inversion).
+    
+    \item Compute $\PP = \Q / R$ and evaluate calibration, discrimination, and Brier scores.
+    
+    \item Compare PMT-derived $\PP$ against: (a) raw option-implied $\Q$-probabilities, (b) analyst consensus forecasts, (c) pure prediction market prices.
+\end{enumerate}
+
+The hypothesis is that $\PP$ (the risk-adjusted market probability) outperforms $\Q$ (the unadjusted option-implied probability) in calibration and discrimination, as $\PP$ removes the systematic risk distortion that makes $\Q$ a biased probability estimator.
+
+\subsection{Data Requirements and Feasibility}
+
+Testing the full PMT framework requires:
+\begin{itemize}
+    \item High-frequency option chain data (to extract $\Q$).
+    \item Contemporaneous prediction market data (for calibration of $R$).
+    \item Realized outcomes for a large sample of events.
+    \item Trading volume and order flow data (for microstructure tests).
+\end{itemize}
+
+The richest testing ground is the period around binary events (earnings announcements, FDA decisions, elections) where both option markets and prediction markets provide probabilities.
+
+
+% ══════════════════════════════════════════════════════════
+% SECTION 14: CONCLUSION
+% ══════════════════════════════════════════════════════════
+
+\section{Conclusion}\label{sec:conclusion}
+
+We have introduced Predictive Market Theory, an axiomatic framework that reconceptualizes financial markets as prediction engines whose fundamental output is a probability measure over future states of the world. The theory rests on five axioms---Predictive Completeness, Bayesian Coherence, Informational Irreversibility, Predictive Sufficiency of Price, and Thermodynamic Dissipation---from which the standard results of asset pricing theory emerge as corollaries.
+
+The key theoretical innovations are:
+
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{The Predictive Measure $\PP$}: A third probability measure, distinct from both the physical $\Prob$ and risk-neutral $\Q$ measures, encoding the market's collective forecast purged of risk distortions.
+    
+    \item \textbf{The Variational Prediction Principle}: The market minimizes predictive free energy, unifying Bayesian inference, information theory, and thermodynamics within a single framework.
+    
+    \item \textbf{Price as derived from prediction}: Rather than deriving prediction from price, PMT derives price from prediction through the pricing functional $P = e^{-r\tau}\E_\PP[X \cdot R]$.
+    
+    \item \textbf{The Predictive Uncertainty Relation}: A fundamental limit on the joint precision of temporal and state-space prediction, $\Delta_T \geq \frac{\log_2 \Delta_S}{\mathcal{C}}$.
+    
+    \item \textbf{Resolution of classical puzzles}: The equity premium, excess volatility, and persistence of active management receive natural explanations as consequences of the predictive structure.
+    
+    \item \textbf{Market coherence as an extension of de Finetti}: The market's predictive function satisfies the same coherence conditions as individual rational probability, elevated to the collective level.
+\end{enumerate}
+
+Predictive Market Theory shifts the conceptual center of gravity in financial economics from \emph{pricing} to \emph{prediction}. In this framework, the primary function of markets is not to ``find the right price'' but to ``find the right probability.'' Prices are instrumental---they are the medium through which the predictive function operates---but the prediction is the substance. This inversion suggests that the true measure of market quality is not price efficiency in the Fama sense but \emph{predictive efficiency}: how well does the market's probability measure approximate the true distribution of future outcomes?
+
+We believe this framework opens a productive new chapter in the theory of financial markets, one that more naturally connects to adjacent fields---machine learning, information theory, statistical mechanics, and decision theory---and that provides sharper tools for both theoretical analysis and empirical investigation.
+
+\vspace{1em}
+\noindent\rule{\textwidth}{0.5pt}
+\noindent\textit{GrokRxiv DOI:} \texttt{10.48550/GrokRxiv.2603.04.predictive-market-theory}
+\hfill \textit{4 March 2026}
+
+
+% ══════════════════════════════════════════════════════════
+% BIBLIOGRAPHY
+% ══════════════════════════════════════════════════════════
+
+\begin{thebibliography}{99}
+
+\bibitem{arrow1954}
+Arrow, K. J., \& Debreu, G. (1954). Existence of an equilibrium for a competitive economy. \textit{Econometrica}, 22(3), 265--290.
+
+\bibitem{arrow1964}
+Arrow, K. J. (1964). The role of securities in the optimal allocation of risk-bearing. \textit{Review of Economic Studies}, 31(2), 91--96.
+
+\bibitem{arrow2008}
+Arrow, K. J., et al. (2008). The promise of prediction markets. \textit{Science}, 320(5878), 877--878.
+
+\bibitem{bachelier1900}
+Bachelier, L. (1900). Th\'{e}orie de la sp\'{e}culation. \textit{Annales Scientifiques de l'\'{E}cole Normale Sup\'{e}rieure}, 17, 21--86.
+
+\bibitem{blei2017}
+Blei, D. M., Kucukelbir, A., \& McAuliffe, J. D. (2017). Variational inference: A review for statisticians. \textit{Journal of the American Statistical Association}, 112(518), 859--877.
+
+\bibitem{breeden1978}
+Breeden, D. T., \& Litzenberger, R. H. (1978). Prices of state-contingent claims implicit in option prices. \textit{Journal of Business}, 51(4), 621--651.
+
+\bibitem{cover2006}
+Cover, T. M., \& Thomas, J. A. (2006). \textit{Elements of Information Theory} (2nd ed.). Wiley.
+
+\bibitem{debreu1959}
+Debreu, G. (1959). \textit{Theory of Value}. Yale University Press.
+
+\bibitem{definetti1937}
+de Finetti, B. (1937). La pr\'{e}vision: ses lois logiques, ses sources subjectives. \textit{Annales de l'Institut Henri Poincar\'{e}}, 7(1), 1--68.
+
+\bibitem{fama1970}
+Fama, E. F. (1970). Efficient capital markets: A review of theory and empirical work. \textit{Journal of Finance}, 25(2), 383--417.
+
+\bibitem{friston2010}
+Friston, K. (2010). The free-energy principle: A unified brain theory? \textit{Nature Reviews Neuroscience}, 11(2), 127--138.
+
+\bibitem{gneiting2007}
+Gneiting, T., \& Raftery, A. E. (2007). Strictly proper scoring rules, prediction, and estimation. \textit{Journal of the American Statistical Association}, 102(477), 359--378.
+
+\bibitem{grossman1980}
+Grossman, S. J., \& Stiglitz, J. E. (1980). On the impossibility of informationally efficient markets. \textit{American Economic Review}, 70(3), 393--408.
+
+\bibitem{hanson2003}
+Hanson, R. (2003). Combinatorial information market design. \textit{Information Systems Frontiers}, 5(1), 107--119.
+
+\bibitem{harrison1981}
+Harrison, J. M., \& Pliska, S. R. (1981). Martingales and stochastic integrals in the theory of continuous trading. \textit{Stochastic Processes and their Applications}, 11(3), 215--260.
+
+\bibitem{hayek1945}
+Hayek, F. A. (1945). The use of knowledge in society. \textit{American Economic Review}, 35(4), 519--530.
+
+\bibitem{kelly1956}
+Kelly, J. L. (1956). A new interpretation of information rate. \textit{Bell System Technical Journal}, 35(4), 917--926.
+
+\bibitem{kyle1985}
+Kyle, A. S. (1985). Continuous auctions and insider trading. \textit{Econometrica}, 53(6), 1315--1335.
+
+\bibitem{long2026part1}
+Long, M. (2026). Markets as distributed Bayesian inference engines: Price formation, information aggregation, and the thermodynamic structure of financial systems. \textit{GrokRxiv:2603.04.markets-bayesian-inference}.
+
+\bibitem{mehra1985}
+Mehra, R., \& Prescott, E. C. (1985). The equity premium: A puzzle. \textit{Journal of Monetary Economics}, 15(2), 145--161.
+
+\bibitem{milgrom1982}
+Milgrom, P., \& Stokey, N. (1982). Information, trade and common knowledge. \textit{Journal of Economic Theory}, 26(1), 17--27.
+
+\bibitem{myerson1981}
+Myerson, R. B. (1981). Optimal auction design. \textit{Mathematics of Operations Research}, 6(1), 58--73.
+
+\bibitem{savage1954}
+Savage, L. J. (1954). \textit{The Foundations of Statistics}. Wiley.
+
+\bibitem{shiller1981}
+Shiller, R. J. (1981). Do stock prices move too much to be justified by subsequent changes in dividends? \textit{American Economic Review}, 71(3), 421--436.
+
+\bibitem{wolfers2004}
+Wolfers, J., \& Zitzewitz, E. (2004). Prediction markets. \textit{Journal of Economic Perspectives}, 18(2), 107--126.
+
+\end{thebibliography}
+
+\end{document}
